@@ -133,8 +133,12 @@
               <shadeSourcesContent>true</shadeSourcesContent>
               <relocations>
                 <relocation>
+                  <pattern>io.netty</pattern>
+                  <shadedPattern>org.apache.hadoop.hbase.shaded.io.netty</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>com.google</pattern>
-                  <shadedPattern>org.apache.hbase.thirdparty.shaded.com.google</shadedPattern>
+                  <shadedPattern>org.apache.hadoop.hbase.shaded.com.google</shadedPattern>
                 </relocation>
               </relocations>
               <!-- What I got when I did a mvn dependency:list for this
@@ -304,9 +308,29 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>22.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.12.Final</version>
     </dependency>
   </dependencies>
   <properties>
@@ -330,6 +354,7 @@
     <!-- Build dependencies -->
     <maven.min.version>3.0.4</maven.min.version>
     <java.min.version>${compileSource}</java.min.version>
+    <protobuf.version>3.3.1</protobuf.version>
   </properties>
   <profiles>
     <!-- this profile should be activated for release builds -->
