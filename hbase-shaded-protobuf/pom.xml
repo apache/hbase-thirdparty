@@ -18,15 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-  ON MVN COMPILE NOT WORKING
-
-  If you wondering why 'mvn compile' does not work building HBase
-  (in particular, if you are doing it for the first time), instead do
-  'mvn package'.  If you are interested in the full story, see
-  https://issues.apache.org/jira/browse/HBASE-6795.
-
 -->
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -38,7 +29,7 @@
   <artifactId>hbase-shaded-protobuf</artifactId>
   <name>Apache HBase Patched &amp; Relocated (Shaded) Protobuf</name>
   <description>
-    Pulls down protobuf, patches it, relocates/shades, and then bundles it up in a new jar.
+    Pulls down protobuf, patches it, compiles, and then relocates/shades.
   </description>
   <build>
     <plugins>
@@ -47,37 +38,91 @@
         <artifactId>maven-source-plugin</artifactId>
       </plugin>
       <plugin>
+        <!--Clean needs to purge src/main/java since this is where
+             the unpack of protobuf is overlaid. Do it for usual
+             clean goal but also before we unpack in case patches
+             delete/add files.-->
         <artifactId>maven-clean-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>pre-compile-protoc</id>
-                  <phase>generate-sources</phase>
-                  <goals>
-                    <goal>clean</goal>
-                  </goals>
-              </execution>
-            </executions>
-                <configuration>
-                  <filesets>
-                    <fileset>
-                      <directory>${basedir}/src/main/java</directory>
-                      <includes>
-                        <include>**/**</include>
-                      </includes>
-                      <followSymlinks>false</followSymlinks>
-                    </fileset>
-                  </filesets>
-                </configuration>
+        <executions>
+          <execution>
+            <id>pre-compile-protoc</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/src/main/java</directory>
+              <includes>
+                <include>**/**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.0.2</version>
-            <configuration>
-              <finalName>${jar.finalName}</finalName>                   
-            </configuration>
-          </plugin>
       <plugin>
+        <!--Download our dependency src, i.e. protobuf, and
+             unpack it. Overlays src/main/java so ready for
+            compile-time-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>sources</classifier>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${basedir}/src/main/java</outputDirectory>
+                  <includes>**/**</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--Apply our patches to the unbundled protobuf-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-patch-plugin</artifactId>
+        <version>1.2</version>
+        <configuration>
+          <targetDirectory>${basedir}</targetDirectory>
+          <skipApplication>false</skipApplication>
+        </configuration>
+        <executions>
+          <execution>
+            <id>patch</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <!--This should run after the above unpack phase-->
+              <goal>apply</goal>
+            </goals>
+            <configuration>
+              <strip>1</strip>
+              <patchDirectory>src/main/patches</patchDirectory>
+              <patchTrackingFile>${project.build.directory}/patches-applied.txt</patchTrackingFile>
+              <naturalOrderProcessing>true</naturalOrderProcessing>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--After compile, shade-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.0.0</version>
@@ -89,7 +134,7 @@
             </goals>
             <configuration>
               <shadeSourcesContent>true</shadeSourcesContent>
-                  <createSourcesJar>true</createSourcesJar>
+              <createSourcesJar>true</createSourcesJar>
               <relocations>
                 <relocation>
                   <pattern>com.google</pattern>
@@ -109,60 +154,6 @@
                 </excludes>
               </artifactSet>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>2.10</version>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>${project.artifactId}</artifactId>
-                      <version>${project.version}</version>
-                      <classifier>sources</classifier>
-                      <type>jar</type>
-                      <overWrite>true</overWrite>
-                      <outputDirectory>${basedir}/src/main/java</outputDirectory>
-                      <includes>**/*.java</includes>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-patch-plugin</artifactId>
-        <version>1.2</version>
-        <configuration>
-           <!--Patches are made at top-level-->
-           <targetDirectory>${basedir}</targetDirectory>
-          <skipApplication>false</skipApplication>
-        </configuration>
-        <executions>
-          <execution>
-            <id>patch</id>
-            <configuration>
-               <strip>1</strip>
-              <patchDirectory>src/main/patches</patchDirectory>
-              <patchTrackingFile>${project.build.directory}/patches-applied.txt</patchTrackingFile>
-              <naturalOrderProcessing>true</naturalOrderProcessing>
-            </configuration>
-            <phase>package</phase>
-            <goals>
-              <!--This should run after the above unpack phase-->
-              <goal>apply</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
