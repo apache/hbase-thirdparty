@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-  http://maven.apache.org/maven-v4_0_0.xsd">
-<!--
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0   http://maven.apache.org/maven-v4_0_0.xsd">
+  <!--
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -44,7 +41,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <name>Apache HBase Relocated Third-party Libraries</name>
   <description>
-    Hosts third-party, relocated (shaded) libraries.
+    Hosts third-party, relocated (renamed, shaded) libraries.
   </description>
   <url>http://hbase.apache.org</url>
   <inceptionYear>2017</inceptionYear>
@@ -55,13 +52,13 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
   <scm>
     <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
     <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/hbase-thirdparty.git</developerConnection>
     <url>https://git-wip-us.apache.org/repos/asf?p=hbase-thirdparty.git</url>
   </scm>
   <issueManagement>
+    <!--File issues for this project against Apache HBase JIRA-->
     <system>JIRA</system>
     <url>http://issues.apache.org/jira/browse/HBASE</url>
   </issueManagement>
@@ -111,51 +108,36 @@
       <archive>http://mail-archives.apache.org/mod_mbox/hbase-builds/</archive>
     </mailingList>
   </mailingLists>
-  <developers /> <!--TODO-->
+  <developers/>
+  <!--TODO-->
+  <properties>
+    <!-- override on command line to have generated LICENSE files include
+         diagnostic info for verifying notice requirements -->
+    <license.debug.print.included>false</license.debug.print.included>
+    <!-- When a particular module bundles its depenendencies, should be true -->
+    <license.bundles.dependencies>false</license.bundles.dependencies>
+    <!-- modules that include a the logo in their source tree should set true -->
+    <license.bundles.logo>false</license.bundles.logo>
+    <!-- modules that include bootstrap in their source tree should set true -->
+    <license.bundles.bootstrap>false</license.bundles.bootstrap>
+    <!-- modules that include jquery in their source tree should set true -->
+    <license.bundles.jquery>false</license.bundles.jquery>
+    <maven.build.timestamp.format>
+      yyyy-MM-dd'T'HH:mm
+    </maven.build.timestamp.format>
+    <buildDate>${maven.build.timestamp}</buildDate>
+    <compileSource>1.8</compileSource>
+    <java.min.version>${compileSource}</java.min.version>
+    <maven.min.version>3.3.3</maven.min.version>
+    <protobuf.version>3.3.1</protobuf.version>
+    <rename.offset>org.apache.hadoop.hbase.shaded</rename.offset>
+  </properties>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
         <version>1.5</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <relocations>
-                <relocation>
-                  <pattern>io.netty</pattern>
-                  <shadedPattern>org.apache.hadoop.hbase.shaded.io.netty</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>org.apache.hadoop.hbase.shaded.com.google</shadedPattern>
-                </relocation>
-              </relocations>
-              <!-- What I got when I did a mvn dependency:list for this
-               module. Exclude all but the com.google.
-              -->
-              <artifactSet>
-                <excludes>
-                  <exclude>com.google.code.findbugs:jsr305</exclude>
-                  <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                  <exclude>com.google.j2objc:j2objc-annotations</exclude>
-                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                </excludes>
-              </artifactSet>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -173,10 +155,6 @@
           <goals>${goals}</goals>
           <pomFileName>pom.xml</pomFileName>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -217,7 +195,6 @@
             <exclude>**/dependency-reduced-pom.xml</exclude>
             <exclude>**/rat.txt</exclude>
             <!-- exclude the shaded protobuf files -->
-            <exclude>**/shaded/com/google/protobuf/**</exclude>
             <exclude>**/src/main/patches/**</exclude>
           </excludes>
         </configuration>
@@ -230,7 +207,7 @@
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>extra-enforcer-rules</artifactId>
-            <version>1.0-beta-3</version>
+            <version>1.0-beta-6</version>
           </dependency>
         </dependencies>
         <!-- version set by parent -->
@@ -275,22 +252,8 @@
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <inherited>false</inherited>
-            <goals>
-              <goal>findbugs</goal>
-            </goals>
-            <configuration>
-              <excludeFilterFile>${basedir}/dev-support/findbugs-exclude.xml</excludeFilterFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.4</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -303,9 +266,60 @@
           <timestampFormat>yyyy</timestampFormat>
           <timestampPropertyName>build.year</timestampPropertyName>
         </configuration>
-        </plugin>
-      </plugins>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>dependency-reduced-pom.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <relocations>
+                <relocation>
+                  <pattern>io.netty</pattern>
+                  <shadedPattern>${rename.offset}.io.netty</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google</pattern>
+                  <shadedPattern>${rename.offset}.com.google</shadedPattern>
+                </relocation>
+              </relocations>
+              <artifactSet>
+                <excludes>
+                  <!--Exclude protobuf itself. We get a patched version later over in hbase core-->
+                  <exclude>com.google.protobuf:protobuf-java</exclude>
+                  <exclude>com.google.code.findbugs:jsr305</exclude>
+                  <exclude>com.google.errorprone:error_prone_annotations</exclude>
+                  <exclude>com.google.j2objc:j2objc-annotations</exclude>
+                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
+                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
+  <!--These are the third-party libs we want to relocate-->
   <dependencies>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -319,11 +333,6 @@
     </dependency>
     <dependency>
       <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java</artifactId>
-      <version>${protobuf.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java-util</artifactId>
       <version>${protobuf.version}</version>
     </dependency>
@@ -333,29 +342,6 @@
       <version>4.1.12.Final</version>
     </dependency>
   </dependencies>
-  <properties>
-    <!-- override on command line to have generated LICENSE files include
-         diagnostic info for verifying notice requirements -->
-    <license.debug.print.included>false</license.debug.print.included>
-    <!-- When a particular module bundles its depenendencies, should be true -->
-    <license.bundles.dependencies>false</license.bundles.dependencies>
-    <!-- modules that include a the logo in their source tree should set true -->
-    <license.bundles.logo>false</license.bundles.logo>
-    <!-- modules that include bootstrap in their source tree should set true -->
-    <license.bundles.bootstrap>false</license.bundles.bootstrap>
-    <!-- modules that include jquery in their source tree should set true -->
-    <license.bundles.jquery>false</license.bundles.jquery>
-    <tar.name>${project.build.finalName}.tar.gz</tar.name>
-    <maven.build.timestamp.format>
-      yyyy-MM-dd'T'HH:mm
-    </maven.build.timestamp.format>
-    <buildDate>${maven.build.timestamp}</buildDate>
-    <compileSource>1.8</compileSource>
-    <!-- Build dependencies -->
-    <maven.min.version>3.0.4</maven.min.version>
-    <java.min.version>${compileSource}</java.min.version>
-    <protobuf.version>3.3.1</protobuf.version>
-  </properties>
   <profiles>
     <!-- this profile should be activated for release builds -->
     <profile>
@@ -380,17 +366,17 @@
             <configuration>
               <rules>
                 <enforceBytecodeVersion>
-                <maxJdkVersion>${compileSource}</maxJdkVersion>
-                <message>HBase has unsupported dependencies.
+                  <maxJdkVersion>${compileSource}</maxJdkVersion>
+                  <message>HBase has unsupported dependencies.
   HBase requires that all dependencies be compiled with version ${compileSource} or earlier
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
   either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
   Non-release builds can temporarily build with a newer JDK version by setting the
   'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).
                 </message>
-              </enforceBytecodeVersion>
-            </rules>
-          </configuration>
+                </enforceBytecodeVersion>
+              </rules>
+            </configuration>
           </plugin>
         </plugins>
       </build>
