@@ -37,11 +37,12 @@
     <!-- no parent resolution -->
   </parent>
   <groupId>org.apache.hbase.thirdparty</groupId>
-  <artifactId>hbase-thirdparty-shaded</artifactId>
+  <artifactId>hbase-thirdparty</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>Apache HBase Relocated Third-party Libraries</name>
+  <name>Apache HBase Third-Party Libs</name>
+  <packaging>pom</packaging>
   <description>
-    Hosts third-party, relocated (renamed, shaded) libraries.
+    Hosts relocated (renamed, shaded) third-party libraries used by hbase.
   </description>
   <url>http://hbase.apache.org</url>
   <inceptionYear>2017</inceptionYear>
@@ -52,6 +53,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <modules>
+    <module>hbase-shaded-protobuf</module>
+    <module>hbase-shaded-thirdparty</module>
+  </modules>
   <scm>
     <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
     <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/hbase-thirdparty.git</developerConnection>
@@ -111,17 +116,6 @@
   <developers/>
   <!--TODO-->
   <properties>
-    <!-- override on command line to have generated LICENSE files include
-         diagnostic info for verifying notice requirements -->
-    <license.debug.print.included>false</license.debug.print.included>
-    <!-- When a particular module bundles its depenendencies, should be true -->
-    <license.bundles.dependencies>false</license.bundles.dependencies>
-    <!-- modules that include a the logo in their source tree should set true -->
-    <license.bundles.logo>false</license.bundles.logo>
-    <!-- modules that include bootstrap in their source tree should set true -->
-    <license.bundles.bootstrap>false</license.bundles.bootstrap>
-    <!-- modules that include jquery in their source tree should set true -->
-    <license.bundles.jquery>false</license.bundles.jquery>
     <maven.build.timestamp.format>
       yyyy-MM-dd'T'HH:mm
     </maven.build.timestamp.format>
@@ -133,70 +127,104 @@
     <rename.offset>org.apache.hadoop.hbase.shaded</rename.offset>
   </properties>
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.5</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <!--You need this profile. It'll sign your artifacts.
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <!--You need this profile. It'll sign your artifacts.
               I'm not sure if this config. actually works though.
               I've been specifying -Papache-release on the command-line
            -->
-          <releaseProfiles>apache-release</releaseProfiles>
-          <!--This stops our running tests for each stage of maven release.
+            <releaseProfiles>apache-release</releaseProfiles>
+            <!--This stops our running tests for each stage of maven release.
               But it builds the test jar.  From SUREFIRE-172.
             -->
-          <arguments>-Dmaven.test.skip.exec ${arguments}</arguments>
-          <goals>${goals}</goals>
-          <pomFileName>pom.xml</pomFileName>
-        </configuration>
-      </plugin>
+            <arguments>-Dmaven.test.skip.exec ${arguments}</arguments>
+            <goals>${goals}</goals>
+            <pomFileName>pom.xml</pomFileName>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.9.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>0.11</version>
+          <configuration>
+            <excludes>
+              <exclude>**/*.versionsBackup</exclude>
+              <exclude>**/*.log</exclude>
+              <exclude>**/.*</exclude>
+              <exclude>**/*.tgz</exclude>
+              <exclude>**/*.orig</exclude>
+              <exclude>**/.idea/**</exclude>
+              <exclude>**/*.iml</exclude>
+              <exclude>**/CHANGES.txt</exclude>
+              <exclude>**/generated/**</exclude>
+              <exclude>**/gen-*/**</exclude>
+              <exclude>**/*.avpr</exclude>
+              <exclude>**/*.svg</exclude>
+              <!-- vector graphics -->
+              <exclude>**/*.vm</exclude>
+              <!-- apache doxia generated -->
+              <exclude>**/control</exclude>
+              <exclude>**/conffile</exclude>
+              <!-- auto-gen docs -->
+              <exclude>docs/*</exclude>
+              <exclude>logs/*</exclude>
+              <!--  exclude source control files -->
+              <exclude>.git/**</exclude>
+              <exclude>.svn/**</exclude>
+              <exclude>**/.settings/**</exclude>
+              <exclude>**/patchprocess/**</exclude>
+              <exclude>**/dependency-reduced-pom.xml</exclude>
+              <exclude>**/rat.txt</exclude>
+              <!-- exclude the shaded protobuf files -->
+              <exclude>**/src/main/patches/**</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.4</version>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>create-timestamp</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <timestampFormat>yyyy</timestampFormat>
+            <timestampPropertyName>build.year</timestampPropertyName>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.9.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <version>0.11</version>
+        <artifactId>maven-clean-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>**/*.versionsBackup</exclude>
-            <exclude>**/*.log</exclude>
-            <exclude>**/.*</exclude>
-            <exclude>**/*.tgz</exclude>
-            <exclude>**/*.orig</exclude>
-            <exclude>**/.idea/**</exclude>
-            <exclude>**/*.iml</exclude>
-            <exclude>**/CHANGES.txt</exclude>
-            <exclude>**/generated/**</exclude>
-            <exclude>**/gen-*/**</exclude>
-            <exclude>**/*.avpr</exclude>
-            <exclude>**/*.svg</exclude>
-            <!-- vector graphics -->
-            <exclude>**/*.vm</exclude>
-            <!-- apache doxia generated -->
-            <exclude>**/control</exclude>
-            <exclude>**/conffile</exclude>
-            <!-- auto-gen docs -->
-            <exclude>docs/*</exclude>
-            <exclude>logs/*</exclude>
-            <!--  exclude source control files -->
-            <exclude>.git/**</exclude>
-            <exclude>.svn/**</exclude>
-            <exclude>**/.settings/**</exclude>
-            <exclude>**/patchprocess/**</exclude>
-            <exclude>**/dependency-reduced-pom.xml</exclude>
-            <exclude>**/rat.txt</exclude>
-            <!-- exclude the shaded protobuf files -->
-            <exclude>**/src/main/patches/**</exclude>
-          </excludes>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>dependency-reduced-pom.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
       <plugin>
@@ -233,9 +261,7 @@
                 <requireJavaVersion>
                   <version>[${java.min.version},)</version>
                   <message>Java is out of date.
-  HBase requirs at least version ${java.min.version} of the JDK to properly build from source.
-  You appear to be using an older version. You can use either "mvn -version" or
-  "mvn enforcer:display-info" to verify what version is active.
+  HBase requires at least version ${java.min.version} of the JDK to properly build from source.
   See the reference guide on building for more information: http://hbase.apache.org/book.html#build
                   </message>
                 </requireJavaVersion>
@@ -250,98 +276,9 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create-timestamp</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <timestampFormat>yyyy</timestampFormat>
-          <timestampPropertyName>build.year</timestampPropertyName>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}</directory>
-              <includes>
-                <include>dependency-reduced-pom.xml</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <relocations>
-                <relocation>
-                  <pattern>io.netty</pattern>
-                  <shadedPattern>${rename.offset}.io.netty</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>${rename.offset}.com.google</shadedPattern>
-                </relocation>
-              </relocations>
-              <artifactSet>
-                <excludes>
-                  <!--Exclude protobuf itself. We get a patched version later over in hbase core-->
-                  <exclude>com.google.protobuf:protobuf-java</exclude>
-                  <exclude>com.google.code.findbugs:jsr305</exclude>
-                  <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                  <exclude>com.google.j2objc:j2objc-annotations</exclude>
-                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                </excludes>
-              </artifactSet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <!--These are the third-party libs we want to relocate-->
-  <dependencies>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>22.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java-util</artifactId>
-      <version>${protobuf.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-      <version>4.1.12.Final</version>
-    </dependency>
-  </dependencies>
   <profiles>
     <!-- this profile should be activated for release builds -->
     <profile>
