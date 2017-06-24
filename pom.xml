@@ -42,7 +42,7 @@
   <name>Apache HBase Third-Party Libs</name>
   <packaging>pom</packaging>
   <description>
-    Hosts relocated (renamed, shaded) third-party libraries used by hbase.
+    Packaging of relocated (renamed, shaded) third-party libraries used by hbase.
   </description>
   <url>http://hbase.apache.org</url>
   <inceptionYear>2017</inceptionYear>
@@ -116,6 +116,7 @@
   <developers/>
   <!--TODO-->
   <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.build.timestamp.format>
       yyyy-MM-dd'T'HH:mm
     </maven.build.timestamp.format>
@@ -123,7 +124,6 @@
     <compileSource>1.8</compileSource>
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
-    <protobuf.version>3.3.1</protobuf.version>
     <rename.offset>org.apache.hadoop.hbase.shaded</rename.offset>
   </properties>
   <build>
@@ -186,6 +186,10 @@
               <exclude>**/rat.txt</exclude>
               <!-- exclude the shaded protobuf files -->
               <exclude>**/src/main/patches/**</exclude>
+              <!--Exclude the unpacked google src-->
+              <exclude>**/src/main/java/com/google/protobuf/**</exclude>
+              <exclude>**/src/main/java/google/**</exclude>
+              <exclude>**/src/main/java/META-INF/**</exclude>
             </excludes>
           </configuration>
         </plugin>

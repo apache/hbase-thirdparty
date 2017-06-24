@@ -41,11 +41,13 @@
         <!--Clean needs to purge src/main/java since this is where
              the unpack of protobuf is overlaid. Do it for usual
              clean goal but also before we unpack in case patches
-             delete/add files.-->
+             delete/add files. We use src/main/java instead of dir
+             under 'target' because the jar plugin is dumb, hard to
+             make it source from other then src/main/java.-->
         <artifactId>maven-clean-plugin</artifactId>
         <executions>
           <execution>
-            <id>pre-compile-protoc</id>
+            <id>pre-generate-sources</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>clean</goal>
@@ -61,13 +63,20 @@
               </includes>
               <followSymlinks>false</followSymlinks>
             </fileset>
+              <fileset>
+                <directory>${basedir}</directory>
+                <includes>
+                  <include>dependency-reduced-pom.xml</include>
+                </includes>
+              </fileset>
           </filesets>
         </configuration>
       </plugin>
       <plugin>
         <!--Download our dependency src, i.e. protobuf, and
              unpack it. Overlays src/main/java so ready for
-            compile-time-->
+            compile-time (the jar plugin expects src in
+            src/main/java)-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.10</version>
@@ -81,9 +90,9 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.artifactId}</artifactId>
-                  <version>${project.version}</version>
+                  <groupId>com.google.protobuf</groupId>
+                  <artifactId>protobuf-java</artifactId>
+                  <version>3.3.1</version>
                   <classifier>sources</classifier>
                   <type>jar</type>
                   <overWrite>true</overWrite>
@@ -96,7 +105,12 @@
         </executions>
       </plugin>
       <plugin>
-        <!--Apply our patches to the unbundled protobuf-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+      </plugin>
+      <!--Apply our patches to the unpacked protobuf src-->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-patch-plugin</artifactId>
         <version>1.2</version>
@@ -107,25 +121,23 @@
         <executions>
           <execution>
             <id>patch</id>
-            <phase>generate-sources</phase>
+            <phase>process-sources</phase>
             <goals>
-              <!--This should run after the above unpack phase-->
               <goal>apply</goal>
             </goals>
             <configuration>
               <strip>1</strip>
-              <patchDirectory>src/main/patches</patchDirectory>
+              <patchDirectory>${basedir}/src/main/patches</patchDirectory>
               <patchTrackingFile>${project.build.directory}/patches-applied.txt</patchTrackingFile>
               <naturalOrderProcessing>true</naturalOrderProcessing>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      <!--Above we built a jar. Now at package step, do relocation/shade-->
       <plugin>
-        <!--After compile, shade-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.0.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -137,33 +149,14 @@
               <createSourcesJar>true</createSourcesJar>
               <relocations>
                 <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>${rename.offset}.com.google</shadedPattern>
+                  <pattern>com.google.protobuf</pattern>
+                  <shadedPattern>${rename.offset}.com.google.protobuf</shadedPattern>
                 </relocation>
               </relocations>
-              <artifactSet>
-                <excludes>
-                  <!--Exclude protobuf itself. We get a patched version later over in hbase core
-                    <exclude>com.google.protobuf:protobuf-java</exclude>
-                    <exclude>com.google.code.findbugs:jsr305</exclude>
-                    <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                    <exclude>com.google.j2objc:j2objc-annotations</exclude>
-                    <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                    <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                    -->
-                </excludes>
-              </artifactSet>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java</artifactId>
-      <version>${protobuf.version}</version>
-    </dependency>
-  </dependencies>
 </project>

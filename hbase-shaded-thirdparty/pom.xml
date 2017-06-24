@@ -58,7 +58,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.0.0</version>
           <executions>
             <execution>
               <phase>package</phase>
@@ -80,6 +79,7 @@
                 <artifactSet>
                   <excludes>
                     <!--Exclude protobuf itself. We get a patched version in adjacent module.
+                        Exclude other dependencies of guava, netty, etc.
                     -->
                     <exclude>com.google.protobuf:protobuf-java</exclude>
                     <exclude>com.google.code.findbugs:jsr305</exclude>
@@ -109,7 +109,9 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java-util</artifactId>
-      <version>${protobuf.version}</version>
+      <!--Version should be same as protobuf except sometimes
+           they publish new protobuf version w/o updating util.-->
+      <version>3.3.0</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
