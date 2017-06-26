@@ -65,11 +65,17 @@
                 <goal>shade</goal>
               </goals>
               <configuration>
-                <shadeSourcesContent>true</shadeSourcesContent>
                 <relocations>
                   <relocation>
                     <pattern>io.netty</pattern>
                     <shadedPattern>${rename.offset}.io.netty</shadedPattern>
+                    <excludes>
+                      <!--Getting at native code; can't relocate this w/o changing c-source
+                           -->
+                      <exclude>
+                        io.netty.channel.unix.LimitsStaticallyReferencedJniMethods
+                      </exclude>
+                    </excludes>
                   </relocation>
                   <relocation>
                     <pattern>com.google</pattern>

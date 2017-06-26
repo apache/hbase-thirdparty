@@ -1,7 +1,8 @@
 This project packages relocated third-party libraries used by Apache HBase.
 
-DISCLAIMER: This is an HBase internal project.  Included libs and/or their
-versions change at the dictate of hbase without regard to others concerns.
+DISCLAIMER: This project is for Apache HBase internal use.  Included libs
+and/or their versions are subject to change at the dictate of hbase without
+regard to the concern of others!
 
 To build, just run:
 
