@@ -1,5 +1,8 @@
 This project packages relocated third-party libraries used by Apache HBase.
 
+DISCLAIMER: This is an HBase internal project.  Included libs and/or their
+versions change at the dictate of hbase without regard to others concerns.
+
 To build, just run:
 
  $ mvn install
