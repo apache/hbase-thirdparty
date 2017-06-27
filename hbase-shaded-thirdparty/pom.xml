@@ -41,64 +41,98 @@
     Pulls down libs, relocates them and then makes a fat new jar with them all in it.
   </description>
   <build>
-     <plugins>
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <configuration>
-            <filesets>
-              <fileset>
-                <directory>${basedir}</directory>
-                <includes>
-                  <include>dependency-reduced-pom.xml</include>
-                </includes>
-              </fileset>
-            </filesets>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>shade</goal>
-              </goals>
-              <configuration>
-                <relocations>
-                  <relocation>
-                    <pattern>io.netty</pattern>
-                    <shadedPattern>${rename.offset}.io.netty</shadedPattern>
-                    <excludes>
-                      <!--Getting at native code; can't relocate this w/o changing c-source
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>dependency-reduced-pom.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>libnetty-transport-native-epoll.so</pattern>
+                  <shadedPattern>lib${rename.offset}-netty-transport-native-epoll.so</shadedPattern>
+                  <excludes>
+                    <!--Getting at native code; can't relocate this w/o changing c-source
                            -->
-                      <exclude>
+                    <exclude>
                         io.netty.channel.unix.*
                       </exclude>
-                    </excludes>
-                  </relocation>
-                  <relocation>
-                    <pattern>com.google</pattern>
-                    <shadedPattern>${rename.offset}.com.google</shadedPattern>
-                  </relocation>
-                </relocations>
-                <artifactSet>
-                  <excludes>
-                    <!--Exclude protobuf itself. We get a patched version in adjacent module.
+                  </excludes>
+                </relocation>
+                <relocation>
+                  <pattern>io.netty</pattern>
+                  <shadedPattern>${rename.offset}.io.netty</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google</pattern>
+                  <shadedPattern>${rename.offset}.com.google</shadedPattern>
+                </relocation>
+              </relocations>
+              <artifactSet>
+                <excludes>
+                  <!--Exclude protobuf itself. We get a patched version in adjacent module.
                         Exclude other dependencies of guava, netty, etc.
                     -->
-                    <exclude>com.google.protobuf:protobuf-java</exclude>
-                    <exclude>com.google.code.findbugs:jsr305</exclude>
-                    <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                    <exclude>com.google.j2objc:j2objc-annotations</exclude>
-                    <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                    <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
-                  </excludes>
-                </artifactSet>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
+                  <exclude>com.google.protobuf:protobuf-java</exclude>
+                  <exclude>com.google.code.findbugs:jsr305</exclude>
+                  <exclude>com.google.errorprone:error_prone_annotations</exclude>
+                  <exclude>com.google.j2objc:j2objc-annotations</exclude>
+                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
+                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--This trick from
+             https://stackoverflow.com/questions/33825743/rename-files-inside-a-jar-using-some-maven-plugin
+          -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo message="unjar"/>
+                <unzip src="${project.build.directory}/${artifactId}-${version}.jar"
+                  dest="${project.build.directory}/unpacked/"/>
+                <echo message="Rename netty .so in META-INF"/>
+                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty-transport-native-epoll.so"
+                  tofile="${project.build.directory}/unpacked/META-INF/native/lib${rename.offset}netty-transport-native-epoll.so" />
+                <echo message="Redo jar"/>
+                <jar destfile="${project.build.directory}/${artifactId}-${version}.jar"
+                    basedir="${project.build.directory}/unpacked"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
