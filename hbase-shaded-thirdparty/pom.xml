@@ -73,7 +73,7 @@
                       <!--Getting at native code; can't relocate this w/o changing c-source
                            -->
                       <exclude>
-                        io.netty.channel.unix.LimitsStaticallyReferencedJniMethods
+                        io.netty.channel.unix.*
                       </exclude>
                     </excludes>
                   </relocation>
