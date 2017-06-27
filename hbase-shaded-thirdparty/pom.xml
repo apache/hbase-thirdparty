@@ -121,13 +121,13 @@
             <configuration>
               <target>
                 <echo message="unjar"/>
-                <unzip src="${project.build.directory}/${artifactId}-${version}.jar"
+                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                   dest="${project.build.directory}/unpacked/"/>
                 <echo message="Rename netty .so in META-INF"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty-transport-native-epoll.so"
                   tofile="${project.build.directory}/unpacked/META-INF/native/liborg-apache-hadoop-hbase-shaded-netty-transport-native-epoll.so" />
                 <echo message="Redo jar"/>
-                <jar destfile="${project.build.directory}/${artifactId}-${version}.jar"
+                <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                     basedir="${project.build.directory}/unpacked"/>
               </target>
             </configuration>
