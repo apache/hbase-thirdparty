@@ -67,17 +67,6 @@
             <configuration>
               <relocations>
                 <relocation>
-                  <pattern>libnetty-transport-native-epoll.so</pattern>
-                  <shadedPattern>lib${rename.offset}-netty-transport-native-epoll.so</shadedPattern>
-                  <excludes>
-                    <!--Getting at native code; can't relocate this w/o changing c-source
-                           -->
-                    <exclude>
-                        io.netty.channel.unix.*
-                      </exclude>
-                  </excludes>
-                </relocation>
-                <relocation>
                   <pattern>io.netty</pattern>
                   <shadedPattern>${rename.offset}.io.netty</shadedPattern>
                 </relocation>
@@ -106,6 +95,21 @@
       <plugin>
         <!--This trick from
              https://stackoverflow.com/questions/33825743/rename-files-inside-a-jar-using-some-maven-plugin
+
+            The netty jar has a .so in it. Shading requires rename of the .so and then passing a system
+            property so netty finds the renamed .so and associates it w/ the relocated netty files.
+
+            Add this define when running unit tests:
+            
+               mvn test -Dorg.apache.hadoop.hbase.shaded.io.netty.packagePrefix=org.apache.hadoop.hbase.shaded. -Dtest=TestNettyIPC
+
+            See toward the end of this issue for how to pass config:
+            
+              https://github.com/netty/netty/issues/6665
+
+            TODO: Ensure native works.
+            NOTE: The 'tofile' in the move command below has the relocation hard-coded
+            with '-' instead of '.' separators. If change the relocation, need to change here too.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -121,7 +125,7 @@
                   dest="${project.build.directory}/unpacked/"/>
                 <echo message="Rename netty .so in META-INF"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty-transport-native-epoll.so"
-                  tofile="${project.build.directory}/unpacked/META-INF/native/lib${rename.offset}netty-transport-native-epoll.so" />
+                  tofile="${project.build.directory}/unpacked/META-INF/native/liborg-apache-hadoop-hbase-shaded-netty-transport-native-epoll.so" />
                 <echo message="Redo jar"/>
                 <jar destfile="${project.build.directory}/${artifactId}-${version}.jar"
                     basedir="${project.build.directory}/unpacked"/>
