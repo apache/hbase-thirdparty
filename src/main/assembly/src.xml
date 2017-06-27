@@ -56,13 +56,13 @@
   </moduleSets>
   <fileSets>
     <fileSet>
-      <directory>${project.basedir}/../src</directory>
+      <directory>${project.basedir}/src</directory>
       <outputDirectory>src</outputDirectory>
       <fileMode>0644</fileMode>
       <directoryMode>0755</directoryMode>
     </fileSet>
     <fileSet>
-      <directory>${project.basedir}/..</directory>
+      <directory>${project.basedir}</directory>
       <outputDirectory>.</outputDirectory>
       <includes>
         <include>pom.xml</include>

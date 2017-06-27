@@ -12,6 +12,10 @@ To deploy to mvn central, run:
 
  $ mvn install deploy  -Papache-release -Prelease 
 
+To build a src tarball:
+
+ $ mvn clean assembly:single
+
 (Make sure you have your credentials set over in ~/.m2/settings.xml, etc. -- see
 hbase refguide for publishing SNAPSHOTS/Release Candidates)
 
