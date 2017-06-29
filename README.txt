@@ -19,9 +19,9 @@ To build a src tarball:
 (Make sure you have your credentials set over in ~/.m2/settings.xml, etc. -- see
 hbase refguide for publishing SNAPSHOTS/Release Candidates)
 
-We have two submodules, one to patch and then relocate (shade) protobuf. The other
-modules relocate a bundle of other (unpatched) libs used by hbase. This latter
-set includes protobuf-util, netty-all, gson, and guava.
+We have a number of submodules, one per ornery lib -- protobuf and netty --
+where we need special-handling and then a bucket for all the rest,
+hbase-shaded-miscellaneous. This latter includes protobuf-util, gson, and guava.
 
 All shading is done using the same relocation offset of
 org.apache.hadoop.hbase.shaded; we add this prefix to the relocated thirdparty

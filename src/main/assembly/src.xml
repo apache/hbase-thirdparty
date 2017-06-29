@@ -30,7 +30,8 @@
       <useAllReactorProjects>true</useAllReactorProjects>
       <includes>
         <include>org.apache.hbase.thirdparty:hbase-shaded-protobuf</include>
-        <include>org.apache.hbase.thirdparty:hbase-shaded-thirdparty</include>
+        <include>org.apache.hbase.thirdparty:hbase-shaded-netty</include>
+        <include>org.apache.hbase.thirdparty:hbase-shaded-miscellaneous</include>
       </includes>
       <!-- Include all the sources in the top directory -->
       <sources>

@@ -55,7 +55,8 @@
   </licenses>
   <modules>
     <module>hbase-shaded-protobuf</module>
-    <module>hbase-shaded-thirdparty</module>
+    <module>hbase-shaded-netty</module>
+    <module>hbase-shaded-miscellaneous</module>
   </modules>
   <scm>
     <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
