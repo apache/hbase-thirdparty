@@ -65,6 +65,8 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <createSourcesJar>true</createSourcesJar>
               <relocations>
                 <relocation>
                   <pattern>io.netty</pattern>
