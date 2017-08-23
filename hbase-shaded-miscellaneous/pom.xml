@@ -81,12 +81,15 @@
                 <excludes>
                   <!--Exclude protobuf itself. We get a patched version in adjacent module.
                         Exclude other dependencies of guava, netty, etc.
+
+                      Anything added here needs to be excluded from the jar that pulls it in
+                      also else we give an odd signal in the META-INF/DEPENDENCIES that we
+                      produce. See below for how to exclusion of transitive dependencies.
                     -->
                   <exclude>com.google.protobuf:protobuf-java</exclude>
                   <exclude>com.google.code.findbugs:jsr305</exclude>
                   <exclude>com.google.errorprone:error_prone_annotations</exclude>
                   <exclude>com.google.j2objc:j2objc-annotations</exclude>
-                  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
                   <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
                 </excludes>
               </artifactSet>
@@ -106,6 +109,24 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>22.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>jsr305</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.errorprone</groupId>
+          <artifactId>error_prone_annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.j2objc</groupId>
+          <artifactId>j2objc-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.google.protobuf</groupId>
@@ -113,6 +134,12 @@
       <!--Version should be same as protobuf except sometimes
            they publish new protobuf version w/o updating util.-->
       <version>3.3.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

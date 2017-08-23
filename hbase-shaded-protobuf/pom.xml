@@ -31,6 +31,9 @@
   <description>
     Pulls down protobuf, patches it, compiles, and then relocates/shades.
   </description>
+  <properties>
+    <protobuf.version>3.3.1</protobuf.version>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -92,7 +95,7 @@
                 <artifactItem>
                   <groupId>com.google.protobuf</groupId>
                   <artifactId>protobuf-java</artifactId>
-                  <version>3.3.1</version>
+                  <version>${protobuf.version}</version>
                   <classifier>sources</classifier>
                   <type>jar</type>
                   <overWrite>true</overWrite>
@@ -175,4 +178,11 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+  </dependencies>
 </project>
