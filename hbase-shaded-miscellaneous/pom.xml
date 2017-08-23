@@ -72,6 +72,9 @@
                 <relocation>
                   <pattern>com.google</pattern>
                   <shadedPattern>${rename.offset}.com.google</shadedPattern>
+                  <excludes>
+                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
+                  </excludes>
                 </relocation>
               </relocations>
               <artifactSet>
