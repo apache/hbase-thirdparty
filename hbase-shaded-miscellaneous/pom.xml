@@ -32,7 +32,7 @@
   <parent>
     <groupId>org.apache.hbase.thirdparty</groupId>
     <artifactId>hbase-thirdparty</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>hbase-shaded-miscellaneous</artifactId>
@@ -72,6 +72,9 @@
                 <relocation>
                   <pattern>com.google</pattern>
                   <shadedPattern>${rename.offset}.com.google</shadedPattern>
+                  <excludes>
+                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
+                  </excludes>
                 </relocation>
               </relocations>
               <artifactSet>
