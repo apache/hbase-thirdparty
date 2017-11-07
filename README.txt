@@ -14,7 +14,7 @@ CLASSPATH. The hbase-shaded-miscellaneous is a sort of all-the-rest but it
 is also libs that depend on each other and are awkward to disentangle.
 
 All shading is done using the same relocation offset of
-org.apache.hadoop.hbase.shaded; we add this prefix to the relocated thirdparty
+org.apache.hbase.thirdparty. We add this prefix to the relocated thirdparty
 library class names.
 
 See the pom.xml for the explicit version of each third-party lib included.

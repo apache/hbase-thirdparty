@@ -102,7 +102,7 @@
 
             Add this define when running unit tests:
             
-               mvn test -Dorg.apache.hadoop.hbase.shaded.io.netty.packagePrefix=org.apache.hadoop.hbase.shaded. -Dtest=TestNettyIPC
+               mvn test -Dorg.apache.hbase.thirdparty.io.netty.packagePrefix=org.apache.hbase.thirdparty. -Dtest=TestNettyIPC
 
             See toward the end of this issue for how to pass config:
             
@@ -126,7 +126,7 @@
                   dest="${project.build.directory}/unpacked/"/>
                 <echo message="Rename netty .so in META-INF"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty-transport-native-epoll.so"
-                  tofile="${project.build.directory}/unpacked/META-INF/native/liborg-apache-hadoop-hbase-shaded-netty-transport-native-epoll.so" />
+                  tofile="${project.build.directory}/unpacked/META-INF/native/liborg-apache-hbase-thirdparty-netty-transport-native-epoll.so" />
                 <echo message="Redo jar"/>
                 <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                     basedir="${project.build.directory}/unpacked"/>

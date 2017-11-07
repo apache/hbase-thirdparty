@@ -125,7 +125,7 @@
     <compileSource>1.8</compileSource>
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
-    <rename.offset>org.apache.hadoop.hbase.shaded</rename.offset>
+    <rename.offset>org.apache.hbase.thirdparty</rename.offset>
   </properties>
   <build>
     <pluginManagement>
