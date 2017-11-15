@@ -125,8 +125,8 @@
                 <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                   dest="${project.build.directory}/unpacked/"/>
                 <echo message="Rename netty .so in META-INF"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty-transport-native-epoll.so"
-                  tofile="${project.build.directory}/unpacked/META-INF/native/liborg-apache-hbase-thirdparty-netty-transport-native-epoll.so" />
+                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_transport_native_epoll_x86_64.so"
+                  tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so" />
                 <echo message="Redo jar"/>
                 <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                     basedir="${project.build.directory}/unpacked"/>
