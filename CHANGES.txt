@@ -1,3 +1,0 @@
-HBase Third-Party Change Log
-
-Initial commit Tue Jun 20 14:28:33 PDT 2017
