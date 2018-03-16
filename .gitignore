@@ -1,3 +1,6 @@
 **/target
 **/dependency-reduced-pom.xml
 hbase-shaded-protobuf/src/main/java/
+.project
+.settings
+.classpath
