@@ -457,7 +457,7 @@ index 12d70ce..e4c8e05 100644
 +          skipRawVarint();
 +          return true;
 +        case WireFormat.WIRETYPE_FIXED64:
-+          skipRawBytes(FIXED_64_SIZE);
++          skipRawBytes(FIXED64_SIZE);
 +          return true;
 +        case WireFormat.WIRETYPE_LENGTH_DELIMITED:
 +          skipRawBytes(readRawVarint32());
@@ -470,7 +470,7 @@ index 12d70ce..e4c8e05 100644
 +        case WireFormat.WIRETYPE_END_GROUP:
 +          return false;
 +        case WireFormat.WIRETYPE_FIXED32:
-+          skipRawBytes(FIXED_32_SIZE);
++          skipRawBytes(FIXED32_SIZE);
 +          return true;
 +        default:
 +          throw InvalidProtocolBufferException.invalidWireType();
@@ -869,11 +869,11 @@ index 12d70ce..e4c8e05 100644
 +    public int readRawLittleEndian32() throws IOException {
 +      int tempPos = pos;
 +
-+      if (limit - tempPos < FIXED_32_SIZE) {
++      if (limit - tempPos < FIXED32_SIZE) {
 +        throw InvalidProtocolBufferException.truncatedMessage();
 +      }
 +
-+      pos = tempPos + FIXED_32_SIZE;
++      pos = tempPos + FIXED32_SIZE;
 +      return (((buffer.read(tempPos) & 0xff))
 +          | ((buffer.read(tempPos + 1) & 0xff) << 8)
 +          | ((buffer.read(tempPos + 2) & 0xff) << 16)
@@ -884,11 +884,11 @@ index 12d70ce..e4c8e05 100644
 +    public long readRawLittleEndian64() throws IOException {
 +      int tempPos = pos;
 +
-+      if (limit - tempPos < FIXED_64_SIZE) {
++      if (limit - tempPos < FIXED64_SIZE) {
 +        throw InvalidProtocolBufferException.truncatedMessage();
 +      }
 +
-+      pos = tempPos + FIXED_64_SIZE;
++      pos = tempPos + FIXED64_SIZE;
 +      return (((buffer.read(tempPos) & 0xffL))
 +          | ((buffer.read(tempPos + 1) & 0xffL) << 8)
 +          | ((buffer.read(tempPos + 2) & 0xffL) << 16)
