@@ -168,11 +168,6 @@
                   <excludes>
                     <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
                   </excludes>
-                  <includes>
-                    <include>
-                      **/*.proto
-                    </include>
-                  </includes>
                 </relocation>
               </relocations>
               <artifactSet>
