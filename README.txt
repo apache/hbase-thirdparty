@@ -29,7 +29,7 @@ To build, just run:
 
 To deploy to mvn central, run:
 
- $ mvn install deploy  -Papache-release -Prelease 
+ $ mvn install deploy  -Papache-release -Prelease
 
 To build a src tarball:
 
