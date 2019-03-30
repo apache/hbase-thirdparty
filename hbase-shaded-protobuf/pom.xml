@@ -162,6 +162,9 @@
                     <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
                   </excludes>
                 </relocation>
+                <!-- Our protos depend on the protos at this location.
+                     TODO: We should move off depending on them and then
+                     put this filter into place. See HBASE-22137.
                 <relocation>
                   <pattern>google.protobuf</pattern>
                   <shadedPattern>${rename.offset}.google.protobuf</shadedPattern>
@@ -169,12 +172,8 @@
                     <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
                   </excludes>
                 </relocation>
+                -->
               </relocations>
-              <artifactSet>
-                <excludes>
-                  <exclude>com.google.*:*</exclude>
-                </excludes>
-              </artifactSet>
             </configuration>
           </execution>
         </executions>
