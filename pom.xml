@@ -32,7 +32,7 @@
   <parent>
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
-    <version>18</version>
+    <version>21</version>
     <relativePath/>
     <!-- no parent resolution -->
   </parent>
@@ -126,6 +126,7 @@
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
+    <protobuf.version>3.7.0</protobuf.version>
   </properties>
   <build>
     <pluginManagement>
@@ -150,7 +151,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.9.1</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
@@ -214,7 +215,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.2.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -235,7 +236,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4</version>
+        <version>1.4.1</version>
         <dependencies>
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
@@ -283,7 +284,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.1</version>
         <configuration>
           <descriptors>
             <descriptor>src/main/assembly/src.xml</descriptor>

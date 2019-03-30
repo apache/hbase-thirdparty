@@ -5,11 +5,11 @@ index c0ed636..906c216 100644
 @@ -112,7 +112,7 @@ final class ByteBufferWriter {
      }
    }
- 
+
 -  private static byte[] getOrCreateBuffer(int requestedSize) {
 +  static byte[] getOrCreateBuffer(int requestedSize) {
      requestedSize = max(requestedSize, MIN_CACHED_BUFFER_SIZE);
- 
+
      byte[] buffer = getBuffer();
 diff --git a/src/main/java/com/google/protobuf/ByteInput.java b/src/main/java/com/google/protobuf/ByteInput.java
 new file mode 100644
@@ -103,7 +103,7 @@ new file mode 100644
 index 0000000..1949602
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInputByteString.java
-@@ -0,0 +1,249 @@
+@@ -0,0 +1,254 @@
 +// Protocol Buffers - Google's data interchange format
 +// Copyright 2008 Google Inc.  All rights reserved.
 +// https://developers.google.com/protocol-buffers/
@@ -184,6 +184,11 @@ index 0000000..1949602
 +
 +  @Override
 +  public byte byteAt(int index) {
++    return buffer.read(getAbsoluteOffset(index));
++  }
++
++  @Override
++  byte internalByteAt(int index) {
 +    return buffer.read(getAbsoluteOffset(index));
 +  }
 +
@@ -368,8 +373,8 @@ index 8cae888..ebfa7fa 100644
 +  }
 +
 +  /**
-    * Wraps the given bytes into a {@code ByteString}. Intended for internal only
-    * usage to force a classload of ByteString before LiteralByteString.
+    * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage to force a
+    * classload of ByteString before LiteralByteString.
     */
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
 index 12d70ce..e4c8e05 100644
