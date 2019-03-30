@@ -69,7 +69,8 @@
         <include>pom.xml</include>
         <include>LICENSE.txt</include>
         <include>NOTICE.txt</include>
-        <include>CHANGES.txt</include>
+        <include>CHANGES.md</include>
+        <include>RELEASENOTES.md</include>
         <include>README.txt</include>
       </includes>
       <fileMode>0644</fileMode>
