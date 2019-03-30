@@ -21,7 +21,13 @@ See the pom.xml for the explicit version of each third-party lib included.
 
 Note that in hbase-shaded-protobuf, we unzip the protobuf jar to src/main/java
 rather than to a dir under target because the jar plugin wants src here (its
-hard to convince it otherwise).
+hard to convince it otherwise). We also apply some patches. Current set are:
+
+  HBASE-15789_V2.patch
+  HBASE-17087.patch
+  HBASE-17239.patch
+
+Ideally we would be pushing this set up into protobuf project.
 
 To build, just run:
 
@@ -37,3 +43,6 @@ To build a src tarball:
 
 (Make sure you have your credentials set over in ~/.m2/settings.xml, etc. -- see
 hbase refguide for publishing SNAPSHOTS/Release Candidates)
+
+There is no CHANGES.md just yet as this project does not have its own
+dedicated JIRA or JIRA label for filing issues against. TODO.

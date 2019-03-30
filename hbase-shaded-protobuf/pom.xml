@@ -63,12 +63,6 @@
               </includes>
               <followSymlinks>false</followSymlinks>
             </fileset>
-              <fileset>
-                <directory>${basedir}</directory>
-                <includes>
-                  <include>dependency-reduced-pom.xml</include>
-                </includes>
-              </fileset>
           </filesets>
         </configuration>
       </plugin>
@@ -168,7 +162,24 @@
                     <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
                   </excludes>
                 </relocation>
+                <relocation>
+                  <pattern>google.protobuf</pattern>
+                  <shadedPattern>${rename.offset}.google.protobuf</shadedPattern>
+                  <excludes>
+                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
+                  </excludes>
+                  <includes>
+                    <include>
+                      **/*.proto
+                    </include>
+                  </includes>
+                </relocation>
               </relocations>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.google.*:*</exclude>
+                </excludes>
+              </artifactSet>
             </configuration>
           </execution>
         </executions>
