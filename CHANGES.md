@@ -40,6 +40,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-22137](https://issues.apache.org/jira/browse/HBASE-22137) | [hbase-thirdparty] RC0 doesn't include google.protobuf so fails PB generation if you try to use it. |  Major | . |
 | [HBASE-18709](https://issues.apache.org/jira/browse/HBASE-18709) | [hbase-thirdparty] Clean out bundled proto files |  Major | hbase-thirdparty |
 
 
@@ -48,7 +49,5 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
 | [HBASE-22130](https://issues.apache.org/jira/browse/HBASE-22130) | [hbase-thirdparty] Upgrade thirdparty dependencies |  Major | thirdparty |
-
-
 
 
