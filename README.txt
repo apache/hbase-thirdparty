@@ -48,6 +48,17 @@ To cut a release candidate, update JIRA. The hbase-thirdparty
 currently uses hbase JIRA but with versions specified with a
 ''thirdparty-' prefix as in thirdparty-2.2.0.
 
+Update release notes and changes by doing following:
+
+ $  source ../hbase.git/dev-support/create-release/release-util.sh; update_releasenotes . thirdparty-2.2.0
+
+The 'pwd' argument says where the thirdparty files to edit are and the
+last argument is the version to search JIRA with.
+
+Change the pom versions.
+
+Commit changes.
+
 To generate the source tarball do as follows (below uses 2.2.0
 as target version and 2.2.0RC0 as the tag to use):
 
