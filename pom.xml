@@ -126,7 +126,7 @@
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
-    <protobuf.version>3.7.0</protobuf.version>
+    <protobuf.version>3.7.1</protobuf.version>
   </properties>
   <build>
     <pluginManagement>

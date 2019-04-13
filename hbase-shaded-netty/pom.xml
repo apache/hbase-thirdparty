@@ -71,9 +71,6 @@
                 <relocation>
                   <pattern>io.netty</pattern>
                   <shadedPattern>${rename.offset}.io.netty</shadedPattern>
-                  <excludes>
-                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
-                  </excludes>
                 </relocation>
               </relocations>
               <artifactSet>

@@ -70,11 +70,20 @@
               <createSourcesJar>true</createSourcesJar>
               <relocations>
                 <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>${rename.offset}.com.google</shadedPattern>
-                  <excludes>
-                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
-                  </excludes>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${rename.offset}.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.gson</pattern>
+                  <shadedPattern>${rename.offset}.com.google.gson</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.protobuf</pattern>
+                  <shadedPattern>${rename.offset}.com.google.protobuf</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.thirdparty</pattern>
+                  <shadedPattern>${rename.offset}.com.google.thirdparty</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons</pattern>
@@ -171,6 +180,11 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <version>4.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.errorprone</groupId>
+      <artifactId>error_prone_annotations</artifactId>
+      <version>2.3.3</version>
     </dependency>
   </dependencies>
 </project>
