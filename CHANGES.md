@@ -32,9 +32,15 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+## Release thirdparty-2.2.1 - Unreleased (as of 2019-04-16)
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-22233](https://issues.apache.org/jira/browse/HBASE-22233) | [hbase-thirdparty] Add error prone annotations dependency explicitly and do not relocate it |  Major | thirdparty |
+
 ## Release thirdparty-2.2.0 - Unreleased (as of 2019-03-30)
-
-
 
 ### BUG FIXES:
 
