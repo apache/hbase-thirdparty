@@ -32,28 +32,12 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release thirdparty-2.2.1 - Unreleased (as of 2019-04-16)
 
-### SUB-TASKS:
+## Release thirdparty-3.0.0 - Unreleased (as of 2019-09-22)
 
-| JIRA | Summary | Priority | Component |
-|:---- |:---- | :--- |:---- |
-| [HBASE-22233](https://issues.apache.org/jira/browse/HBASE-22233) | [hbase-thirdparty] Add error prone annotations dependency explicitly and do not relocate it |  Major | thirdparty |
-
-## Release thirdparty-2.2.0 - Unreleased (as of 2019-03-30)
-
-### BUG FIXES:
+### IMPROVEMENTS:
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
-| [HBASE-22137](https://issues.apache.org/jira/browse/HBASE-22137) | [hbase-thirdparty] RC0 doesn't include google.protobuf so fails PB generation if you try to use it. |  Major | . |
-| [HBASE-18709](https://issues.apache.org/jira/browse/HBASE-18709) | [hbase-thirdparty] Clean out bundled proto files |  Major | hbase-thirdparty |
-
-
-### OTHER:
-
-| JIRA | Summary | Priority | Component |
-|:---- |:---- | :--- |:---- |
-| [HBASE-22130](https://issues.apache.org/jira/browse/HBASE-22130) | [hbase-thirdparty] Upgrade thirdparty dependencies |  Major | thirdparty |
-
+| [HBASE-23052](https://issues.apache.org/jira/browse/HBASE-23052) | hbase-thirdparty version of GSON that works for branch-1 |  Blocker | dependencies |
 

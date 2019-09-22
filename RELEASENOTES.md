@@ -32,28 +32,19 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING RNS!-->
-# HBASE  thirdparty-2.2.1 Release Notes
-
-These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
-
-# HBASE  thirdparty-2.2.0 Release Notes
+# HBASE  thirdparty-3.0.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
 
 
 ---
 
-* [HBASE-22130](https://issues.apache.org/jira/browse/HBASE-22130) | *Major* | **[hbase-thirdparty] Upgrade thirdparty dependencies**
+* [HBASE-23052](https://issues.apache.org/jira/browse/HBASE-23052) | *Blocker* | **hbase-thirdparty version of GSON that works for branch-1**
 
-Made following upgrades:
+<!-- markdown -->
+HBase's internal use of GSON is now done in a stand alone module named `hbase-shaded-gson` rather than as a part of the `hbase-shaded-miscellaneous` module. The relocated fully qualified class names are still the same.
 
-gson 2.8.1 -\> 2.8.5
-guava 22.0 -\> 27.1-jre
-pb 3.5.1 -\> 3.7.0
-netty 4.1.17 -\> 4.1.34
-commons-collections4 4.1 -\> 4.3
-
-Updated apache parent pom from 18 to 21 and misc plugins.
+This internal artifact is also set to maintain JDK bytecode compatibility as appropriate for use with branches-1 based releases in addition to the existing use in later release lines.
 
 
 
