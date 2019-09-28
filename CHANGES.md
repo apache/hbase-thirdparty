@@ -43,7 +43,6 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 | [HBASE-23088](https://issues.apache.org/jira/browse/HBASE-23088) | [hbase-thirdparty] Upgrade the dependencies for hbase-thirdparty |  Major | hbase-thirdparty |
 
 
-
 ## Release thirdparty-3.0.0 - Unreleased (as of 2019-09-22)
 
 ### IMPROVEMENTS:
