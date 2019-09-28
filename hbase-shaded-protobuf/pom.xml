@@ -27,7 +27,7 @@
     <relativePath>..</relativePath>
   </parent>
   <artifactId>hbase-shaded-protobuf</artifactId>
-  <name>Apache HBase Patched &amp; Relocated (Shaded) Protobuf</name>
+  <name>Apache HBase Patched and Relocated (Shaded) Protobuf</name>
   <description>
     Pulls down protobuf, patches it, compiles, and then relocates/shades.
   </description>
