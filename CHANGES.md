@@ -32,6 +32,17 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+## Release hbase-thirdparty-3.1.0 - Unreleased (as of 2019-09-28)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-23088](https://issues.apache.org/jira/browse/HBASE-23088) | [hbase-thirdparty] Upgrade the dependencies for hbase-thirdparty |  Major | hbase-thirdparty |
+
+
 
 ## Release thirdparty-3.0.0 - Unreleased (as of 2019-09-22)
 
