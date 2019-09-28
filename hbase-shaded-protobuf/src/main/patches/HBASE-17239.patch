@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 0ad20e5..0bff626 100644
+index 598c6929b..a9b70afb4 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -150,11 +150,7 @@ public abstract class CodedInputStream {
+@@ -195,11 +195,7 @@ public abstract class CodedInputStream {
    }
  
    /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
@@ -16,13 +16,14 @@ index 0ad20e5..0bff626 100644
    }
  
 diff --git a/src/main/java/com/google/protobuf/UnsafeByteOperations.java b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
-index 3d53f2e..ad99372 100644
+index bcaf1d2f3..d207f2be7 100644
 --- a/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 +++ b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 @@ -98,6 +98,17 @@ public final class UnsafeByteOperations {
+     return ByteString.wrap(buffer);
    }
  
-   /**
++  /**
 +   * An unsafe operation that returns a {@link ByteString} that is backed by the provided buffer.
 +   * @param buffer the ByteInput buffer to be wrapped
 +   * @param offset the offset of the wrapped byteinput
@@ -33,7 +34,6 @@ index 3d53f2e..ad99372 100644
 +    return ByteString.wrap(buffer, offset, len);
 +  }
 +
-+  /**
+   /**
     * Writes the given {@link ByteString} to the provided {@link ByteOutput}. Calling this method may
-    * result in multiple operations on the target {@link ByteOutput}
-    * (i.e. for roped {@link ByteString}s).
+    * result in multiple operations on the target {@link ByteOutput} (i.e. for roped {@link

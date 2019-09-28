@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/ByteBufferWriter.java b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-index c0ed636..906c216 100644
+index 2cb3ada67..6e1737c45 100644
 --- a/src/main/java/com/google/protobuf/ByteBufferWriter.java
 +++ b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-@@ -112,7 +112,7 @@ final class ByteBufferWriter {
+@@ -111,7 +111,7 @@ final class ByteBufferWriter {
      }
    }
 
@@ -13,7 +13,7 @@ index c0ed636..906c216 100644
      byte[] buffer = getBuffer();
 diff --git a/src/main/java/com/google/protobuf/ByteInput.java b/src/main/java/com/google/protobuf/ByteInput.java
 new file mode 100644
-index 0000000..a745d37
+index 000000000..37c3824a3
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInput.java
 @@ -0,0 +1,81 @@
@@ -100,7 +100,7 @@ index 0000000..a745d37
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteInputByteString.java b/src/main/java/com/google/protobuf/ByteInputByteString.java
 new file mode 100644
-index 0000000..1949602
+index 000000000..320977290
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInputByteString.java
 @@ -0,0 +1,254 @@
@@ -359,28 +359,28 @@ index 0000000..1949602
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 8cae888..ebfa7fa 100644
+index e5454a63d..697a8aee7 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -323,6 +323,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -373,6 +373,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+     }
    }
  
-   /**
++  /**
 +   * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage.
 +   */
 +  static ByteString wrap(ByteInput buffer, int offset, int length) {
 +    return new ByteInputByteString(buffer, offset, length);
 +  }
 +
-+  /**
+   /**
     * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage to force a
     * classload of ByteString before LiteralByteString.
-    */
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 12d70ce..e4c8e05 100644
+index 87c683725..598c6929b 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -149,6 +149,15 @@ public abstract class CodedInputStream {
+@@ -194,6 +194,15 @@ public abstract class CodedInputStream {
      return newInstance(buffer, 0, buffer.length, true);
    }
  
@@ -396,8 +396,8 @@ index 12d70ce..e4c8e05 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
  
-@@ -2892,4 +2901,652 @@ public abstract class CodedInputStream {
-       pos = size - tempPos;
+@@ -3919,4 +3928,652 @@ public abstract class CodedInputStream {
+       }
      }
    }
 +
@@ -1050,10 +1050,10 @@ index 12d70ce..e4c8e05 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index e6a497d..b84efd6 100644
+index 104ab0983..0a15447a3 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
-@@ -229,6 +229,16 @@ final class Utf8 {
+@@ -218,6 +218,16 @@ final class Utf8 {
      }
    }
  
@@ -1070,10 +1070,11 @@ index e6a497d..b84efd6 100644
    // These UTF-8 handling methods are copied from Guava's Utf8 class with a modification to throw
    // a protocol buffer local exception. This exception is then caught in CodedOutputStream so it can
    // fallback to more lenient behavior.
-@@ -332,6 +342,24 @@ final class Utf8 {
+@@ -340,6 +350,24 @@ final class Utf8 {
+     return processor.decodeUtf8(bytes, index, size);
    }
  
-   /**
++  /**
 +   * Determines if the given {@link ByteInput} is a valid UTF-8 string.
 +   *
 +   * @param buffer the buffer to check.
@@ -1091,12 +1092,11 @@ index e6a497d..b84efd6 100644
 +    return processor.partialIsValidUtf8(state, buffer, index, limit);
 +  }
 +
-+  /**
+   /**
     * Encodes the given characters to the target {@link ByteBuffer} using UTF-8 encoding.
     *
-    * <p>Selects an optimal algorithm based on the type of {@link ByteBuffer} (i.e. heap or direct)
-@@ -610,6 +638,169 @@ final class Utf8 {
-       }
+@@ -716,6 +744,169 @@ final class Utf8 {
+       return new String(resultArr, 0, resultPos);
      }
  
 +    public boolean isValidUtf8(ByteInput buffer, int index, int limit) {
