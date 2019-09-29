@@ -32,7 +32,7 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release hbase-thirdparty-3.1.0 - Unreleased (as of 2019-09-28)
+## Release hbase-thirdparty-3.1.0 - Unreleased (as of 2019-09-29)
 
 
 
