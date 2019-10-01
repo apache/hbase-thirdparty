@@ -20,38 +20,6 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-# HBASE  hbase-thirdparty-3.1.0 Release Notes
-
-These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
-
-
----
-
-* [HBASE-23088](https://issues.apache.org/jira/browse/HBASE-23088) | *Major* | **[hbase-thirdparty] Upgrade the dependencies for hbase-thirdparty**
-
-    netty-all: 4.1.34.Final =\> 4.1.42.Final
-    guava: 27.1-jre =\> 28.1-jre
-    commons-collections4: 4.3 =\> 4.4
-    protobuf: 3.7.1 =\> 3.9.2
-
-
-
-
-These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
-
-
----
-
-* [HBASE-23088](https://issues.apache.org/jira/browse/HBASE-23088) | *Major* | **[hbase-thirdparty] Upgrade the dependencies for hbase-thirdparty**
-
-    netty-all: 4.1.34.Final =\> 4.1.42.Final
-    guava: 27.1-jre =\> 28.1-jre
-    commons-collections4: 4.3 =\> 4.4
-    protobuf: 3.7.1 =\> 3.9.2
-
-
-
-
 # HBASE  hbase-thirdparty-3.0.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
