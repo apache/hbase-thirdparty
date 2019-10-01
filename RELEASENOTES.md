@@ -36,7 +36,6 @@ These release notes cover new developer and user-facing incompatibilities, impor
 
 
 
-# HBASE  hbase-thirdparty-3.1.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
 
