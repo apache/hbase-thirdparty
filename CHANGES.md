@@ -32,6 +32,17 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+## Release hbase-thirdparty-3.1.1 - Unreleased (as of 2019-10-08)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-23132](https://issues.apache.org/jira/browse/HBASE-23132) | Squash hbase-thirdparty-3.1.0; was compiled w/ jdk10 so "NoSuchMethodError: java.nio.ByteBuffer.\*" |  Major | . |
+
+
 ## Release hbase-thirdparty-3.1.0 - Unreleased (as of 2019-10-04)
 
 
