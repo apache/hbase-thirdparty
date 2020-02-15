@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--
+  /**
+   * Licensed to the Apache Software Foundation (ASF) under one
+   * or more contributor license agreements.  See the NOTICE file
+   * distributed with this work for additional information
+   * regarding copyright ownership.  The ASF licenses this file
+   * to you under the Apache License, Version 2.0 (the
+   * "License"); you may not use this file except in compliance
+   * with the License.  You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
+  -->
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>hbase-thirdparty</artifactId>
+        <groupId>org.apache.hbase.thirdparty</groupId>
+        <version>3.2.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <artifactId>hbase-shaded-jaeger</artifactId>
+    <name>Apache HBase Relocated (Shaded) JaegerTracing Libs</name>
+    <description>The shaded uber jar of JaegerTracing library used by HBase.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.jaegertracing</groupId>
+            <artifactId>jaeger-client</artifactId>
+            <version>${jaegertracing.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <!--Make it so assembly:single does nothing in here-->
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <configuration>
+                        <skipAssembly>true</skipAssembly>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>aggregate-into-a-jar-with-relocated-third-parties</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <createSourcesJar>false</createSourcesJar>
+                                <shadedArtifactAttached>false</shadedArtifactAttached>
+                                <shadeTestJar>false</shadeTestJar>
+
+                                <artifactSet>
+                                    <excludes>
+                                        <exclude>org.apache.httpcomponents:httpclient</exclude>
+                                        <exclude>commons-logging:commons-logging</exclude>
+                                        <exclude>commons-codec:commons-codec</exclude>
+                                        <exclude>org.apache.httpcomponents:httpcore</exclude>
+                                        <exclude>javax.annotation:javax.annotation-api</exclude>
+                                        <exclude>org.slf4j:slf4j-api</exclude>
+                                        <exclude>io.opentracing:*</exclude>
+                                    </excludes>
+                                </artifactSet>
+
+                                <relocations>
+                                    <!-- shade gson, which is transitively included via jaeger-core -->
+                                    <relocation>
+                                        <pattern>com.google.gson</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.com.google.gson</shadedPattern>
+                                    </relocation>
+
+                                    <!-- shade jaeger-thrift and its dependencies -->
+                                    <relocation>
+                                        <pattern>io.jaegertracing.thriftjava</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.thriftjava</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.jaegertracing.crossdock</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.crossdock</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.jaegertracing.thrift</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.thrift</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.jaegertracing.agent</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.agent</shadedPattern>
+                                    </relocation>
+
+                                    <relocation>
+                                        <pattern>org.apache.thrift</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.apache.thrift</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.twitter.zipkin</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.com.twitter.zipkin</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>okhttp3</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.okhttp3</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>kotlin</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.kotlin</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.intellij</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.org.intellij</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.jetbrains</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.org.jetbrains</shadedPattern>
+                                    </relocation>
+                                    <!-- top level okio -->
+                                    <relocation>
+                                        <pattern>okio</pattern>
+                                        <shadedPattern>${rename.offset}.io.jaegertracing.okio</shadedPattern>
+                                    </relocation>
+
+                                </relocations>
+                                <transformers>
+                                    <!-- Need to filter out some extraneous license files.
+                                         Don't use the ApacheLicenseRT because it just removes all
+                                         META-INF/LICENSE(.txt)? files, including ours. -->
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                        <resources>
+                                            <resource>LICENSE.txt</resource>
+                                            <resource>ASL2.0</resource>
+                                            <!-- also this unneeded doc -->
+                                            <resource>overview.html</resource>
+                                        </resources>
+                                    </transformer>
+                                    <!-- Where notices exist, just concat them -->
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                                        <addHeader>false</addHeader>
+                                        <projectName>${project.name}</projectName>
+                                    </transformer>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer">
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <!--Make it so assembly:single does nothing in here-->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <skipAssembly>true</skipAssembly>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

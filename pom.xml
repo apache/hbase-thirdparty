@@ -57,6 +57,7 @@
     <module>hbase-shaded-protobuf</module>
     <module>hbase-shaded-netty</module>
     <module>hbase-shaded-gson</module>
+    <module>hbase-shaded-jaeger</module>
     <module>hbase-shaded-miscellaneous</module>
   </modules>
   <scm>
@@ -133,6 +134,7 @@
     <commons-cli.version>1.4</commons-cli.version>
     <commons-collections.version>4.4</commons-collections.version>
     <error_prone_annotations.version>2.3.4</error_prone_annotations.version>
+    <jaegertracing.version>0.34.2</jaegertracing.version>
   </properties>
   <build>
     <pluginManagement>
