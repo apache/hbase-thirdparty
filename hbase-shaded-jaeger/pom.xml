@@ -25,7 +25,7 @@
     <parent>
         <artifactId>hbase-thirdparty</artifactId>
         <groupId>org.apache.hbase.thirdparty</groupId>
-        <version>3.2.1-SNAPSHOT</version>
+        <version>3.3.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     <artifactId>hbase-shaded-jaeger</artifactId>
@@ -67,13 +67,13 @@
 
                                 <artifactSet>
                                     <excludes>
-                                        <exclude>org.apache.httpcomponents:httpclient</exclude>
-                                        <exclude>commons-logging:commons-logging</exclude>
-                                        <exclude>commons-codec:commons-codec</exclude>
-                                        <exclude>org.apache.httpcomponents:httpcore</exclude>
-                                        <exclude>javax.annotation:javax.annotation-api</exclude>
-                                        <exclude>org.slf4j:slf4j-api</exclude>
-                                        <exclude>io.opentracing:*</exclude>
+                                        <exclude>org.apache.httpcomponents:httpclient</exclude>  <!-- hadoop-common has it too -->
+                                        <exclude>commons-logging:commons-logging</exclude>       <!-- transitively added by hbase-common -> commons-validator -->
+                                        <exclude>commons-codec:commons-codec</exclude>           <!-- hbase-common has it too -->
+                                        <exclude>org.apache.httpcomponents:httpcore</exclude>    <!-- hbase-common has it too -->
+                                        <exclude>javax.annotation:javax.annotation-api</exclude> <!-- comes in through JDK -->
+                                        <exclude>org.slf4j:slf4j-api</exclude>                   <!-- hbase-common has it too -->
+                                        <exclude>io.opentracing:*</exclude>                      <!-- hbase-common declares this dependency too -->
                                     </excludes>
                                 </artifactSet>
 
