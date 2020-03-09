@@ -133,6 +133,7 @@
     <commons-cli.version>1.4</commons-cli.version>
     <commons-collections.version>4.4</commons-collections.version>
     <error_prone_annotations.version>2.3.4</error_prone_annotations.version>
+    <jetty.version>9.4.27.v20200227</jetty.version>
   </properties>
   <build>
     <pluginManagement>

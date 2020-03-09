@@ -89,6 +89,38 @@
                   <pattern>org.apache.commons</pattern>
                   <shadedPattern>${rename.offset}.org.apache.commons</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>org.eclipse.jetty</pattern>
+                  <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax</pattern>
+                  <shadedPattern>${rename.offset}.javax</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.glassfish.jersey</pattern>
+                  <shadedPattern>${rename.offset}.org.glassfish.jersery</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>jersey</pattern>
+                  <shadedPattern>${rename.offset}.jersery</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javassist</pattern>
+                  <shadedPattern>${rename.offset}.javassist</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.sun.research</pattern>
+                  <shadedPattern>${rename.offset}.com.sun.research</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.glassfish</pattern>
+                  <shadedPattern>${rename.offset}.org.glassfish</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.jvnet</pattern>
+                  <shadedPattern>${rename.offset}.org.jvnet</shadedPattern>
+                </relocation>
               </relocations>
               <artifactSet>
                 <excludes>
@@ -114,6 +146,15 @@
                   <addHeader>false</addHeader>
                 </transformer>
               </transformers>
+              <filters>
+                <filter>
+                  <artifact>org.eclipse.jetty:*</artifact>
+                  <excludes>
+                    <exclude>about.html</exclude>
+                    <exclude>jetty-dir.css</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>
@@ -185,6 +226,72 @@
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
       <version>${error_prone_annotations.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>${jetty.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-security</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-http</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-io</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-jmx</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util-ajax</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+      <version>2.25.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>2.25.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>2.25.1</version>
     </dependency>
   </dependencies>
 </project>
