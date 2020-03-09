@@ -74,14 +74,16 @@
                                         <exclude>javax.annotation:javax.annotation-api</exclude> <!-- comes in through JDK -->
                                         <exclude>org.slf4j:slf4j-api</exclude>                   <!-- hbase-common has it too -->
                                         <exclude>io.opentracing:*</exclude>                      <!-- hbase-common declares this dependency too -->
+                                        <exclude>com.google.code.gson:gson</exclude>             <!-- exclude it because hbase-shaded-misc jar has it -->
                                     </excludes>
                                 </artifactSet>
 
                                 <relocations>
-                                    <!-- shade gson, which is transitively included via jaeger-core -->
+                                    <!-- gson is transitively included via jaeger-core -->
+                                    <!-- the gson classes are excluded from the shaded jar. Update the reference to use the gson in hbase-shaded-misc jar -->
                                     <relocation>
                                         <pattern>com.google.gson</pattern>
-                                        <shadedPattern>${rename.offset}.io.jaegertracing.com.google.gson</shadedPattern>
+                                        <shadedPattern>${rename.offset}.com.google.gson</shadedPattern>
                                     </relocation>
 
                                     <!-- shade jaeger-thrift and its dependencies -->
