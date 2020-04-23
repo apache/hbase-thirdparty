@@ -134,7 +134,7 @@
     <commons-cli.version>1.4</commons-cli.version>
     <commons-collections.version>4.4</commons-collections.version>
     <error_prone_annotations.version>2.3.4</error_prone_annotations.version>
-    <jaegertracing.version>0.34.2</jaegertracing.version>
+    <jaegertracing.version>1.2.0</jaegertracing.version>
   </properties>
   <build>
     <pluginManagement>
