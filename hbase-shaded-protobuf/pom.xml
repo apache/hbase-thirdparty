@@ -34,6 +34,10 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+      <plugin>
         <!--Clean needs to purge src/main/java since this is where
              the unpack of protobuf is overlaid. Do it for usual
              clean goal but also before we unpack in case patches
