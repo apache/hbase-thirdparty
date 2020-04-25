@@ -32,6 +32,35 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+## Release thirdparty-3.3.0 - Unreleased (as of 2020-04-25)
+
+
+
+### IMPROVEMENTS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-24149](https://issues.apache.org/jira/browse/HBASE-24149) | Bump netty version to 4.1.48.Final |  Major | thirdparty |
+| [HBASE-23790](https://issues.apache.org/jira/browse/HBASE-23790) | Bump netty version to 4.1.45.Final in hbase-thirdparty |  Major | hbase-thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-23750](https://issues.apache.org/jira/browse/HBASE-23750) | [hbase-thirdparty] Add nexus-staging-maven-plugin to apache-release profile |  Major | . |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-24259](https://issues.apache.org/jira/browse/HBASE-24259) | [thirdparty] Update Protobuf to 3.11.4 |  Major | thirdparty |
+| [HBASE-24216](https://issues.apache.org/jira/browse/HBASE-24216) | Add .idea directory to Gitignore in hbase-thirdparty |  Trivial | thirdparty |
+| [HBASE-24241](https://issues.apache.org/jira/browse/HBASE-24241) | [hbase-thirdparty] Bump the dependencies for hbase-thirdparty |  Major | hbase-thirdparty |
+| [HBASE-24214](https://issues.apache.org/jira/browse/HBASE-24214) | Update Apache POM to version 23 for hbase-thirdparty |  Minor | thirdparty |
+
+
 ## Release hbase-thirdparty-3.2.0 - Unreleased (as of 2020-01-22)
 
 

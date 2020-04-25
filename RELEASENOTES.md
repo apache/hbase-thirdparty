@@ -20,6 +20,33 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-3.3.0 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-24259](https://issues.apache.org/jira/browse/HBASE-24259) | *Major* | **[thirdparty] Update Protobuf to 3.11.4**
+
+The version of Protobuf provided is now 3.11.4.
+
+
+---
+
+* [HBASE-24241](https://issues.apache.org/jira/browse/HBASE-24241) | *Major* | **[hbase-thirdparty] Bump the dependencies for hbase-thirdparty**
+
+guava 28.2-jre =\> 29.0-jre
+
+
+---
+
+* [HBASE-24149](https://issues.apache.org/jira/browse/HBASE-24149) | *Major* | **Bump netty version to 4.1.48.Final**
+
+The version of Netty provided is now 4.1.48.Final. This is expected to be a compatible change from version 4.1.45.Final provided in the previous release.
+
+
+
 # HBASE  hbase-thirdparty-3.2.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
