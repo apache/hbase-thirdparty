@@ -27,6 +27,13 @@ These release notes cover new developer and user-facing incompatibilities, impor
 
 ---
 
+* [HBASE-24279](https://issues.apache.org/jira/browse/HBASE-24279) | *Trivial* | **Fix thirdparty-3.2.0 release notes**
+
+The hbase-thirdparty 3.2.0 release incorrectly listed gson upgrade. The gson version in 3.2.0 and 3.3.0 stayed on 2.8.5.
+
+
+---
+
 * [HBASE-24259](https://issues.apache.org/jira/browse/HBASE-24259) | *Major* | **[thirdparty] Update Protobuf to 3.11.4**
 
 The version of Protobuf provided is now 3.11.4.
