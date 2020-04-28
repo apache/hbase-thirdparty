@@ -56,7 +56,6 @@ These release notes cover new developer and user-facing incompatibilities, impor
 
 * [HBASE-23718](https://issues.apache.org/jira/browse/HBASE-23718) | *Major* | **[hbase-thirdparty] Update libs; pb from 3.9 to 3.11, etc.**
 
-gson: 2.8.5 =\> 2.8.6
 guava: 28.1-jre =\> 28.2-jre
 error\_prone: 2.3.3 =\> 2.3.4
 netty: 4.1.42.Final =\> 4.1.44.Final
