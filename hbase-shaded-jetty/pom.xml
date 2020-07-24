@@ -75,18 +75,11 @@
               </relocations>
               <artifactSet>
                 <excludes>
-                  <!--Exclude protobuf itself. We get a patched version in adjacent module.
-                        Exclude other dependencies of guava, netty, etc.
-
+                  <!--
                       Anything added here needs to be excluded from the jar that pulls it in
                       also else we give an odd signal in the META-INF/DEPENDENCIES that we
                       produce. See below for how to exclusion of transitive dependencies.
                     -->
-                  <exclude>com.google.protobuf:protobuf-java</exclude>
-                  <exclude>com.google.code.findbugs:jsr305</exclude>
-                  <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                  <exclude>com.google.j2objc:j2objc-annotations</exclude>
-		  <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
                   <exclude>javax.servlet:javax.servlet-api</exclude>
                 </excludes>
               </artifactSet>
