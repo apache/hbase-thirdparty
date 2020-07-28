@@ -32,6 +32,26 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+## Release thirdparty-3.4.0 - Unreleased (as of 2020-07-28)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-24784](https://issues.apache.org/jira/browse/HBASE-24784) | [hbase-thirdparty] Set version as 3.4.0 in prep for first RC |  Major | thirdparty |
+| [HBASE-24785](https://issues.apache.org/jira/browse/HBASE-24785) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 3.4.0 |  Major | thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
+| [HBASE-19256](https://issues.apache.org/jira/browse/HBASE-19256) | [hbase-thirdparty] shade jetty |  Major | dependencies, thirdparty |
+
+
 ## Release thirdparty-3.3.0 - Unreleased (as of 2020-04-28)
 
 
