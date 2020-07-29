@@ -20,6 +20,27 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-3.4.0 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | *Major* | **[hbase-thirdparty] Bump dependencis in hbase-thirdparty**
+
+netty 4.1.18.Final \> 4.1.51.Final
+protobuf 3.11.4 -\> 3.12.2
+
+
+---
+
+* [HBASE-19256](https://issues.apache.org/jira/browse/HBASE-19256) | *Major* | **[hbase-thirdparty] shade jetty**
+
+Introduce two new modules for hbase-thirdparty, one is hbase-shaded-jetty, for shading jetty related jars, and the other is hbase-shaded-jersey, for shading jersey related jars.
+
+
+
 # HBASE  thirdparty-3.3.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
