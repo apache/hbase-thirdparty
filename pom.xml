@@ -249,6 +249,26 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>regex-property</id>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>rename.offset.dir</name>
+              <value>${rename.offset}</value>
+              <regex>\.</regex>
+              <replacement>/</replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>1.4.1</version>
@@ -334,6 +354,10 @@
               <rules>
                 <enforceBytecodeVersion>
                   <maxJdkVersion>${compileSource}</maxJdkVersion>
+                  <ignoreClasses>
+                    <ignoreClass>module-info</ignoreClass>
+		    <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
+                  </ignoreClasses>
                   <message>HBase has unsupported dependencies.
   HBase requires that all dependencies be compiled with version ${compileSource} or earlier
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
