@@ -106,6 +106,37 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <!--
+          There are some classes under META-INF in jersey-common jar, for supporting multiple jdks,
+          we should also relocate them.
+          -->
+          <execution>
+            <id>relocate-jersey-jdk11-support</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo message="unjar" />
+                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/" />
+                <echo message="Rename jersey versions in META-INF" />
+                <mkdir dir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}" />
+                <move todir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}">
+                  <fileset dir="${project.build.directory}/unpacked/META-INF/versions/11" />
+                </move>
+                <echo message="Redo jar" />
+                <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar" basedir="${project.build.directory}/unpacked" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
