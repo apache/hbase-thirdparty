@@ -27,6 +27,22 @@ These release notes cover new developer and user-facing incompatibilities, impor
 
 ---
 
+* [HBASE-24798](https://issues.apache.org/jira/browse/HBASE-24798) | *Major* | **[hbase-thirdparty] Ignore module-info and SubmissionPublisher in enforceBytecodeVersion rule**
+
+Ignore module-info in enforceBytecodeVersion rule as it is for supporting for JDK9+ and will not break JDK8 support.
+Ignore SubmissionPublisher in enforceBytecodeVersion rule as it is used by jersey-common for supporting JDK11 and will not break JDK8 support.
+Jersey 2.x promises to support JDK8.
+
+
+---
+
+* [HBASE-24801](https://issues.apache.org/jira/browse/HBASE-24801) | *Major* | **[hbase-thirdparty] Remove assembly plugin for generating src tarballs**
+
+Remove the maven-assembly-plugin for generating src tarballs. We will generate it with 'git archive' command in release scripts.
+
+
+---
+
 * [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | *Major* | **[hbase-thirdparty] Bump dependencis in hbase-thirdparty**
 
 netty 4.1.18.Final \> 4.1.51.Final

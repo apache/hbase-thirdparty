@@ -32,22 +32,30 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release thirdparty-3.4.0 - Unreleased (as of 2020-07-28)
+## Release thirdparty-3.4.0 - Unreleased (as of 2020-07-31)
 
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-24798](https://issues.apache.org/jira/browse/HBASE-24798) | [hbase-thirdparty] Ignore module-info and SubmissionPublisher in enforceBytecodeVersion rule |  Major | build, thirdparty |
 
 
 ### SUB-TASKS:
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
-| [HBASE-24784](https://issues.apache.org/jira/browse/HBASE-24784) | [hbase-thirdparty] Set version as 3.4.0 in prep for first RC |  Major | thirdparty |
 | [HBASE-24785](https://issues.apache.org/jira/browse/HBASE-24785) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 3.4.0 |  Major | thirdparty |
+| [HBASE-24784](https://issues.apache.org/jira/browse/HBASE-24784) | [hbase-thirdparty] Set version as 3.4.0 in prep for first RC |  Major | thirdparty |
 
 
 ### OTHER:
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-24801](https://issues.apache.org/jira/browse/HBASE-24801) | [hbase-thirdparty] Remove assembly plugin for generating src tarballs |  Major | thirdparty |
 | [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
 | [HBASE-19256](https://issues.apache.org/jira/browse/HBASE-19256) | [hbase-thirdparty] shade jetty |  Major | dependencies, thirdparty |
 
