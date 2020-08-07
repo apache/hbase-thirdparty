@@ -72,6 +72,15 @@
                   <pattern>org.eclipse.jetty</pattern>
                   <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
                 </relocation>
+                <!--
+                This is for relocating the blacklist in
+                org.eclipse.jetty.webapp.WebAppContext.__dftServerClasses,
+                where we have a '-' in front of the class name
+                -->
+                <relocation>
+                  <pattern>-org.eclipse.jetty</pattern>
+                  <shadedPattern>-${rename.offset}.org.eclipse.jetty</shadedPattern>
+                </relocation>
               </relocations>
               <artifactSet>
                 <excludes>
