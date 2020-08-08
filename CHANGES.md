@@ -32,7 +32,7 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release thirdparty-3.4.0 - Unreleased (as of 2020-07-31)
+## Release thirdparty-3.4.0 - Unreleased (as of 2020-08-08)
 
 
 
@@ -55,6 +55,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-24820](https://issues.apache.org/jira/browse/HBASE-24820) | [hbase-thirdparty] Add jersey-hk2 when shading jersey and bump jetty to 9.4.31 |  Major | dependencies, hbase-thirdparty |
 | [HBASE-24801](https://issues.apache.org/jira/browse/HBASE-24801) | [hbase-thirdparty] Remove assembly plugin for generating src tarballs |  Major | thirdparty |
 | [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
 | [HBASE-19256](https://issues.apache.org/jira/browse/HBASE-19256) | [hbase-thirdparty] shade jetty |  Major | dependencies, thirdparty |

@@ -27,6 +27,14 @@ These release notes cover new developer and user-facing incompatibilities, impor
 
 ---
 
+* [HBASE-24820](https://issues.apache.org/jira/browse/HBASE-24820) | *Major* | **[hbase-thirdparty] Add jersey-hk2 when shading jersey and bump jetty to 9.4.31**
+
+Jetty 9.4.30 -\> 9.4.31
+Shade jersey-hk2 in hbase-shaded-jersey.
+
+
+---
+
 * [HBASE-24798](https://issues.apache.org/jira/browse/HBASE-24798) | *Major* | **[hbase-thirdparty] Ignore module-info and SubmissionPublisher in enforceBytecodeVersion rule**
 
 Ignore module-info in enforceBytecodeVersion rule as it is for supporting for JDK9+ and will not break JDK8 support.
