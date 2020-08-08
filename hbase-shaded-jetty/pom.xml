@@ -72,6 +72,15 @@
                   <pattern>org.eclipse.jetty</pattern>
                   <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
                 </relocation>
+                <!--
+                This is for relocating the blacklist in
+                org.eclipse.jetty.webapp.WebAppContext.__dftServerClasses,
+                where we have a '-' in front of the class name
+                -->
+                <relocation>
+                  <pattern>-org.eclipse.jetty</pattern>
+                  <shadedPattern>-${rename.offset}.org.eclipse.jetty</shadedPattern>
+                </relocation>
               </relocations>
               <artifactSet>
                 <excludes>
@@ -92,6 +101,36 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <!--
+          The webdefault.xml contains some jetty servlet classes which should also be relocated
+          -->
+          <execution>
+            <id>relocate-web-xml</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo message="unjar" />
+                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/" />
+                <echo message="Replace content in webdefault.xml" />
+                <replace file="${project.build.directory}/unpacked/${rename.offset.dir}/org/eclipse/jetty/webapp/webdefault.xml">
+                  <replacetoken>org.eclipse.jetty</replacetoken>
+                  <replacevalue>${rename.offset}.org.eclipse.jetty</replacevalue>
+                </replace>
+                <echo message="Redo jar" />
+                <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar" basedir="${project.build.directory}/unpacked" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

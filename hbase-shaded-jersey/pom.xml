@@ -80,6 +80,14 @@
                   <pattern>com.sun.research</pattern>
                   <shadedPattern>${rename.offset}.com.sun.research</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>org.aopalliance</pattern>
+                  <shadedPattern>${rename.offset}.org.aopalliance</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.jvnet.hk2</pattern>
+                  <shadedPattern>${rename.offset}.org.jvnet.hk2</shadedPattern>
+                </relocation>
               </relocations>
               <artifactSet>
                 <excludes>
@@ -92,6 +100,7 @@
                   <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
                   <exclude>jakarta.validation:jakarta.validation-api</exclude>
                   <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
+                  <exclude>org.javassist:javassist</exclude>
                 </excludes>
               </artifactSet>
               <transformers>
@@ -156,6 +165,11 @@
       <version>${jersey.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
       <groupId>jakarta.ws.rs</groupId>
       <artifactId>jakarta.ws.rs-api</artifactId>
       <version>${jakarta.ws.rs-api.version}</version>
@@ -174,6 +188,11 @@
       <groupId>org.glassfish.hk2.external</groupId>
       <artifactId>jakarta.inject</artifactId>
       <version>${jakarta.inject.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>${javassist.version}</version>
     </dependency>
   </dependencies>
 </project>
