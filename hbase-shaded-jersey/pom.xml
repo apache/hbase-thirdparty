@@ -101,6 +101,11 @@
                   <exclude>jakarta.validation:jakarta.validation-api</exclude>
                   <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
                   <exclude>org.javassist:javassist</exclude>
+                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
+                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
+                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
+                    that we've already packaged a services file once. -->
+                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jersey</exclude>
                 </excludes>
               </artifactSet>
               <transformers>
