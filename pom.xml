@@ -59,6 +59,7 @@
     <module>hbase-shaded-miscellaneous</module>
     <module>hbase-shaded-jetty</module>
     <module>hbase-shaded-jersey</module>
+    <module>hbase-noop-htrace</module>
   </modules>
   <scm>
     <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
