@@ -30,6 +30,20 @@ pipeline {
         skipDefaultCheckout()
     }
 
+    parameters {
+        booleanParam(name: 'DEBUG',
+               defaultValue: false,
+               description: 'Print extra outputs for debugging the jenkins job and yetus')
+        // the hbase and hadoop versions listed here need to match the matrix axes in the test
+        // section. it's not currently possible to reuse a single array for both purposes.
+        choice(name: 'HBASE_VERSION',
+               choices: ['all', '2.2.5'],
+               description: 'HBase releases to test. default is everything in the list.')
+        choice(name: 'HADOOP_VERSION',
+               choices: ['all', '3.2.1', '2.10.0'],
+               description: 'Hadoop versions to run each hbase version on. default is everything in the list.')
+    }
+
     environment {
         SRC_REL = 'src'
         PATCH_REL = 'output'
@@ -39,86 +53,284 @@ pipeline {
         DOCKERFILE_REL = "${SRC_REL}/dev-support/jenkins/Dockerfile"
         YETUS_DRIVER_REL = "${SRC_REL}/dev-support/jenkins/jenkins_precommit_github_yetus.sh"
         ARCHIVE_PATTERN_LIST = '*.dump'
-        BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
         SET_JAVA_HOME = '/usr/local/openjdk-8'
-        WORKDIR_REL = 'yetus-precommit-check'
-        WORKDIR = "${WORKSPACE}/${WORKDIR_REL}"
-        SOURCEDIR = "${WORKDIR}/${SRC_REL}"
-        PATCHDIR = "${WORKDIR}/${PATCH_REL}"
-        DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
-        YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
-        YETUSDIR = "${WORKDIR}/${YETUS_REL}"
         PLUGINS = 'all'
     }
 
-    parameters {
-        booleanParam(name: 'DEBUG',
-               defaultValue: false,
-               description: 'Print extra outputs for debugging the jenkins job and yetus')
-    }
 
     stages {
-        stage ('precommit checks') {
-            steps {
-                dir("${SOURCEDIR}") {
-                    checkout scm
-                }
-                dir("${YETUSDIR}") {
-                    checkout([
-                      $class           : 'GitSCM',
-                      branches         : [[name: "${YETUS_VERSION}"]],
-                      userRemoteConfigs: [[url: 'https://github.com/apache/yetus.git']]]
-                    )
-                }
-                dir("${WORKDIR}") {
-                    withCredentials([
-                      usernamePassword(
-                        credentialsId: 'apache-hbase-at-github.com',
-                        passwordVariable: 'GITHUB_PASSWORD',
-                        usernameVariable: 'GITHUB_USER'
-                      )]) {
-                        sh label: 'test-patch', script: '''#!/bin/bash -e
-                            printenv 2>&1 | sort
-                            echo "[INFO] Launching Yetus via ${YETUS_DRIVER}"
-                            "${YETUS_DRIVER}"
-                        '''
+        //stage ('precommit checks') {
+        //    when {
+        //        changeRequest()
+        //    }
+        //    environment {
+        //        WORKDIR_REL = 'yetus-precommit-check'
+        //        WORKDIR = "${WORKSPACE}/${WORKDIR_REL}"
+        //        SOURCEDIR = "${WORKDIR}/${SRC_REL}"
+        //        PATCHDIR = "${WORKDIR}/${PATCH_REL}"
+        //        DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
+        //        YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
+        //        YETUSDIR = "${WORKDIR}/${YETUS_REL}"
+        //        BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
+        //    }
+        //    steps {
+        //        dir("${SOURCEDIR}") {
+        //            checkout scm
+        //        }
+        //        dir("${YETUSDIR}") {
+        //            checkout([
+        //              $class           : 'GitSCM',
+        //              branches         : [[name: "${YETUS_VERSION}"]],
+        //              userRemoteConfigs: [[url: 'https://github.com/apache/yetus.git']]]
+        //            )
+        //        }
+        //        dir("${WORKDIR}") {
+        //            withCredentials([
+        //              usernamePassword(
+        //                credentialsId: 'apache-hbase-at-github.com',
+        //                passwordVariable: 'GITHUB_PASSWORD',
+        //                usernameVariable: 'GITHUB_USER'
+        //              )]) {
+        //                sh label: 'test-patch', script: '''#!/bin/bash -e
+        //                    printenv 2>&1 | sort
+        //                    echo "[INFO] Launching Yetus via ${YETUS_DRIVER}"
+        //                    "${YETUS_DRIVER}"
+        //                '''
+        //            }
+        //        }
+        //    }
+        //    post {
+        //        always {
+        //            // Has to be relative to WORKSPACE.
+        //            archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit"
+        //            archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/**/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit/**/*"
+        //            publishHTML target: [
+        //              allowMissing: true,
+        //              keepAll: true,
+        //              alwaysLinkToLastBuild: true,
+        //              // Has to be relative to WORKSPACE
+        //              reportDir: "${WORKDIR_REL}/${PATCH_REL}",
+        //              reportFiles: 'report.html',
+        //              reportName: 'PR General Check Report'
+        //            ]
+        //        }
+        //        // Jenkins pipeline jobs fill slaves on PRs without this :(
+        //        cleanup() {
+        //            script {
+        //                sh label: 'Cleanup workspace', script: '''#!/bin/bash -e
+        //                    # See YETUS-764
+        //                    if [ -f "${PATCHDIR}/pidfile.txt" ]; then
+        //                      echo "test-patch process appears to still be running: killing"
+        //                      kill `cat "${PATCHDIR}/pidfile.txt"` || true
+        //                      sleep 10
+        //                    fi
+        //                    if [ -f "${PATCHDIR}/cidfile.txt" ]; then
+        //                      echo "test-patch container appears to still be running: killing"
+        //                      docker kill `cat "${PATCHDIR}/cidfile.txt"` || true
+        //                    fi
+        //                    # See HADOOP-13951
+        //                    chmod -R u+rxw "${WORKSPACE}"
+        //                '''
+        //                dir ("${WORKDIR}") {
+        //                    deleteDir()
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        stage ('noop htrace drop in') {
+        //    when {
+        //        anyOf {
+        //            changeset "hbase-noop-htrace/**"
+        //            changeset "dev-support/jenkins/Jenkinsfile"
+        //        }
+        //    }
+            tools {
+                // this needs to be set to the jdk that ought to be used to build releases on the branch the Jenkinsfile is stored in.
+                jdk "jdk_1.8_latest"
+            }
+            stages {
+                stage ('setup') {
+                    tools {
+                        maven 'maven_latest'
+                    }
+                    environment {
+                        WORKDIR = "${WORKSPACE}/htrace-noop"
+                        CACHE_DIR = "${WORKSPACE}/cache"
+                    }
+                    steps {
+                        dir ("htrace-noop") {
+                            dir ("component") {
+                                echo 'Build the htrace replacement artifact.'
+                                checkout scm
+                                sh 'mvn -DskipTests -pl hbase-noop-htrace clean package'
+                            }
+                            dir ("tools") {
+                                echo 'Downloading enabling scripts from main hbase repo.'
+                                sh '''#!/usr/bin/env bash
+                                    set -oe
+                                    declare script
+                                    declare -a needed_files
+                                    needed_files=( \
+                                        hbase_nightly_pseudo-distributed-test.sh \
+                                        jenkins-scripts/cache-apache-project-artifact.sh \
+                                    )
+                                    for script in "${needed_files[@]}"; do
+                                        curl -L -O https://raw.githubusercontent.com/apache/hbase/HEAD/dev-support/"${script}"
+                                        chmod +x "$(basename "${script}")"
+                                    done
+                                '''
+                            }
+                            stash name: 'scripts', includes: "tools/hbase_nightly_pseudo-distributed-test.sh"
+                            dir ("hbase") {
+                                script {
+                                    def hbase_versions = [ params.HBASE_VERSION ]
+                                    if (params.HBASE_VERSION == 'all') {
+                                        // this set needs to match the matrix axes below
+                                        hbase_versions = [ '2.2.6', '2.3.3' ]
+                                    }
+                                    hbase_versions.each {
+                                        def hbase_version = it
+                                        sh """#!/usr/bin/env bash
+                                            set -e
+                                            set -x
+                                            mkdir -p "downloads/hbase-${hbase_version}"
+                                            mkdir -p "${CACHE_DIR}"
+                                            echo "downloading hbase version ${hbase_version}"
+                                            "${WORKDIR}/htrace-noop/tools/cache-apache-project-artifact.sh" \
+                                                    --working-dir "${WORKDIR}/htrace-noop/hbase/downloads/hbase-${hbase_version}" \
+                                                    --keys 'https://downloads.apache.org/hbase/KEYS' \
+                                                    "${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz" \
+                                                    "hbase/${hbase_version}/hbase-${hbase_version}-bin.tar.gz"
+                                            mkdir "hbase-${hbase_version}"
+                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/htrace-noop/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                            if [ -z "${noop_htrace}" ]; then
+                                              echo "failed to find htrace noop replacement. did building step work?" >&2
+                                              exit 1
+                                            fi
+                                            "${WORKDIR}/htrace-noop/component/dev-support/jenkins/swap_htrace_jar.sh "$(pwd)/hbase-${hbase_version}" "${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz" "${noop_htrace}"
+                                        """
+                                        stash name: "hbase-${hbase_version}", includes: "hbase-${hbase_version}/**"
+                                    }
+                                }
+                            }
+                            dir ("hadoop") {
+                                script {
+                                    def hadoop_versions = [ params.HADOOP_VERSION ]
+                                    if (params.HADOOP_VERSION == 'all') {
+                                        // this set needs to match the matrix axes below
+                                        hadoop_versions = [ '3.2.1', '2.10.0']
+                                    }
+                                    hadoop_versions.each {
+                                        def hadoop_version = it
+                                        sh """#!/usr/bin/env bash
+                                            set -e
+                                            set -x
+                                            mkdir -p "downloads/hadoop-${hadoop_version}"
+                                            mkdir -p "${CACHE_DIR}"
+                                            echo "downloading hadoop version ${hadoop_version}"
+                                            "${WORKDIR}/htrace-noop/tools/cache-apache-project-artifact.sh" \
+                                                    --working-dir "${WORKDIR}/htrace-noop/hadoop/downloads/hadoop-${hadoop_version}" \
+                                                    --keys 'https://downloads.apache.org/hadoop/common/KEYS' \
+                                                    "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" \
+                                                    "hadoop/common/hadoop-${hadoop_version}/hadoop-${hadoop_version}.tar.gz"
+                                            mkdir "hadoop-${hadoop_version}"
+                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/htrace-noop/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                            if [ -z "${noop_htrace}" ]; then
+                                              echo "failed to find htrace noop replacement. did building step work?" >&2
+                                              exit 1
+                                            fi
+                                            "${WORKDIR}/htrace-noop/component/dev-support/jenkins/swap_htrace_jar.sh "$(pwd)/hadoop-${hadoop_version}" "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" "${noop_htrace}"
+                                        """
+                                        stash name: "hadoop-${hadoop_version}", includes: "hadoop-${hadoop_version}/**"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    post {
+                        cleanup {
+                            // clean up the working area but don't delete the download cache
+                            dir ("htrace-noop") {
+                                deleteDir()
+                            }
+                        }
                     }
                 }
-            }
-            post {
-                always {
-                    // Has to be relative to WORKSPACE.
-                    archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit"
-                    archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/**/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit/**/*"
-                    publishHTML target: [
-                      allowMissing: true,
-                      keepAll: true,
-                      alwaysLinkToLastBuild: true,
-                      // Has to be relative to WORKSPACE
-                      reportDir: "${WORKDIR_REL}/${PATCH_REL}",
-                      reportFiles: 'report.html',
-                      reportName: 'PR General Check Report'
-                    ]
-                }
-                // Jenkins pipeline jobs fill slaves on PRs without this :(
-                cleanup() {
-                    script {
-                        sh label: 'Cleanup workspace', script: '''#!/bin/bash -e
-                            # See YETUS-764
-                            if [ -f "${PATCHDIR}/pidfile.txt" ]; then
-                              echo "test-patch process appears to still be running: killing"
-                              kill `cat "${PATCHDIR}/pidfile.txt"` || true
-                              sleep 10
-                            fi
-                            if [ -f "${PATCHDIR}/cidfile.txt" ]; then
-                              echo "test-patch container appears to still be running: killing"
-                              docker kill `cat "${PATCHDIR}/cidfile.txt"` || true
-                            fi
-                            # See HADOOP-13951
-                            chmod -R u+rxw "${WORKSPACE}"
-                        '''
-                        dir ("${WORKDIR}") {
-                            deleteDir()
+                stage ("test htrace drop in replacement") {
+                    matrix {
+                        axes {
+                            axis {
+                                name 'HBASE'
+                                values '2.2.6', '2.3.3'
+                            }
+                            axis {
+                                name 'HADOOP'
+                                values '3.2.1', '2.10.0'
+                            }
+                        }
+                        excludes {
+                            exclude {
+                                axis {
+                                    name 'HBASE'
+                                    values '1.6.0'
+                                }
+                                axis {
+                                    name 'HADOOP'
+                                    values '3.2.1'
+                                }
+                            }
+                        }
+                        when {
+                            allOf {
+                                anyOf {
+                                    expression { params.HBASE_VERSION == 'all' }
+                                    expression { params.HBASE_VERSION == env.HBASE }
+                                }
+                                anyOf {
+                                    expression { params.HADOOP_VERSION == 'all' }
+                                    expression { params.HADOOP_VERSION == env.HADOOP }
+                                }
+                            }
+                        }
+                        stages {
+                            stage ("test a specific hbase on a specific hadoop") {
+                                steps {
+                                    unstash 'scripts'
+                                    unstash "hbase-${env.HBASE}"
+                                    unstash "hadoop-${env.HADOOP}"
+                                    sh '''#!/usr/bin/env bash
+                                        set -eo
+                                        set -x
+                                        mkdir -p "hbase-${HBASE}.hadoop-${HADOOP}"
+                                        ./tools/hbase_nightly_pseudo-distributed-test.sh \
+                                                --single-process \
+                                                --working-dir "hbase-${HBASE}.hadoop-${HADOOP}" \
+                                                "hbase-${HBASE}" \
+                                                "hadoop-${HADOOP}/bin/hadoop" \
+                                                "hadoop-${HADOOP}"/share/hadoop/yarn/timelineservice \
+                                                "hadoop-${HADOOP}"/share/hadoop/yarn/test/hadoop-yarn-server-tests-*-tests.jar \
+                                                "hadoop-${HADOOP}"/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-*-tests.jar \
+                                                "hadoop-${HADOOP}"/bin/mapred \
+                                    '''
+                                }
+                                post {
+                                    failure {
+                                        sh '''#!/usr/bin/env bash
+                                            set -eo
+                                            set -x
+                                            find "hbase-${HBASE}.hadoop-${HADOOP}" \
+                                                    "hbase-${HBASE}" "hadoop-${HADOOP}" \
+                                                    -type d -name logs | \
+                                                    xargs zip -r "hbase-${HBASE}.hadoop-${HADOOP}.logs.zip"
+                                        '''
+                                        archiveArtifacts artifacts: "hbase-${env.HBASE}.hadoop-${env.HADOOP}.logs.zip"
+                                    }
+                                    cleanup {
+                                        deleteDir()
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -128,14 +340,14 @@ pipeline {
 
     post {
         // Jenkins pipeline jobs fill slaves on PRs without this :(
-        cleanup() {
+        cleanup {
             script {
                 sh label: 'Cleanup workspace', script: '''#!/bin/bash -e
                     # See HADOOP-13951
                     chmod -R u+rxw "${WORKSPACE}"
-                    '''
-                deleteDir()
+                '''
             }
+            // we purposefully don't do a top level workspace cleanup so that we can reuse downloads
         }
     }
 }
