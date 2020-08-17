@@ -32,7 +32,9 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release thirdparty-3.4.0 - Unreleased (as of 2020-08-08)
+# HBASE Changelog
+
+## Release thirdparty-3.4.0 - Unreleased (as of 2020-08-17)
 
 
 
@@ -40,6 +42,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-24858](https://issues.apache.org/jira/browse/HBASE-24858) | [hbase-thirdparty] Builds without a \`clean\` phase fail on hbase-shaded-jetty |  Minor | thirdparty |
 | [HBASE-24798](https://issues.apache.org/jira/browse/HBASE-24798) | [hbase-thirdparty] Ignore module-info and SubmissionPublisher in enforceBytecodeVersion rule |  Major | build, thirdparty |
 
 
@@ -55,6 +58,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-24860](https://issues.apache.org/jira/browse/HBASE-24860) | [hbase-thirdparty] Bump copyright year in NOTICE |  Trivial | thirdparty |
 | [HBASE-24820](https://issues.apache.org/jira/browse/HBASE-24820) | [hbase-thirdparty] Add jersey-hk2 when shading jersey and bump jetty to 9.4.31 |  Major | dependencies, hbase-thirdparty |
 | [HBASE-24801](https://issues.apache.org/jira/browse/HBASE-24801) | [hbase-thirdparty] Remove assembly plugin for generating src tarballs |  Major | thirdparty |
 | [HBASE-24782](https://issues.apache.org/jira/browse/HBASE-24782) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
