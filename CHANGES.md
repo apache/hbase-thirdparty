@@ -34,6 +34,33 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-3.4.1 - Unreleased (as of 2020-11-13)
+
+
+
+### IMPROVEMENTS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25262](https://issues.apache.org/jira/browse/HBASE-25262) | [hbase-thirdparty] Update jetty version in hbase-thirdparty |  Major | dependencies, hbase-thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25270](https://issues.apache.org/jira/browse/HBASE-25270) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 3.4.1 |  Major | thirdparty |
+| [HBASE-25269](https://issues.apache.org/jira/browse/HBASE-25269) | [hbase-thirdparty] Set version as 3.4.1 in prep for first RC |  Major | thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25265](https://issues.apache.org/jira/browse/HBASE-25265) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, hbase-thirdparty |
+| [HBASE-25264](https://issues.apache.org/jira/browse/HBASE-25264) | [hbase-thirdparty] Update jersey version in hbase-thirdparty |  Major | dependencies, hbase-thirdparty |
+
+
 ## Release thirdparty-3.4.0 - Unreleased (as of 2020-08-17)
 
 
