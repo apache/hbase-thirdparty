@@ -20,6 +20,28 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-3.4.1 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-25265](https://issues.apache.org/jira/browse/HBASE-25265) | *Major* | **[hbase-thirdparty] Bump dependencis in hbase-thirdparty**
+
+netty 4.1.51.Final -\> 4.1.53.Final
+protobuf 3.12.2 -\> 3.13.0
+guava 29.0-jre -\> 30.0-jre
+
+
+---
+
+* [HBASE-25264](https://issues.apache.org/jira/browse/HBASE-25264) | *Major* | **[hbase-thirdparty] Update jersey version in hbase-thirdparty**
+
+Update jersey version 2.31 -\> 2.32
+
+
+
 # HBASE  thirdparty-3.4.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
