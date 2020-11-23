@@ -349,7 +349,8 @@
                   <maxJdkVersion>${compileSource}</maxJdkVersion>
                   <ignoreClasses>
                     <ignoreClass>module-info</ignoreClass>
-		    <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
+                    <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
+                    <ignoreClass>**.glassfish.jersey.internal.jsr166.JerseyFlowSubscriber*</ignoreClass>
                   </ignoreClasses>
                   <message>HBase has unsupported dependencies.
   HBase requires that all dependencies be compiled with version ${compileSource} or earlier
