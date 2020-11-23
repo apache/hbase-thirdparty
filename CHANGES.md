@@ -45,6 +45,13 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 | [HBASE-25262](https://issues.apache.org/jira/browse/HBASE-25262) | [hbase-thirdparty] Update jetty version in hbase-thirdparty |  Major | dependencies, hbase-thirdparty |
 
 
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25319](https://issues.apache.org/jira/browse/HBASE-25319) | [hbase-thirdparty] Add JerseyFlowSubscriber to ignoreClass in maven enforcer plugin |  Blocker | build, hbase-thirdparty |
+
+
 ### SUB-TASKS:
 
 | JIRA | Summary | Priority | Component |
