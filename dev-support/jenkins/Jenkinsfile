@@ -37,7 +37,7 @@ pipeline {
         // the hbase and hadoop versions listed here need to match the matrix axes in the test
         // section. it's not currently possible to reuse a single array for both purposes.
         choice(name: 'HBASE_VERSION',
-               choices: ['all', '2.2.5'],
+               choices: ['all', '2.2.6', '2.3.3'],
                description: 'HBase releases to test. default is everything in the list.')
         choice(name: 'HADOOP_VERSION',
                choices: ['all', '3.2.1', '2.10.0'],
@@ -196,19 +196,19 @@ pipeline {
                                             set -x
                                             mkdir -p "downloads/hbase-${hbase_version}"
                                             mkdir -p "${CACHE_DIR}"
-                                            echo "downloading hbase version ${hbase_version}"
-                                            "${WORKDIR}/htrace-noop/tools/cache-apache-project-artifact.sh" \
-                                                    --working-dir "${WORKDIR}/htrace-noop/hbase/downloads/hbase-${hbase_version}" \
+                                            echo 'downloading hbase version ${hbase_version}'
+                                            '${WORKDIR}/tools/cache-apache-project-artifact.sh' \
+                                                    --working-dir '${WORKDIR}/hbase/downloads/hbase-${hbase_version}' \
                                                     --keys 'https://downloads.apache.org/hbase/KEYS' \
-                                                    "${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz" \
-                                                    "hbase/${hbase_version}/hbase-${hbase_version}-bin.tar.gz"
-                                            mkdir "hbase-${hbase_version}"
-                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/htrace-noop/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                                    '${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz' \
+                                                    'hbase/${hbase_version}/hbase-${hbase_version}-bin.tar.gz'
+                                            mkdir 'hbase-${hbase_version}'
+                                            declare noop_htrace="$(ls -1 '${WORKDIR}'/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
                                             if [ -z "${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
                                             fi
-                                            "${WORKDIR}/htrace-noop/component/dev-support/jenkins/swap_htrace_jar.sh "$(pwd)/hbase-${hbase_version}" "${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz" "${noop_htrace}"
+                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' '${WORKDIR}/hbase/hbase-${hbase_version}' '${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz' "${noop_htrace}"
                                         """
                                         stash name: "hbase-${hbase_version}", includes: "hbase-${hbase_version}/**"
                                     }
@@ -229,18 +229,18 @@ pipeline {
                                             mkdir -p "downloads/hadoop-${hadoop_version}"
                                             mkdir -p "${CACHE_DIR}"
                                             echo "downloading hadoop version ${hadoop_version}"
-                                            "${WORKDIR}/htrace-noop/tools/cache-apache-project-artifact.sh" \
-                                                    --working-dir "${WORKDIR}/htrace-noop/hadoop/downloads/hadoop-${hadoop_version}" \
+                                            "${WORKDIR}/tools/cache-apache-project-artifact.sh" \
+                                                    --working-dir "${WORKDIR}/hadoop/downloads/hadoop-${hadoop_version}" \
                                                     --keys 'https://downloads.apache.org/hadoop/common/KEYS' \
                                                     "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" \
                                                     "hadoop/common/hadoop-${hadoop_version}/hadoop-${hadoop_version}.tar.gz"
                                             mkdir "hadoop-${hadoop_version}"
-                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/htrace-noop/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
                                             if [ -z "${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
                                             fi
-                                            "${WORKDIR}/htrace-noop/component/dev-support/jenkins/swap_htrace_jar.sh "$(pwd)/hadoop-${hadoop_version}" "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" "${noop_htrace}"
+                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' "${WORKDIR}/hadoop/hadoop-${hadoop_version}" "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" "${noop_htrace}"
                                         """
                                         stash name: "hadoop-${hadoop_version}", includes: "hadoop-${hadoop_version}/**"
                                     }
