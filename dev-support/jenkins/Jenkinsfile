@@ -203,7 +203,8 @@ pipeline {
                                                     '${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz' \
                                                     'hbase/${hbase_version}/hbase-${hbase_version}-bin.tar.gz'
                                             mkdir 'hbase-${hbase_version}'
-                                            declare noop_htrace="$(ls -1 '${WORKDIR}'/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                            declare noop_htrace
+                                            noop_htrace="\$(ls -1 '${WORKDIR}/component/hbase-noop-htrace/target/'hbase-noop-htrace-*.jar | head -n 1)"
                                             if [ -z "${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
@@ -235,7 +236,8 @@ pipeline {
                                                     "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" \
                                                     "hadoop/common/hadoop-${hadoop_version}/hadoop-${hadoop_version}.tar.gz"
                                             mkdir "hadoop-${hadoop_version}"
-                                            declare noop_htrace="$(ls -1 "${WORKDIR}"/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+                                            declare noop_htrace
+                                            noop_htrace="\$(ls -1 "${WORKDIR}"/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
                                             if [ -z "${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
