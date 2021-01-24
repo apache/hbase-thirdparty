@@ -15,6 +15,8 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+
+# Call it like ./swap_htrace_jar.sh /some/place/to/target /a/path/to/component.tar.gz /a/path/to/hbase-noop-htrace.jar
 set -e
 if [ -n "${DEBUG}" ]; then
   set -x
