@@ -29,6 +29,6 @@ tar -xzf "${tarball}" --strip-components=1 --exclude 'htrace*.jar' -C "${destina
 echo "insert a copy of our replacement artifact for htrace."
 for htrace_location in $(tar -tzf "${tarball}" | grep -E 'htrace.*jar' ); do
   htrace_location="$(dirname "${htrace_location#*/}")"
-  echo "	placing htrace jar at ${htrace_location}"
+  echo "        placing htrace jar at ${htrace_location}"
   cp "${noop_htrace}" "${destination}/${htrace_location}"
 done;

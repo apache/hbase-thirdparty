@@ -44,8 +44,8 @@
     <!-- This is also used by branch-1, so make sure we're jdk7 compatible -->
     <compileSource>1.7</compileSource>
     <!-- These maybe need to match the main repo -->
-    <maven.checkstyle.version>3.0.0</maven.checkstyle.version>
-    <checkstyle.version>8.11</checkstyle.version>
+    <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
+    <checkstyle.version>8.28</checkstyle.version>
   </properties>
   <dependencies>
     <dependency>
