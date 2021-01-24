@@ -59,92 +59,92 @@ pipeline {
 
 
     stages {
-        //stage ('precommit checks') {
-        //    when {
-        //        changeRequest()
-        //    }
-        //    environment {
-        //        WORKDIR_REL = 'yetus-precommit-check'
-        //        WORKDIR = "${WORKSPACE}/${WORKDIR_REL}"
-        //        SOURCEDIR = "${WORKDIR}/${SRC_REL}"
-        //        PATCHDIR = "${WORKDIR}/${PATCH_REL}"
-        //        DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
-        //        YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
-        //        YETUSDIR = "${WORKDIR}/${YETUS_REL}"
-        //        BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
-        //    }
-        //    steps {
-        //        dir("${SOURCEDIR}") {
-        //            checkout scm
-        //        }
-        //        dir("${YETUSDIR}") {
-        //            checkout([
-        //              $class           : 'GitSCM',
-        //              branches         : [[name: "${YETUS_VERSION}"]],
-        //              userRemoteConfigs: [[url: 'https://github.com/apache/yetus.git']]]
-        //            )
-        //        }
-        //        dir("${WORKDIR}") {
-        //            withCredentials([
-        //              usernamePassword(
-        //                credentialsId: 'apache-hbase-at-github.com',
-        //                passwordVariable: 'GITHUB_PASSWORD',
-        //                usernameVariable: 'GITHUB_USER'
-        //              )]) {
-        //                sh label: 'test-patch', script: '''#!/bin/bash -e
-        //                    printenv 2>&1 | sort
-        //                    echo "[INFO] Launching Yetus via ${YETUS_DRIVER}"
-        //                    "${YETUS_DRIVER}"
-        //                '''
-        //            }
-        //        }
-        //    }
-        //    post {
-        //        always {
-        //            // Has to be relative to WORKSPACE.
-        //            archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit"
-        //            archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/**/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit/**/*"
-        //            publishHTML target: [
-        //              allowMissing: true,
-        //              keepAll: true,
-        //              alwaysLinkToLastBuild: true,
-        //              // Has to be relative to WORKSPACE
-        //              reportDir: "${WORKDIR_REL}/${PATCH_REL}",
-        //              reportFiles: 'report.html',
-        //              reportName: 'PR General Check Report'
-        //            ]
-        //        }
-        //        // Jenkins pipeline jobs fill slaves on PRs without this :(
-        //        cleanup() {
-        //            script {
-        //                sh label: 'Cleanup workspace', script: '''#!/bin/bash -e
-        //                    # See YETUS-764
-        //                    if [ -f "${PATCHDIR}/pidfile.txt" ]; then
-        //                      echo "test-patch process appears to still be running: killing"
-        //                      kill `cat "${PATCHDIR}/pidfile.txt"` || true
-        //                      sleep 10
-        //                    fi
-        //                    if [ -f "${PATCHDIR}/cidfile.txt" ]; then
-        //                      echo "test-patch container appears to still be running: killing"
-        //                      docker kill `cat "${PATCHDIR}/cidfile.txt"` || true
-        //                    fi
-        //                    # See HADOOP-13951
-        //                    chmod -R u+rxw "${WORKSPACE}"
-        //                '''
-        //                dir ("${WORKDIR}") {
-        //                    deleteDir()
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        stage ('precommit checks') {
+            when {
+                changeRequest()
+            }
+            environment {
+                WORKDIR_REL = 'yetus-precommit-check'
+                WORKDIR = "${WORKSPACE}/${WORKDIR_REL}"
+                SOURCEDIR = "${WORKDIR}/${SRC_REL}"
+                PATCHDIR = "${WORKDIR}/${PATCH_REL}"
+                DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
+                YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
+                YETUSDIR = "${WORKDIR}/${YETUS_REL}"
+                BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
+            }
+            steps {
+                dir("${SOURCEDIR}") {
+                    checkout scm
+                }
+                dir("${YETUSDIR}") {
+                    checkout([
+                      $class           : 'GitSCM',
+                      branches         : [[name: "${YETUS_VERSION}"]],
+                      userRemoteConfigs: [[url: 'https://github.com/apache/yetus.git']]]
+                    )
+                }
+                dir("${WORKDIR}") {
+                    withCredentials([
+                      usernamePassword(
+                        credentialsId: 'apache-hbase-at-github.com',
+                        passwordVariable: 'GITHUB_PASSWORD',
+                        usernameVariable: 'GITHUB_USER'
+                      )]) {
+                        sh label: 'test-patch', script: '''#!/bin/bash -e
+                            printenv 2>&1 | sort
+                            echo "[INFO] Launching Yetus via ${YETUS_DRIVER}"
+                            "${YETUS_DRIVER}"
+                        '''
+                    }
+                }
+            }
+            post {
+                always {
+                    // Has to be relative to WORKSPACE.
+                    archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit"
+                    archiveArtifacts artifacts: "${WORKDIR_REL}/${PATCH_REL}/**/*", excludes: "${WORKDIR_REL}/${PATCH_REL}/precommit/**/*"
+                    publishHTML target: [
+                      allowMissing: true,
+                      keepAll: true,
+                      alwaysLinkToLastBuild: true,
+                      // Has to be relative to WORKSPACE
+                      reportDir: "${WORKDIR_REL}/${PATCH_REL}",
+                      reportFiles: 'report.html',
+                      reportName: 'PR General Check Report'
+                    ]
+                }
+                // Jenkins pipeline jobs fill slaves on PRs without this :(
+                cleanup() {
+                    script {
+                        sh label: 'Cleanup workspace', script: '''#!/bin/bash -e
+                            # See YETUS-764
+                            if [ -f "${PATCHDIR}/pidfile.txt" ]; then
+                              echo "test-patch process appears to still be running: killing"
+                              kill `cat "${PATCHDIR}/pidfile.txt"` || true
+                              sleep 10
+                            fi
+                            if [ -f "${PATCHDIR}/cidfile.txt" ]; then
+                              echo "test-patch container appears to still be running: killing"
+                              docker kill `cat "${PATCHDIR}/cidfile.txt"` || true
+                            fi
+                            # See HADOOP-13951
+                            chmod -R u+rxw "${WORKSPACE}"
+                        '''
+                        dir ("${WORKDIR}") {
+                            deleteDir()
+                        }
+                    }
+                }
+            }
+        }
         stage ('noop htrace drop in') {
-        //    when {
-        //        anyOf {
-        //            changeset "hbase-noop-htrace/**"
-        //            changeset "dev-support/jenkins/Jenkinsfile"
-        //        }
-        //    }
+            when {
+                anyOf {
+                    changeset "hbase-noop-htrace/**"
+                    changeset "dev-support/jenkins/Jenkinsfile"
+                }
+            }
             tools {
                 // this needs to be set to the jdk that ought to be used to build releases on the branch the Jenkinsfile is stored in.
                 jdk "jdk_1.8_latest"
@@ -272,18 +272,6 @@ pipeline {
                             axis {
                                 name 'HADOOP'
                                 values '3.2.1', '2.10.0'
-                            }
-                        }
-                        excludes {
-                            exclude {
-                                axis {
-                                    name 'HBASE'
-                                    values '1.6.0'
-                                }
-                                axis {
-                                    name 'HADOOP'
-                                    values '3.2.1'
-                                }
                             }
                         }
                         when {
