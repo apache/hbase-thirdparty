@@ -205,11 +205,11 @@ pipeline {
                                             mkdir 'hbase-${hbase_version}'
                                             declare noop_htrace
                                             noop_htrace="\$(ls -1 '${WORKDIR}/component/hbase-noop-htrace/target/'hbase-noop-htrace-*.jar | head -n 1)"
-                                            if [ -z "${noop_htrace}" ]; then
+                                            if [ -z "\${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
                                             fi
-                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' '${WORKDIR}/hbase/hbase-${hbase_version}' '${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz' "${noop_htrace}"
+                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' '${WORKDIR}/hbase/hbase-${hbase_version}' '${CACHE_DIR}/hbase-${hbase_version}-bin.tar.gz' "\${noop_htrace}"
                                         """
                                         stash name: "hbase-${hbase_version}", includes: "hbase-${hbase_version}/**"
                                     }
@@ -238,11 +238,11 @@ pipeline {
                                             mkdir "hadoop-${hadoop_version}"
                                             declare noop_htrace
                                             noop_htrace="\$(ls -1 "${WORKDIR}"/component/hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
-                                            if [ -z "${noop_htrace}" ]; then
+                                            if [ -z "\${noop_htrace}" ]; then
                                               echo "failed to find htrace noop replacement. did building step work?" >&2
                                               exit 1
                                             fi
-                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' "${WORKDIR}/hadoop/hadoop-${hadoop_version}" "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" "${noop_htrace}"
+                                            '${WORKDIR}/component/dev-support/jenkins/swap_htrace_jar.sh' "${WORKDIR}/hadoop/hadoop-${hadoop_version}" "${CACHE_DIR}/hadoop-${hadoop_version}-bin.tar.gz" "\${noop_htrace}"
                                         """
                                         stash name: "hadoop-${hadoop_version}", includes: "hadoop-${hadoop_version}/**"
                                     }
