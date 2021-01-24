@@ -261,6 +261,9 @@ pipeline {
                 }
                 stage ("test htrace drop in replacement") {
                     matrix {
+                        agent {
+                            label 'hbase'
+                        }
                         axes {
                             axis {
                                 name 'HBASE'
