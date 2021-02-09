@@ -37,7 +37,7 @@
   </parent>
   <groupId>org.apache.hbase.thirdparty</groupId>
   <artifactId>hbase-thirdparty</artifactId>
-  <version>3.5.0</version>
+  <version>3.5.1-SNAPSHOT</version>
   <name>Apache HBase Third-Party Libs</name>
   <packaging>pom</packaging>
   <description>
