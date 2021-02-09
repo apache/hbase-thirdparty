@@ -32,7 +32,19 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-# HBASE Changelog
+## Release hbase-thirdparty-3.5.0 - Unreleased (as of 2021-02-09)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25557](https://issues.apache.org/jira/browse/HBASE-25557) | hbase thirdparty jdk bytecode enforcement shouldn't check test dependencies |  Major | hbase-thirdparty |
+| [HBASE-25552](https://issues.apache.org/jira/browse/HBASE-25552) | [hbase-thirdparty] Update jetty version to fix CVE-2020-27218 |  Major | dependencies, hbase-thirdparty |
+| [HBASE-24802](https://issues.apache.org/jira/browse/HBASE-24802) | make a drop-in compatible impl of htrace APIs that does not do anything |  Critical | Client, dependencies, thirdparty |
+
+
 
 ## Release thirdparty-3.4.1 - Unreleased (as of 2020-11-13)
 

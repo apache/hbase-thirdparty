@@ -20,6 +20,47 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  hbase-thirdparty-3.5.0 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-24802](https://issues.apache.org/jira/browse/HBASE-24802) | *Critical* | **make a drop-in compatible impl of htrace APIs that does not do anything**
+
+<!-- markdown -->
+
+The HBase Thirdparty project now produces an artifact that is a drop in replacement for the defunct HTrace project's library. This artifact is binary and source compatible with the artifact produced by the HTrace incubating 4.2.0 release with the exception of APIs that expressly referred to the relocated version of Jackson it included.
+
+
+To use this library you should remove the `htrace-core4`  jar file from your runtime classpath and add the `hbase-noop-htrace` jar in its place.
+
+For use in maven, add an exclusion to any dependencies that have a transitive dependency on HTrace:
+
+```
+<exclusions>
+  <exclusion>
+    <groupId>org.apache.htrace</groupId>
+    <artifactId>htrace-core4</artifactId>
+  </exclusion>
+</exclusions>
+```
+
+Once the HTrace library has been excluded you should add a dependency on the replacement implementation at an appropriate scope. e.g. for the first release that includes this artifact at the default (compile) scope:
+
+```
+<dependency>
+  <groupId>org.apache.hbase.thirdparty</groupId>
+  <artifactId>hbase-noop-htrace</artifactId>
+  <version>3.5.0</version>
+</dependency>
+```
+
+For a detailed compatibility report between the libraries please see the attachments on jira for HBASE-24802.
+
+
+
 # HBASE  thirdparty-3.4.1 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
