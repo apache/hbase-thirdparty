@@ -74,7 +74,7 @@
                 </relocation>
                 <relocation>
                   <pattern>jersey</pattern>
-                  <shadedPattern>${rename.offset}.jersery</shadedPattern>
+                  <shadedPattern>${rename.offset}.jersey</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.sun.research</pattern>
