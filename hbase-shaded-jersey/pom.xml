@@ -69,6 +69,10 @@
               <createSourcesJar>true</createSourcesJar>
               <relocations>
                 <relocation>
+                  <pattern>javax.ws.rs</pattern>
+                  <shadedPattern>${rename.offset}.javax.ws.rs</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>org.glassfish</pattern>
                   <shadedPattern>${rename.offset}.org.glassfish</shadedPattern>
                 </relocation>
@@ -96,7 +100,6 @@
                       also else we give an odd signal in the META-INF/DEPENDENCIES that we
                       produce. See below for how to exclusion of transitive dependencies.
                     -->
-                  <exclude>jakarta.ws.rs:jakarta.ws.rs-api</exclude>
                   <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
                   <exclude>jakarta.validation:jakarta.validation-api</exclude>
                   <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
