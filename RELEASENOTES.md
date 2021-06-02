@@ -20,11 +20,38 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-# hbase hbase-thirdparty-3.5.1-stack3 Release Notes
-No changes
+# HBASE  thirdparty-3.5.1 Release Notes
 
-# hbase hbase-thirdparty-3.5.1-stack Release Notes
-No changes
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-25943](https://issues.apache.org/jira/browse/HBASE-25943) | *Major* | **[hbase-thirdparty] Bump dependencis in hbase-thirdparty**
+
+protobuf 3.13.0 =\> 3.17.1
+netty 4.1.63.Final =\> 4.1.65.Final
+guava 30.0-jre =\> 30.1.1-jre
+error\_prone\_annotations 2.3.4 =\> 2.7.1
+jetty 9.4.39.v20210325 =\> 9.4.41.v20210516
+
+
+---
+
+* [HBASE-25855](https://issues.apache.org/jira/browse/HBASE-25855) | *Minor* | **[hbase-thirdparty] Fix typo in jersey relocation path**
+
+We have a typo in our jersey relocation path, where we use 'jersery' instead of 'jersey'.
+
+This is a minor change, but indeed an incompatible change. But since hbase-thirdparty is only used by hbase, it is not a big problem for end users. We will update the thridparty dependency for all active branches.
+
+
+---
+
+* [HBASE-25728](https://issues.apache.org/jira/browse/HBASE-25728) | *Major* | **[hbase-thirdparty] Upgrade Netty library to \>= 4.1.60 due to security vulnerability CVE-2021-21295**
+
+Netty is upgrade to 4.1.63.Final due to security vulnerability CVE-2021-21295.
+
+
 
 # HBASE  hbase-thirdparty-3.5.0 Release Notes
 

@@ -32,11 +32,36 @@ The 'pwd' argument says where the thirdparty files to edit are and the
 last argument is the version to search JIRA with.
 
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
-## Release hbase-thirdparty-3.5.1-stack3 - Unreleased (as of Wed Jun  2 01:22:56 UTC 2021)
-No changes
+# HBASE Changelog
 
-## Release hbase-thirdparty-3.5.1-stack - Unreleased (as of Tue Jun  1 16:48:15 PDT 2021)
-No changes
+## Release thirdparty-3.5.1 - Unreleased (as of 2021-06-02)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25959](https://issues.apache.org/jira/browse/HBASE-25959) | Relocate libnetty\_transport\_native\_epoll\_aarch\_64.so in hbase-thirdparty |  Minor | hbase-thirdparty |
+| [HBASE-25746](https://issues.apache.org/jira/browse/HBASE-25746) | [hbase-thirdparty] Update jetty to \>= 9.4.39 due to CVE-2021-28165 |  Major | thirdparty |
+| [HBASE-25728](https://issues.apache.org/jira/browse/HBASE-25728) | [hbase-thirdparty] Upgrade Netty library to \>= 4.1.60 due to security vulnerability CVE-2021-21295 |  Major | thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25946](https://issues.apache.org/jira/browse/HBASE-25946) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 3.5.1 |  Major | thirdparty |
+| [HBASE-25945](https://issues.apache.org/jira/browse/HBASE-25945) | [hbase-thirdparty] Set version as 3.5.1 in prep for first RC |  Major | thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-25943](https://issues.apache.org/jira/browse/HBASE-25943) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
+| [HBASE-25855](https://issues.apache.org/jira/browse/HBASE-25855) | [hbase-thirdparty] Fix typo in jersey relocation path |  Minor | hbase-thirdparty |
+
 
 ## Release hbase-thirdparty-3.5.0 - Unreleased (as of 2021-02-09)
 
