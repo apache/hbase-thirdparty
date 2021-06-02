@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.hbase.thirdparty</groupId>
     <artifactId>hbase-thirdparty</artifactId>
-    <version>3.5.2-SNAPSHOT</version>
+    <version>3.5.1-stack</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>hbase-noop-htrace</artifactId>
