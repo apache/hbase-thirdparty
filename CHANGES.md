@@ -59,6 +59,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-25962](https://issues.apache.org/jira/browse/HBASE-25962) | [hbase-thirdparty] Relocate mac jnilib for netty |  Major | thirdparty |
 | [HBASE-25943](https://issues.apache.org/jira/browse/HBASE-25943) | [hbase-thirdparty] Bump dependencis in hbase-thirdparty |  Major | dependencies, thirdparty |
 | [HBASE-25855](https://issues.apache.org/jira/browse/HBASE-25855) | [hbase-thirdparty] Fix typo in jersey relocation path |  Minor | hbase-thirdparty |
 
