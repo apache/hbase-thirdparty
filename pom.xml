@@ -168,7 +168,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.0.1-SNAPSHOT</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
@@ -233,6 +233,31 @@
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.2.4</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-patch-plugin</artifactId>
+          <version>1.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -252,7 +277,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.2.0</version>
         <executions>
           <execution>
             <id>regex-property</id>
@@ -272,7 +296,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>3.0.0</version>
         <dependencies>
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
