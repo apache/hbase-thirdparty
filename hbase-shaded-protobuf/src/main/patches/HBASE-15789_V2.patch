@@ -359,10 +359,10 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index e5454a63d..697a8aee7 100644
+index a4beaeb4c..090430346 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -373,6 +373,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -383,6 +383,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      }
    }
  
@@ -377,13 +377,14 @@ index e5454a63d..697a8aee7 100644
     * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage to force a
     * classload of ByteString before LiteralByteString.
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 87c683725..598c6929b 100644
+index 6e9c0f620..bcd5639e8 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -194,6 +194,15 @@ public abstract class CodedInputStream {
-     return newInstance(buffer, 0, buffer.length, true);
+@@ -200,6 +200,16 @@ public abstract class CodedInputStream {
+       throw InvalidProtocolBufferException.recursionLimitExceeded();
+     }
    }
- 
++
 +  /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
 +  public static CodedInputStream newInstance(ByteInput buf, boolean bufferIsImmutable) {
 +    return new ByteInputDecoder(buf, bufferIsImmutable);
@@ -396,7 +397,7 @@ index 87c683725..598c6929b 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
  
-@@ -3919,4 +3928,652 @@ public abstract class CodedInputStream {
+@@ -3979,4 +3989,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1050,7 +1051,7 @@ index 87c683725..598c6929b 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index 104ab0983..0a15447a3 100644
+index 7c9133e16..657d92640 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
 @@ -218,6 +218,16 @@ final class Utf8 {
