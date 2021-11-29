@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 598c6929b..a9b70afb4 100644
+index bcd5639e8..b649d23a4 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -195,11 +195,7 @@ public abstract class CodedInputStream {
+@@ -202,11 +202,7 @@ public abstract class CodedInputStream {
    }
  
    /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
