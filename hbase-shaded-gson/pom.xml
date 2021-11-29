@@ -40,10 +40,6 @@
   <description>
     Pulls down GSON, relocates it and makes a far jar.
   </description>
-  <properties>
-    <!-- This GSON is also used by branch-1, so make sure we're jdk7 compatible -->
-    <compileSource>1.7</compileSource>
-  </properties>
   <build>
     <plugins>
       <plugin>
