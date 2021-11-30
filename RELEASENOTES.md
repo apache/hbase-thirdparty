@@ -20,6 +20,95 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-4.0.0 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-26506](https://issues.apache.org/jira/browse/HBASE-26506) | *Major* | **[hbase-thirdparty] Bump jersey version to 2.35**
+
+Upgrade jersey version
+
+2.32 -\> 2.35
+
+
+---
+
+* [HBASE-26505](https://issues.apache.org/jira/browse/HBASE-26505) | *Major* | **[hbase-thirdparty] Bump commons-cli version to 1.5.0**
+
+Upgrade commons-cli version
+
+1.4 -\> 1.5.0
+
+
+---
+
+* [HBASE-26504](https://issues.apache.org/jira/browse/HBASE-26504) | *Major* | **[hbase-thirdparty] Bump maven plugin versions**
+
+Upgrade versions of some maven plugins:
+
+maven-dependency-plugin: 3.1.1 -\> 3.2.0
+build-helper-maven-plugin: 3.0.1-SNAPSHOT -\>3.2.0
+maven-compiler-plugi:  -\>3.8.1
+maven-source-plugin: -\> 3.2.0
+maven-enforcer-plugin: 1.4.1 -\> 3.0.0
+
+
+---
+
+* [HBASE-26503](https://issues.apache.org/jira/browse/HBASE-26503) | *Major* | **[hbase-thirdparty] Bump guava version to 31.0.1-jre**
+
+Upgrade guava version
+
+30.1.1-jre -\> 31.0.1-jre
+
+
+---
+
+* [HBASE-26502](https://issues.apache.org/jira/browse/HBASE-26502) | *Major* | **[hbase-thirdparty] Bump gson version to 2.8.9**
+
+Upgrade gson version
+
+2.8.5 -\>2.8.9
+
+
+---
+
+* [HBASE-26501](https://issues.apache.org/jira/browse/HBASE-26501) | *Major* | **[hbase-thirdparty] Bump jetty version to 9.4.44.v20210927**
+
+Upgrade jetty version
+
+9.4.41.v20210516 -\> 9.4.44.v20210927
+
+
+---
+
+* [HBASE-26499](https://issues.apache.org/jira/browse/HBASE-26499) | *Major* | **[hbase-thirdparty] Bump netty version to 4.1.70.Final**
+
+Upgrade netty version
+
+4.1.65.Final -\> 4.1.70.Final
+
+
+---
+
+* [HBASE-26509](https://issues.apache.org/jira/browse/HBASE-26509) | *Major* | **[hbase-thirdparty] Bump version to 4.0.0-SNAPSHOT on master branch**
+
+Bump version to 4.0.0-SNAPSHOT, drop JDK7 support.
+
+
+---
+
+* [HBASE-26500](https://issues.apache.org/jira/browse/HBASE-26500) | *Major* | **[hbase-thirdparty] Bump protobuf version to 3.19.1**
+
+Upgrade protobuf version
+
+3.17.1 -\> 3.19.1
+
+
+
 # HBASE  thirdparty-3.5.1 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
