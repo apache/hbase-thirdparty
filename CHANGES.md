@@ -34,6 +34,36 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-4.0.0 - Unreleased (as of 2021-11-30)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26496](https://issues.apache.org/jira/browse/HBASE-26496) | [hbase-thirdparty] Exclude the original protobuf-java jar when shading |  Major | hbase-thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26515](https://issues.apache.org/jira/browse/HBASE-26515) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.0.0 |  Major | thirdparty |
+| [HBASE-26514](https://issues.apache.org/jira/browse/HBASE-26514) | [hbase-thirdparty] Set version as 4.0.0 in prep for first RC |  Major | build, pom, thirdparty |
+| [HBASE-25868](https://issues.apache.org/jira/browse/HBASE-25868) | [hbase-thirdparty] Shade jackson-jaxrs-json-provider for use with shaded jersey |  Major | hbase-thirdparty |
+| [HBASE-25863](https://issues.apache.org/jira/browse/HBASE-25863) | [hbase-thirdparty] Shade javax.ws.rs package for use with shaded Jersey |  Major | thirdparty |
+| [HBASE-26506](https://issues.apache.org/jira/browse/HBASE-26506) | [hbase-thirdparty] Bump jersey version to 2.35 |  Major | hbase-thirdparty |
+| [HBASE-26505](https://issues.apache.org/jira/browse/HBASE-26505) | [hbase-thirdparty] Bump commons-cli version to 1.5.0 |  Major | hbase-thirdparty |
+| [HBASE-26504](https://issues.apache.org/jira/browse/HBASE-26504) | [hbase-thirdparty] Bump maven plugin versions |  Major | build, hbase-thirdparty, pom |
+| [HBASE-26503](https://issues.apache.org/jira/browse/HBASE-26503) | [hbase-thirdparty] Bump guava version to 31.0.1-jre |  Major | hbase-thirdparty |
+| [HBASE-26502](https://issues.apache.org/jira/browse/HBASE-26502) | [hbase-thirdparty] Bump gson version to 2.8.9 |  Major | hbase-thirdparty |
+| [HBASE-26501](https://issues.apache.org/jira/browse/HBASE-26501) | [hbase-thirdparty] Bump jetty version to 9.4.44.v20210927 |  Major | hbase-thirdparty |
+| [HBASE-26499](https://issues.apache.org/jira/browse/HBASE-26499) | [hbase-thirdparty] Bump netty version to 4.1.70.Final |  Major | hbase-thirdparty |
+| [HBASE-26509](https://issues.apache.org/jira/browse/HBASE-26509) | [hbase-thirdparty] Bump version to 4.0.0-SNAPSHOT on master branch |  Major | build, hbase-thirdparty, pom |
+| [HBASE-26500](https://issues.apache.org/jira/browse/HBASE-26500) | [hbase-thirdparty] Bump protobuf version to 3.19.1 |  Major | hbase-thirdparty |
+
+
 ## Release thirdparty-3.5.1 - Unreleased (as of 2021-06-02)
 
 
