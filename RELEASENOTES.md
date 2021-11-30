@@ -54,6 +54,7 @@ build-helper-maven-plugin: 3.0.1-SNAPSHOT -\>3.2.0
 maven-compiler-plugi:  -\>3.8.1
 maven-source-plugin: -\> 3.2.0
 maven-enforcer-plugin: 1.4.1 -\> 3.0.0
+extra-enforcer-rules: 1.3 -\> 1.4
 
 
 ---
