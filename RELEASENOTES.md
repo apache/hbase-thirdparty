@@ -33,6 +33,8 @@ Upgrade jersey version
 
 2.32 -\> 2.35
 
+Add jersey-media-jaxb dependency.
+
 
 ---
 
