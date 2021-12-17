@@ -32,6 +32,15 @@
     Pulls down protobuf, patches it, compiles, and then relocates/shades.
   </description>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <!-- include the protos -->
+          <include>google/**</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <!--Clean needs to purge src/main/java since this is where
@@ -78,6 +87,12 @@
               <goal>unpack</goal>
             </goals>
             <configuration>
+              <!--
+                The protobuf-java has no compile or runtime dependency so we
+                only depend it here, without adding it to our dependencies
+                section. Need to review later if protobuf-java has compile or
+                runtime dependencies in the future.
+              -->
               <artifactItems>
                 <artifactItem>
                   <groupId>com.google.protobuf</groupId>
@@ -148,12 +163,6 @@
             <configuration>
               <shadeSourcesContent>true</shadeSourcesContent>
               <createSourcesJar>true</createSourcesJar>
-              <artifactSet>
-                <excludes>
-                  <!-- We will compile our own version, so exclude the original one -->
-                  <exclude>com.google.protobuf:protobuf-java</exclude>
-                </excludes>
-              </artifactSet>
               <relocations>
                 <relocation>
                   <pattern>com.google.protobuf</pattern>
@@ -177,11 +186,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java</artifactId>
-      <version>${protobuf.version}</version>
-    </dependency>
-  </dependencies>
 </project>
