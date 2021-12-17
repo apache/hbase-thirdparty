@@ -20,6 +20,19 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-4.0.1 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-26592](https://issues.apache.org/jira/browse/HBASE-26592) | *Blocker* | **Fix the broken shaded protobuf module**
+
+Remove protobuf-java dependency from hbase-shaded-protobuf module, as we will unpack its source and patch it and then recompile from source. Also add a resources section to make sure that we include the proto files in the final jar.
+
+
+
 # HBASE  thirdparty-4.0.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

@@ -34,6 +34,19 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-4.0.1 - Unreleased (as of 2021-12-17)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26593](https://issues.apache.org/jira/browse/HBASE-26593) | [hbase-thirdparty] Set version as 4.0.1 in prep for first RC |  Major | build, pom, thirdparty |
+| [HBASE-26594](https://issues.apache.org/jira/browse/HBASE-26594) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.0.1 |  Major | thirdparty |
+| [HBASE-26592](https://issues.apache.org/jira/browse/HBASE-26592) | Fix the broken shaded protobuf module |  Blocker | hbase-thirdparty, Protobufs |
+
+
 ## Release thirdparty-4.0.0 - Unreleased (as of 2021-11-30)
 
 
