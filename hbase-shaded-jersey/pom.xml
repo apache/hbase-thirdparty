@@ -95,10 +95,13 @@
                       Anything added here needs to be excluded from the jar that pulls it in
                       also else we give an odd signal in the META-INF/DEPENDENCIES that we
                       produce. See below for how to exclusion of transitive dependencies.
-                    -->
-                  <exclude>jakarta.ws.rs:jakarta.ws.rs-api</exclude>
+                  -->
+                  <exclude>com.sun.activation:jakarta.activation</exclude>
+                  <exclude>jakarta.activation:jakarta.activation-api</exclude>
                   <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
                   <exclude>jakarta.validation:jakarta.validation-api</exclude>
+                  <exclude>jakarta.ws.rs:jakarta.ws.rs-api</exclude>
+                  <exclude>jakarta.xml.bind:jakarta.xml.bind-api</exclude>
                   <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
                   <exclude>org.javassist:javassist</exclude>
                   <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
