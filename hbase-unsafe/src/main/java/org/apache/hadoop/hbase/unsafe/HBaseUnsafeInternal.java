@@ -29,9 +29,9 @@ import sun.misc.Unsafe;
  * Delegate all the method in sun.misc.Unsafe.
  */
 @SuppressWarnings("restriction")
-final class HBaseUnsafe0 {
+final class HBaseUnsafeInternal {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HBaseUnsafe0.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HBaseUnsafeInternal.class);
 
   private static final Unsafe UNSAFE;
   static {
@@ -50,7 +50,7 @@ final class HBaseUnsafe0 {
     });
   }
 
-  private HBaseUnsafe0() {
+  private HBaseUnsafeInternal() {
   }
 
   public static int getInt(Object o, long offset) {

@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Delegate all methods of {@link HBaseUnsafe0}, so we will not touch the actual
+ * Delegate all methods of {@link HBaseUnsafeInternal}, so we will not touch the actual
  * {@code sun.misc.Unsafe} class until we actually call the methods.
  */
 public final class HBaseUnsafe {
@@ -202,361 +202,361 @@ public final class HBaseUnsafe {
   }
 
   public static int getInt(Object o, long offset) {
-    return HBaseUnsafe0.getInt(o, offset);
+    return HBaseUnsafeInternal.getInt(o, offset);
   }
 
   public static void putInt(Object o, long offset, int x) {
-    HBaseUnsafe0.putInt(o, offset, x);
+    HBaseUnsafeInternal.putInt(o, offset, x);
   }
 
   public static Object getObject(Object o, long offset) {
-    return HBaseUnsafe0.getObject(o, offset);
+    return HBaseUnsafeInternal.getObject(o, offset);
   }
 
   public static void putObject(Object o, long offset, Object x) {
-    HBaseUnsafe0.putObject(o, offset, x);
+    HBaseUnsafeInternal.putObject(o, offset, x);
   }
 
   public static boolean getBoolean(Object o, long offset) {
-    return HBaseUnsafe0.getBoolean(o, offset);
+    return HBaseUnsafeInternal.getBoolean(o, offset);
   }
 
   public static void putBoolean(Object o, long offset, boolean x) {
-    HBaseUnsafe0.putBoolean(o, offset, x);
+    HBaseUnsafeInternal.putBoolean(o, offset, x);
   }
 
   public static byte getByte(Object o, long offset) {
-    return HBaseUnsafe0.getByte(o, offset);
+    return HBaseUnsafeInternal.getByte(o, offset);
   }
 
   public static void putByte(Object o, long offset, byte x) {
-    HBaseUnsafe0.putByte(o, offset, x);
+    HBaseUnsafeInternal.putByte(o, offset, x);
   }
 
   public static short getShort(Object o, long offset) {
-    return HBaseUnsafe0.getShort(o, offset);
+    return HBaseUnsafeInternal.getShort(o, offset);
   }
 
   public static void putShort(Object o, long offset, short x) {
-    HBaseUnsafe0.putShort(o, offset, x);
+    HBaseUnsafeInternal.putShort(o, offset, x);
   }
 
   public static char getChar(Object o, long offset) {
-    return HBaseUnsafe0.getChar(o, offset);
+    return HBaseUnsafeInternal.getChar(o, offset);
   }
 
   public static void putChar(Object o, long offset, char x) {
-    HBaseUnsafe0.putChar(o, offset, x);
+    HBaseUnsafeInternal.putChar(o, offset, x);
   }
 
   public static long getLong(Object o, long offset) {
-    return HBaseUnsafe0.getLong(o, offset);
+    return HBaseUnsafeInternal.getLong(o, offset);
   }
 
   public static void putLong(Object o, long offset, long x) {
-    HBaseUnsafe0.putLong(o, offset, x);
+    HBaseUnsafeInternal.putLong(o, offset, x);
   }
 
   public static float getFloat(Object o, long offset) {
-    return HBaseUnsafe0.getFloat(o, offset);
+    return HBaseUnsafeInternal.getFloat(o, offset);
   }
 
   public static void putFloat(Object o, long offset, float x) {
-    HBaseUnsafe0.putFloat(o, offset, x);
+    HBaseUnsafeInternal.putFloat(o, offset, x);
   }
 
   public static double getDouble(Object o, long offset) {
-    return HBaseUnsafe0.getDouble(o, offset);
+    return HBaseUnsafeInternal.getDouble(o, offset);
   }
 
   public static void putDouble(Object o, long offset, double x) {
-    HBaseUnsafe0.putDouble(o, offset, x);
+    HBaseUnsafeInternal.putDouble(o, offset, x);
   }
 
   public static byte getByte(long address) {
-    return HBaseUnsafe0.getByte(address);
+    return HBaseUnsafeInternal.getByte(address);
   }
 
   public static void putByte(long address, byte x) {
-    HBaseUnsafe0.putByte(address, x);
+    HBaseUnsafeInternal.putByte(address, x);
   }
 
   public static short getShort(long address) {
-    return HBaseUnsafe0.getShort(address);
+    return HBaseUnsafeInternal.getShort(address);
   }
 
   public static void putShort(long address, short x) {
-    HBaseUnsafe0.putShort(address, x);
+    HBaseUnsafeInternal.putShort(address, x);
   }
 
   public static char getChar(long address) {
-    return HBaseUnsafe0.getChar(address);
+    return HBaseUnsafeInternal.getChar(address);
   }
 
   public static void putChar(long address, char x) {
-    HBaseUnsafe0.putChar(address, x);
+    HBaseUnsafeInternal.putChar(address, x);
   }
 
   public static int getInt(long address) {
-    return HBaseUnsafe0.getInt(address);
+    return HBaseUnsafeInternal.getInt(address);
   }
 
   public static void putInt(long address, int x) {
-    HBaseUnsafe0.putInt(address, x);
+    HBaseUnsafeInternal.putInt(address, x);
   }
 
   public static long getLong(long address) {
-    return HBaseUnsafe0.getLong(address);
+    return HBaseUnsafeInternal.getLong(address);
   }
 
   public static void putLong(long address, long x) {
-    HBaseUnsafe0.putLong(address, x);
+    HBaseUnsafeInternal.putLong(address, x);
   }
 
   public static float getFloat(long address) {
-    return HBaseUnsafe0.getFloat(address);
+    return HBaseUnsafeInternal.getFloat(address);
   }
 
   public static void putFloat(long address, float x) {
-    HBaseUnsafe0.putFloat(address, x);
+    HBaseUnsafeInternal.putFloat(address, x);
   }
 
   public static double getDouble(long address) {
-    return HBaseUnsafe0.getDouble(address);
+    return HBaseUnsafeInternal.getDouble(address);
   }
 
   public static void putDouble(long address, double x) {
-    HBaseUnsafe0.putDouble(address, x);
+    HBaseUnsafeInternal.putDouble(address, x);
   }
 
   public static long getAddress(long address) {
-    return HBaseUnsafe0.getAddress(address);
+    return HBaseUnsafeInternal.getAddress(address);
   }
 
   public static void putAddress(long address, long x) {
-    HBaseUnsafe0.putAddress(address, x);
+    HBaseUnsafeInternal.putAddress(address, x);
   }
 
   public static long allocateMemory(long bytes) {
-    return HBaseUnsafe0.allocateMemory(bytes);
+    return HBaseUnsafeInternal.allocateMemory(bytes);
   }
 
   public static long reallocateMemory(long address, long bytes) {
-    return HBaseUnsafe0.reallocateMemory(address, bytes);
+    return HBaseUnsafeInternal.reallocateMemory(address, bytes);
   }
 
   public static void setMemory(Object o, long offset, long bytes, byte value) {
-    HBaseUnsafe0.setMemory(o, offset, bytes, value);
+    HBaseUnsafeInternal.setMemory(o, offset, bytes, value);
   }
 
   public static void setMemory(long address, long bytes, byte value) {
-    HBaseUnsafe0.setMemory(address, bytes, value);
+    HBaseUnsafeInternal.setMemory(address, bytes, value);
   }
 
   public static void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset,
       long bytes) {
-    HBaseUnsafe0.copyMemory(srcBase, srcOffset, destBase, destOffset, bytes);
+    HBaseUnsafeInternal.copyMemory(srcBase, srcOffset, destBase, destOffset, bytes);
   }
 
   public static void copyMemory(long srcAddress, long destAddress, long bytes) {
-    HBaseUnsafe0.copyMemory(srcAddress, destAddress, bytes);
+    HBaseUnsafeInternal.copyMemory(srcAddress, destAddress, bytes);
   }
 
   public static void freeMemory(long address) {
-    HBaseUnsafe0.freeMemory(address);
+    HBaseUnsafeInternal.freeMemory(address);
   }
 
   public static long staticFieldOffset(Field f) {
-    return HBaseUnsafe0.staticFieldOffset(f);
+    return HBaseUnsafeInternal.staticFieldOffset(f);
   }
 
   public static long objectFieldOffset(Field f) {
-    return HBaseUnsafe0.objectFieldOffset(f);
+    return HBaseUnsafeInternal.objectFieldOffset(f);
   }
 
   public static Object staticFieldBase(Field f) {
-    return HBaseUnsafe0.staticFieldBase(f);
+    return HBaseUnsafeInternal.staticFieldBase(f);
   }
 
   public static boolean shouldBeInitialized(Class<?> c) {
-    return HBaseUnsafe0.shouldBeInitialized(c);
+    return HBaseUnsafeInternal.shouldBeInitialized(c);
   }
 
   public static void ensureClassInitialized(Class<?> c) {
-    HBaseUnsafe0.ensureClassInitialized(c);
+    HBaseUnsafeInternal.ensureClassInitialized(c);
   }
 
   public static int arrayBaseOffset(Class<?> arrayClass) {
-    return HBaseUnsafe0.arrayBaseOffset(arrayClass);
+    return HBaseUnsafeInternal.arrayBaseOffset(arrayClass);
   }
 
   public static int arrayIndexScale(Class<?> arrayClass) {
-    return HBaseUnsafe0.arrayIndexScale(arrayClass);
+    return HBaseUnsafeInternal.arrayIndexScale(arrayClass);
   }
 
   public static int addressSize() {
-    return HBaseUnsafe0.addressSize();
+    return HBaseUnsafeInternal.addressSize();
   }
 
   public static int pageSize() {
-    return HBaseUnsafe0.pageSize();
+    return HBaseUnsafeInternal.pageSize();
   }
 
   public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
       ProtectionDomain protectionDomain) {
-    return HBaseUnsafe0.defineClass(name, b, off, len, loader, protectionDomain);
+    return HBaseUnsafeInternal.defineClass(name, b, off, len, loader, protectionDomain);
   }
 
   public static Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
-    return HBaseUnsafe0.defineAnonymousClass(hostClass, data, cpPatches);
+    return HBaseUnsafeInternal.defineAnonymousClass(hostClass, data, cpPatches);
   }
 
   public static Object allocateInstance(Class<?> cls) throws InstantiationException {
-    return HBaseUnsafe0.allocateInstance(cls);
+    return HBaseUnsafeInternal.allocateInstance(cls);
   }
 
   public static void throwException(Throwable ee) {
-    HBaseUnsafe0.throwException(ee);
+    HBaseUnsafeInternal.throwException(ee);
   }
 
   public static boolean compareAndSwapObject(Object o, long offset, Object expected, Object x) {
-    return HBaseUnsafe0.compareAndSwapObject(o, offset, expected, x);
+    return HBaseUnsafeInternal.compareAndSwapObject(o, offset, expected, x);
   }
 
   public static boolean compareAndSwapInt(Object o, long offset, int expected, int x) {
-    return HBaseUnsafe0.compareAndSwapInt(o, offset, expected, x);
+    return HBaseUnsafeInternal.compareAndSwapInt(o, offset, expected, x);
   }
 
   public static boolean compareAndSwapLong(Object o, long offset, long expected, long x) {
-    return HBaseUnsafe0.compareAndSwapLong(o, offset, expected, x);
+    return HBaseUnsafeInternal.compareAndSwapLong(o, offset, expected, x);
   }
 
   public static Object getObjectVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getObjectVolatile(o, offset);
+    return HBaseUnsafeInternal.getObjectVolatile(o, offset);
   }
 
   public static void putObjectVolatile(Object o, long offset, Object x) {
-    HBaseUnsafe0.putObjectVolatile(o, offset, x);
+    HBaseUnsafeInternal.putObjectVolatile(o, offset, x);
   }
 
   public static int getIntVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getIntVolatile(o, offset);
+    return HBaseUnsafeInternal.getIntVolatile(o, offset);
   }
 
   public static void putIntVolatile(Object o, long offset, int x) {
-    HBaseUnsafe0.putIntVolatile(o, offset, x);
+    HBaseUnsafeInternal.putIntVolatile(o, offset, x);
   }
 
   public static boolean getBooleanVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getBooleanVolatile(o, offset);
+    return HBaseUnsafeInternal.getBooleanVolatile(o, offset);
   }
 
   public static void putBooleanVolatile(Object o, long offset, boolean x) {
-    HBaseUnsafe0.putBooleanVolatile(o, offset, x);
+    HBaseUnsafeInternal.putBooleanVolatile(o, offset, x);
   }
 
   public static byte getByteVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getByteVolatile(o, offset);
+    return HBaseUnsafeInternal.getByteVolatile(o, offset);
   }
 
   public static void putByteVolatile(Object o, long offset, byte x) {
-    HBaseUnsafe0.putByteVolatile(o, offset, x);
+    HBaseUnsafeInternal.putByteVolatile(o, offset, x);
   }
 
   public static short getShortVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getShortVolatile(o, offset);
+    return HBaseUnsafeInternal.getShortVolatile(o, offset);
   }
 
   public static void putShortVolatile(Object o, long offset, short x) {
-    HBaseUnsafe0.putShortVolatile(o, offset, x);
+    HBaseUnsafeInternal.putShortVolatile(o, offset, x);
   }
 
   public static char getCharVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getCharVolatile(o, offset);
+    return HBaseUnsafeInternal.getCharVolatile(o, offset);
   }
 
   public static void putCharVolatile(Object o, long offset, char x) {
-    HBaseUnsafe0.putCharVolatile(o, offset, x);
+    HBaseUnsafeInternal.putCharVolatile(o, offset, x);
   }
 
   public static long getLongVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getLongVolatile(o, offset);
+    return HBaseUnsafeInternal.getLongVolatile(o, offset);
   }
 
   public static void putLongVolatile(Object o, long offset, long x) {
-    HBaseUnsafe0.putLongVolatile(o, offset, x);
+    HBaseUnsafeInternal.putLongVolatile(o, offset, x);
   }
 
   public static float getFloatVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getFloatVolatile(o, offset);
+    return HBaseUnsafeInternal.getFloatVolatile(o, offset);
   }
 
   public static void putFloatVolatile(Object o, long offset, float x) {
-    HBaseUnsafe0.putFloatVolatile(o, offset, x);
+    HBaseUnsafeInternal.putFloatVolatile(o, offset, x);
   }
 
   public static double getDoubleVolatile(Object o, long offset) {
-    return HBaseUnsafe0.getDoubleVolatile(o, offset);
+    return HBaseUnsafeInternal.getDoubleVolatile(o, offset);
   }
 
   public static void putDoubleVolatile(Object o, long offset, double x) {
-    HBaseUnsafe0.putDoubleVolatile(o, offset, x);
+    HBaseUnsafeInternal.putDoubleVolatile(o, offset, x);
   }
 
   public static void putOrderedObject(Object o, long offset, Object x) {
-    HBaseUnsafe0.putOrderedObject(o, offset, x);
+    HBaseUnsafeInternal.putOrderedObject(o, offset, x);
   }
 
   public static void putOrderedInt(Object o, long offset, int x) {
-    HBaseUnsafe0.putOrderedInt(o, offset, x);
+    HBaseUnsafeInternal.putOrderedInt(o, offset, x);
   }
 
   public static void putOrderedLong(Object o, long offset, long x) {
-    HBaseUnsafe0.putOrderedLong(o, offset, x);
+    HBaseUnsafeInternal.putOrderedLong(o, offset, x);
   }
 
   public static void unpark(Object thread) {
-    HBaseUnsafe0.unpark(thread);
+    HBaseUnsafeInternal.unpark(thread);
   }
 
   public static void park(boolean isAbsolute, long time) {
-    HBaseUnsafe0.park(isAbsolute, time);
+    HBaseUnsafeInternal.park(isAbsolute, time);
   }
 
   public static int getLoadAverage(double[] loadavg, int nelems) {
-    return HBaseUnsafe0.getLoadAverage(loadavg, nelems);
+    return HBaseUnsafeInternal.getLoadAverage(loadavg, nelems);
   }
 
   public static int getAndAddInt(Object o, long offset, int delta) {
-    return HBaseUnsafe0.getAndAddInt(o, offset, delta);
+    return HBaseUnsafeInternal.getAndAddInt(o, offset, delta);
   }
 
   public static long getAndAddLong(Object o, long offset, long delta) {
-    return HBaseUnsafe0.getAndAddLong(o, offset, delta);
+    return HBaseUnsafeInternal.getAndAddLong(o, offset, delta);
   }
 
   public static int getAndSetInt(Object o, long offset, int newValue) {
-    return HBaseUnsafe0.getAndSetInt(o, offset, newValue);
+    return HBaseUnsafeInternal.getAndSetInt(o, offset, newValue);
   }
 
   public static long getAndSetLong(Object o, long offset, long newValue) {
-    return HBaseUnsafe0.getAndSetLong(o, offset, newValue);
+    return HBaseUnsafeInternal.getAndSetLong(o, offset, newValue);
   }
 
   public static Object getAndSetObject(Object o, long offset, Object newValue) {
-    return HBaseUnsafe0.getAndSetObject(o, offset, newValue);
+    return HBaseUnsafeInternal.getAndSetObject(o, offset, newValue);
   }
 
   public static void loadFence() {
-    HBaseUnsafe0.loadFence();
+    HBaseUnsafeInternal.loadFence();
   }
 
   public static void storeFence() {
-    HBaseUnsafe0.storeFence();
+    HBaseUnsafeInternal.storeFence();
   }
 
   public static void fullFence() {
-    HBaseUnsafe0.fullFence();
+    HBaseUnsafeInternal.fullFence();
   }
 
 }
