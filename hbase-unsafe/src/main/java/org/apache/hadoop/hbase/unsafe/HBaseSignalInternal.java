@@ -24,7 +24,10 @@ import sun.misc.Signal;
  * Delegation of {@code sun.misc.Signal}.
  */
 @SuppressWarnings("restriction")
-public class HBaseSignalInternal {
+public final class HBaseSignalInternal {
+
+  private HBaseSignalInternal() {
+  }
 
   public static void handle(String signal, BiConsumer<Integer, String> handler) {
     Signal.handle(new Signal(signal), s -> handler.accept(s.getNumber(), s.getName()));
