@@ -22,17 +22,19 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
+import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Delegate all methods of {@link HBaseUnsafeInternal}, so we will not touch the actual
- * {@code sun.misc.Unsafe} class until we actually call the methods.
+ * Delegate all methods of {@link HBaseUnsafeInternal} and {@link HBaseSignalInternal} so we will
+ * not touch the actual {@code sun.misc.Unsafe} and {@code sun.misc.Signal} classes until we
+ * actually call the methods.
  */
-public final class HBaseUnsafe {
+public final class HBasePlatformDependent {
 
   private static final String CLASS_NAME = "sun.misc.Unsafe";
-  private static final Logger LOG = LoggerFactory.getLogger(HBaseUnsafe.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HBasePlatformDependent.class);
   private static final boolean AVAIL;
   private static final boolean UNALIGNED;
 
@@ -174,9 +176,8 @@ public final class HBaseUnsafe {
       m.setAccessible(true);
       return (Boolean) m.invoke(null);
     } catch (Exception e) {
-      LOG.warn("java.nio.Bits#unaligned() check failed."
-          + "Unsafe based read/write of primitive types won't be used",
-        e);
+      LOG.warn("java.nio.Bits#unaligned() check failed." +
+        "Unsafe based read/write of primitive types won't be used", e);
     }
     return false;
   }
@@ -185,7 +186,7 @@ public final class HBaseUnsafe {
    * @return true when running JVM is having sun's Unsafe package available in it and it is
    *         accessible.
    */
-  public static boolean isAvailable() {
+  public static boolean isUnsafeAvailable() {
     return AVAIL;
   }
 
@@ -197,7 +198,7 @@ public final class HBaseUnsafe {
     return UNALIGNED;
   }
 
-  private HBaseUnsafe() {
+  private HBasePlatformDependent() {
     // private constructor to avoid instantiation
   }
 
@@ -354,7 +355,7 @@ public final class HBaseUnsafe {
   }
 
   public static void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset,
-      long bytes) {
+    long bytes) {
     HBaseUnsafeInternal.copyMemory(srcBase, srcOffset, destBase, destOffset, bytes);
   }
 
@@ -403,7 +404,7 @@ public final class HBaseUnsafe {
   }
 
   public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
-      ProtectionDomain protectionDomain) {
+    ProtectionDomain protectionDomain) {
     return HBaseUnsafeInternal.defineClass(name, b, off, len, loader, protectionDomain);
   }
 
@@ -559,4 +560,13 @@ public final class HBaseUnsafe {
     HBaseUnsafeInternal.fullFence();
   }
 
+  /**
+   * Delegate {@code sun.misc.Signal}.
+   * @param signal the name of the signal, such as 'HUP'.
+   * @param handler the handler of the signal, the first parameter is the number of the signal,
+   *          while the second one is the name of the sinal.
+   */
+  public static void handle(String signal, BiConsumer<Integer, String> handler) {
+    HBaseSignalInternal.handle(signal, handler);
+  }
 }

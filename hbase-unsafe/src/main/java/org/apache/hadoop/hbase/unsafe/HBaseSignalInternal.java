@@ -17,19 +17,19 @@
  */
 package org.apache.hadoop.hbase.unsafe;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
+import java.util.function.BiConsumer;
+import sun.misc.Signal;
 
-import org.junit.Test;
+/**
+ * Delegation of {@code sun.misc.Signal}.
+ */
+@SuppressWarnings("restriction")
+public final class HBaseSignalInternal {
 
-public class TestHBaseUnsafe {
+  private HBaseSignalInternal() {
+  }
 
-  @Test
-  public void test() {
-    assumeTrue(HBasePlatformDependent.isUnsafeAvailable());
-    byte[] arr = new byte[4];
-    int arrayBaseOffset = HBasePlatformDependent.arrayBaseOffset(arr.getClass());
-    HBasePlatformDependent.putInt(arr, arrayBaseOffset, 123456);
-    assertEquals(123456, HBasePlatformDependent.getInt(arr, arrayBaseOffset));
+  public static void handle(String signal, BiConsumer<Integer, String> handler) {
+    Signal.handle(new Signal(signal), s -> handler.accept(s.getNumber(), s.getName()));
   }
 }
