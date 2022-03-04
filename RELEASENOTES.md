@@ -20,6 +20,35 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-4.1.0 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-26773](https://issues.apache.org/jira/browse/HBASE-26773) | *Major* | **[hbase-thirdparty] Introduce a hbase-unsafe module in hbase-thirdparty to remove the direct references of Unsafe in our main code base**
+
+Introduced a new hbase-unsafe module in hbase-thirdparty.
+
+
+---
+
+* [HBASE-26733](https://issues.apache.org/jira/browse/HBASE-26733) | *Major* | **[hbase-thirdparty] Upgrade Netty to 4.1.73.Final**
+
+Upgrade netty to 4.1.73.Final for addressing CVE-2021-43797.
+
+
+---
+
+* [HBASE-26732](https://issues.apache.org/jira/browse/HBASE-26732) | *Major* | **[hbase-thirdparty] Update jackson (databind) to 2.13.1**
+
+Upgrade jackson databind from 2.10.1 -\> 2.13.1.
+
+For addressing a possible Dos attack described in https://github.com/FasterXML/jackson-databind/issues/3328.
+
+
+
 # HBASE  thirdparty-4.0.1 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
