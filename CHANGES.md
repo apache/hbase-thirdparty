@@ -34,6 +34,41 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-4.1.0 - Unreleased (as of 2022-03-04)
+
+
+
+### IMPROVEMENTS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26773](https://issues.apache.org/jira/browse/HBASE-26773) | [hbase-thirdparty] Introduce a hbase-unsafe module in hbase-thirdparty to remove the direct references of Unsafe in our main code base |  Major | compatibility, thirdparty |
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26746](https://issues.apache.org/jira/browse/HBASE-26746) | Update protobuf-java to 3.19.4 |  Minor | Protobufs, thirdparty |
+| [HBASE-26733](https://issues.apache.org/jira/browse/HBASE-26733) | [hbase-thirdparty] Upgrade Netty to 4.1.73.Final |  Major | security, thirdparty |
+| [HBASE-26732](https://issues.apache.org/jira/browse/HBASE-26732) | [hbase-thirdparty] Update jackson (databind) to 2.13.1 |  Major | security, thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26795](https://issues.apache.org/jira/browse/HBASE-26795) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.1.0 |  Major | thirdparty |
+| [HBASE-26794](https://issues.apache.org/jira/browse/HBASE-26794) | [hbase-thirdparty] Set version as 4.1.0 in master in prep for first RC of 4.1.0 |  Major | build, pom, thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-26781](https://issues.apache.org/jira/browse/HBASE-26781) | [hbase-thirdparty] Introduce the sun.misc.Signal delegation in hbase-unsafe |  Major | thirdparty |
+
+
 ## Release thirdparty-4.0.1 - Unreleased (as of 2021-12-17)
 
 
