@@ -146,7 +146,7 @@
     <jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javassist.version>3.25.0-GA</javassist.version>
-    <jackson-jaxrs-json-provider.version>2.13.1</jackson-jaxrs-json-provider.version>
+    <jackson-jaxrs-json-provider.version>2.13.3</jackson-jaxrs-json-provider.version>
   </properties>
   <build>
     <pluginManagement>
