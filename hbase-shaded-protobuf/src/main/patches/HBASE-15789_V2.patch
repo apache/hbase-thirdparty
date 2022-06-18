@@ -359,10 +359,10 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index a4beaeb4c..090430346 100644
+index 480f85fd6..dd8b913ff 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -383,6 +383,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -442,6 +442,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      }
    }
  
@@ -377,7 +377,7 @@ index a4beaeb4c..090430346 100644
     * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage to force a
     * classload of ByteString before LiteralByteString.
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 6e9c0f620..bcd5639e8 100644
+index b3074b5b5..7d457294c 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
 @@ -200,6 +200,16 @@ public abstract class CodedInputStream {
@@ -1051,10 +1051,10 @@ index 6e9c0f620..bcd5639e8 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index 7c9133e16..657d92640 100644
+index c74497cd8..c58316ded 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
-@@ -218,6 +218,16 @@ final class Utf8 {
+@@ -219,6 +219,16 @@ final class Utf8 {
      }
    }
  
@@ -1071,7 +1071,7 @@ index 7c9133e16..657d92640 100644
    // These UTF-8 handling methods are copied from Guava's Utf8 class with a modification to throw
    // a protocol buffer local exception. This exception is then caught in CodedOutputStream so it can
    // fallback to more lenient behavior.
-@@ -340,6 +350,24 @@ final class Utf8 {
+@@ -341,6 +351,24 @@ final class Utf8 {
      return processor.decodeUtf8(bytes, index, size);
    }
  
@@ -1096,7 +1096,7 @@ index 7c9133e16..657d92640 100644
    /**
     * Encodes the given characters to the target {@link ByteBuffer} using UTF-8 encoding.
     *
-@@ -716,6 +744,169 @@ final class Utf8 {
+@@ -717,6 +745,169 @@ final class Utf8 {
        return new String(resultArr, 0, resultPos);
      }
  
