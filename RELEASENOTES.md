@@ -20,6 +20,25 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-4.1.1 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-27130](https://issues.apache.org/jira/browse/HBASE-27130) | *Major* | **[hbase-thirdparty] Bump dependency versions**
+
+protobuf 3.19.4 -\> 3.21.1
+netty 4.1.73.Final -\> 4.1.78.Final
+guava 31.0.1-jre -\> 31.1-jre
+error\_prone\_annotations 2.7.1 -\> 2.14.0
+gson 2.8.9 -\> 2.9.0
+jetty 9.4.44.v20210927 -\> 9.4.46.v20220331
+jersey.version 2.35 -\>2.36
+
+
+
 # HBASE  thirdparty-4.1.0 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

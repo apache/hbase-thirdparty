@@ -34,6 +34,28 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-4.1.1 - Unreleased (as of 2022-06-18)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27138](https://issues.apache.org/jira/browse/HBASE-27138) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.1.1 |  Major | thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27135](https://issues.apache.org/jira/browse/HBASE-27135) | [hbase-thirdparty] Bump checkstyle from 8.28 to 8.29 in /hbase-noop-htrace |  Major | security, thirdparty |
+| [HBASE-27134](https://issues.apache.org/jira/browse/HBASE-27134) | [hbase-thirdparty] Bump junit from 4.12 to 4.13.1 in /hbase-noop-htrace |  Major | security, thirdparty |
+| [HBASE-27130](https://issues.apache.org/jira/browse/HBASE-27130) | [hbase-thirdparty] Bump dependency versions |  Major | thirdparty |
+| [HBASE-27133](https://issues.apache.org/jira/browse/HBASE-27133) | [hbase-thirdparty] Bump checkstyle from 8.28 to 8.29 in /hbase-unsafe |  Major | security, thirdparty |
+| [HBASE-26893](https://issues.apache.org/jira/browse/HBASE-26893) | [hbase-thirdparty] Upgrade jackson to 2.13.3 |  Major | thirdparty |
+
+
 ## Release thirdparty-4.1.0 - Unreleased (as of 2022-03-04)
 
 
