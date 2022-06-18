@@ -42,6 +42,7 @@ DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
+| [HBASE-27137](https://issues.apache.org/jira/browse/HBASE-27137) | [hbase-thirdparty] Set version as 4.1.1 in master in prep for first RC of 4.1.1 |  Major | build, pom, thirdparty |
 | [HBASE-27138](https://issues.apache.org/jira/browse/HBASE-27138) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.1.1 |  Major | thirdparty |
 
 
