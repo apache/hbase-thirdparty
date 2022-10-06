@@ -34,6 +34,26 @@ last argument is the version to search JIRA with.
 DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
 # HBASE Changelog
 
+## Release thirdparty-4.1.2 - Unreleased (as of 2022-10-06)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27417](https://issues.apache.org/jira/browse/HBASE-27417) | [hbase-thirdparty] Generate CHANGES.md and RELEASENOTES.md for 4.1.2 |  Major | thirdparty |
+| [HBASE-27416](https://issues.apache.org/jira/browse/HBASE-27416) | [hbase-thirdparty] Set version as 4.1.2 in master in prep for first RC of 4.1.2 |  Major | build, pom, thirdparty |
+| [HBASE-27140](https://issues.apache.org/jira/browse/HBASE-27140) | [hbase-thirdparty] Set version as 4.1.2-SNAPSHOT in prep for the next release |  Major | build, pom, thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27412](https://issues.apache.org/jira/browse/HBASE-27412) | [hbase-thirdparty] Bump dependency versions in hbase-thirdparty |  Major | dependencies, security, thirdparty |
+
+
 ## Release thirdparty-4.1.1 - Unreleased (as of 2022-06-18)
 
 
