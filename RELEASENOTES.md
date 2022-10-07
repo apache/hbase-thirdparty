@@ -20,6 +20,25 @@
 # Be careful doing manual edits in this file. Do not change format
 # of release header or remove the below marker. This file is generated.
 # DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# HBASE  thirdparty-4.1.2 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-27412](https://issues.apache.org/jira/browse/HBASE-27412) | *Major* | **[hbase-thirdparty] Bump dependency versions in hbase-thirdparty**
+
+protobuf 3.21.1 -\> 3.21.7
+netty 4.1.78.Final -\> 4.1.82.Final
+error prone annotation 2.14.0 \> 2.15.0
+gson 2.9.0 -\> 2.9.1
+jetty 9.4.46.v20220331 -\> 9.4.49.v20220914
+jersey 2.36 -\> 2.37
+jackson 2.13.3 -\> 2.13.4
+
+
+
 # HBASE  thirdparty-4.1.1 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
