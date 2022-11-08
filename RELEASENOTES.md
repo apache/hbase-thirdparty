@@ -1,5 +1,4 @@
 # RELEASENOTES
-
 <!---
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -16,10 +15,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# Be careful doing manual edits in this file. Do not change format
-# of release header or remove the below marker. This file is generated.
-# DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+-->
+# HBASE  thirdparty-4.1.3 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-27467](https://issues.apache.org/jira/browse/HBASE-27467) | *Major* | **[hbase-thirdparty] Bump thirdparty dependencies**
+
+protobuf 3.21.7 -\> 3.21.9
+netty 4.1.82.Final -\>4.1.84.Final
+error prone 2.15.0 -\> 2.16
+gson 2.9.1 -\>2.10
+jackson 2.13.4 -\> 2.14.0
+
+
+---
+
+* [HBASE-27468](https://issues.apache.org/jira/browse/HBASE-27468) | *Major* | **[hbase-thirdparty] Use $revision as placeholder for maven version**
+
+Use ${revision} as placeholder for maven version in pom, so later you can use 'mvn install -Drevision=xxx' to specify the version at build time.
+After this change, you can not use mvn versions:set to bump the version, instead. you should just modify the parent pom to change the value of the 'revision' property in the properties section.
+
+
+
 # HBASE  thirdparty-4.1.2 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

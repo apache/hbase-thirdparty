@@ -1,38 +1,47 @@
-# HBASE Changelog
+
 <!---
- Licensed to the Apache Software Foundation (ASF) under one
- or more contributor license agreements.  See the NOTICE file
- distributed with this work for additional information
- regarding copyright ownership.  The ASF licenses this file
- to you under the Apache License, Version 2.0 (the
- "License"); you may not use this file except in compliance
- with the License.  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-
-
-
-CHANGES.md and RELEASENOTES.md were generated using yetus releasedocmaker.
-
-First make sure what is in JIRA agrees with what is in git and vice-versa.
-Thirdparty version numbers are of the form thirdparty-x.y.z.
-
-Then run the hbase script that updates CHANGES and RELEASENOTES. For
-example:
-
- $  source ../hbase.git/dev-support/create-release/release-util.sh; update_releasenotes `pwd` thirdparty-2.2.0
-
-The 'pwd' argument says where the thirdparty files to edit are and the
-last argument is the version to search JIRA with.
-
-DO NOT REMOVE THIS MARKER; FOR INTERPOLATING CHANGES!-->
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+-->
 # HBASE Changelog
+
+## Release thirdparty-4.1.3 - Unreleased (as of 2022-11-08)
+
+
+
+### IMPROVEMENTS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27468](https://issues.apache.org/jira/browse/HBASE-27468) | [hbase-thirdparty] Use $revision as placeholder for maven version |  Major | build, pom |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27427](https://issues.apache.org/jira/browse/HBASE-27427) | [hbase-thirdparty] Set version as 4.1.3-SNAPSHOT in prep for the next release |  Major | build, pom |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27467](https://issues.apache.org/jira/browse/HBASE-27467) | [hbase-thirdparty] Bump thirdparty dependencies |  Major | dependencies, thirdparty |
+
 
 ## Release thirdparty-4.1.2 - Unreleased (as of 2022-10-06)
 
