@@ -131,13 +131,13 @@
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
-    <protobuf.version>3.21.7</protobuf.version>
-    <netty.version>4.1.82.Final</netty.version>
+    <protobuf.version>3.21.9</protobuf.version>
+    <netty.version>4.1.84.Final</netty.version>
     <guava.version>31.1-jre</guava.version>
     <commons-cli.version>1.5.0</commons-cli.version>
     <commons-collections.version>4.4</commons-collections.version>
-    <error_prone_annotations.version>2.15.0</error_prone_annotations.version>
-    <gson.version>2.9.1</gson.version>
+    <error_prone_annotations.version>2.16</error_prone_annotations.version>
+    <gson.version>2.10</gson.version>
     <jetty.version>9.4.49.v20220914</jetty.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <jersey.version>2.37</jersey.version>
@@ -146,7 +146,7 @@
     <jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javassist.version>3.25.0-GA</javassist.version>
-    <jackson-jaxrs-json-provider.version>2.13.4</jackson-jaxrs-json-provider.version>
+    <jackson-jaxrs-json-provider.version>2.14.0</jackson-jaxrs-json-provider.version>
   </properties>
   <build>
     <pluginManagement>
