@@ -6,3 +6,4 @@ hbase-shaded-protobuf/src/main/java/
 .classpath
 .idea
 *.iml
+.flattened-pom.xml
