@@ -40,6 +40,13 @@ Use ${revision} as placeholder for maven version in pom, so later you can use 'm
 After this change, you can not use mvn versions:set to bump the version, instead. you should just modify the parent pom to change the value of the 'revision' property in the properties section.
 
 
+---
+
+* [HBASE-27478](https://issues.apache.org/jira/browse/HBASE-27478) | *Major* | **[hbase-thirdparty] Use maven flatten plugin to generate final pom**
+
+Use flatten maven plugin to resolve all the profiles and properties in the poms which are deployed.
+
+
 
 # HBASE  thirdparty-4.1.2 Release Notes
 

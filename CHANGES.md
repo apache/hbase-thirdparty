@@ -18,7 +18,7 @@
 -->
 # HBASE Changelog
 
-## Release thirdparty-4.1.3 - Unreleased (as of 2022-11-08)
+## Release thirdparty-4.1.3 - Unreleased (as of 2022-11-11)
 
 
 
@@ -41,6 +41,7 @@
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
 | [HBASE-27467](https://issues.apache.org/jira/browse/HBASE-27467) | [hbase-thirdparty] Bump thirdparty dependencies |  Major | dependencies, thirdparty |
+| [HBASE-27478](https://issues.apache.org/jira/browse/HBASE-27478) | [hbase-thirdparty] Use maven flatten plugin to generate final pom |  Major | build, pom, thirdparty |
 
 
 ## Release thirdparty-4.1.2 - Unreleased (as of 2022-10-06)
