@@ -16,6 +16,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.4 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-27573](https://issues.apache.org/jira/browse/HBASE-27573) | *Major* | **[hbase-thirdparty] Bump dependency versions**
+
+protobuf 3.21.9 -\> 3.21.12
+netty 4.1.86.Final -\> 4.1.87.Final
+error prone 2.16 -\> 2.18.0
+gson 2.10 -\> 2.10.1
+jetty 9.4.49.v20220914 -\> 9.4.50.v20221201
+jersey 2,37 -\> 2.38
+jackson 2.14.0 -\>2.14.1
+
+
+
 # HBASE  thirdparty-4.1.3 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

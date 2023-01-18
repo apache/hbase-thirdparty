@@ -18,6 +18,25 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.4 - Unreleased (as of 2023-01-18)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27505](https://issues.apache.org/jira/browse/HBASE-27505) | [hbase-thirdparty] Set updatePomFile for maven-flatten-plugin |  Major | build, pom, thirdparty |
+| [HBASE-27549](https://issues.apache.org/jira/browse/HBASE-27549) | [hbase-thirdparty] Upgrade Netty to 4.1.86.Final |  Major | thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-27573](https://issues.apache.org/jira/browse/HBASE-27573) | [hbase-thirdparty] Bump dependency versions |  Major | dependencies, thirdparty |
+
+
 ## Release thirdparty-4.1.3 - Unreleased (as of 2022-11-11)
 
 
