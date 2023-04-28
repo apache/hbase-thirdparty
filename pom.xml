@@ -357,6 +357,7 @@
         <configuration>
           <embedBuildProfileDependencies>true</embedBuildProfileDependencies>
           <updatePomFile>true</updatePomFile>
+          <flattenMode>oss</flattenMode>
         </configuration>
         <executions>
           <!-- enable flattening -->
