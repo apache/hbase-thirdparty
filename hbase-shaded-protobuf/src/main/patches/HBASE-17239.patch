@@ -1,5 +1,5 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 7d457294c..ff5a487ec 100644
+index ce1d05875..5d74971ff 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
 @@ -202,11 +202,7 @@ public abstract class CodedInputStream {
@@ -16,7 +16,7 @@ index 7d457294c..ff5a487ec 100644
    }
  
 diff --git a/src/main/java/com/google/protobuf/UnsafeByteOperations.java b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
-index 16521e1bd..73b493360 100644
+index 164010e43..8b3857069 100644
 --- a/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 +++ b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 @@ -98,6 +98,17 @@ public final class UnsafeByteOperations {

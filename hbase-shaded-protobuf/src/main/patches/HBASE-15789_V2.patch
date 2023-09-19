@@ -1,5 +1,5 @@
 diff --git a/src/main/java/com/google/protobuf/ByteBufferWriter.java b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-index 2cb3ada67..6e1737c45 100644
+index 3970b0ea5..571b0a975 100644
 --- a/src/main/java/com/google/protobuf/ByteBufferWriter.java
 +++ b/src/main/java/com/google/protobuf/ByteBufferWriter.java
 @@ -111,7 +111,7 @@ final class ByteBufferWriter {
@@ -359,10 +359,10 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 480f85fd6..dd8b913ff 100644
+index 2569d5dad..bebee3373 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -442,6 +442,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -445,6 +445,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      }
    }
  
@@ -374,10 +374,10 @@ index 480f85fd6..dd8b913ff 100644
 +  }
 +
    /**
-    * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage to force a
-    * classload of ByteString before LiteralByteString.
+    * Wraps the given bytes into a {@code ByteString}. Intended for internal usage within the library
+    * to force a classload of ByteString before LiteralByteString.
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index b3074b5b5..7d457294c 100644
+index ae94ee887..ce1d05875 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
 @@ -200,6 +200,16 @@ public abstract class CodedInputStream {
@@ -397,7 +397,7 @@ index b3074b5b5..7d457294c 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
  
-@@ -3979,4 +3989,652 @@ public abstract class CodedInputStream {
+@@ -3965,4 +3975,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1051,7 +1051,7 @@ index b3074b5b5..7d457294c 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index c74497cd8..c58316ded 100644
+index 7c6823d91..20afe8255 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
 @@ -219,6 +219,16 @@ final class Utf8 {
