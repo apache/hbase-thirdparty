@@ -215,7 +215,7 @@
               <exclude>**/src/main/patches/**</exclude>
               <!--Exclude the unpacked google src-->
               <exclude>**/src/main/java/com/google/protobuf/**</exclude>
-              <exclude>**/src/main/java/google/**</exclude>
+              <exclude>**/src/main/resources/google/**</exclude>
               <exclude>**/src/main/java/META-INF/**</exclude>
             </excludes>
           </configuration>

@@ -32,15 +32,6 @@
     Pulls down protobuf, patches it, compiles, and then relocates/shades.
   </description>
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <!-- include the protos -->
-          <include>google/**</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <!--Clean needs to purge src/main/java since this is where
@@ -63,6 +54,13 @@
           <filesets>
             <fileset>
               <directory>${basedir}/src/main/java</directory>
+              <includes>
+                <include>**/**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/src/main/resources</directory>
               <includes>
                 <include>**/**</include>
               </includes>
@@ -102,6 +100,16 @@
                   <overWrite>true</overWrite>
                   <outputDirectory>${basedir}/src/main/java</outputDirectory>
                   <includes>**/**</includes>
+                </artifactItem>
+                <!-- for including the proto files -->
+                <artifactItem>
+                  <groupId>com.google.protobuf</groupId>
+                  <artifactId>protobuf-java</artifactId>
+                  <version>${protobuf.version}</version>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${basedir}/src/main/resources</outputDirectory>
+                  <includes>**/*.proto</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -166,17 +174,11 @@
                   <pattern>com.google.protobuf</pattern>
                   <shadedPattern>${rename.offset}.com.google.protobuf</shadedPattern>
                 </relocation>
-                <!-- Our protos depend on the protos at this location.
-                     TODO: We should move off depending on them and then
-                     put this filter into place. See HBASE-22137.
+                <!-- relocate the proto files, like any.proto -->
                 <relocation>
                   <pattern>google.protobuf</pattern>
                   <shadedPattern>${rename.offset}.google.protobuf</shadedPattern>
-                  <excludes>
-                    <exclude>com.google.errorprone.annotations.CanIgnoreReturnValue</exclude>
-                  </excludes>
                 </relocation>
-                -->
               </relocations>
             </configuration>
           </execution>
