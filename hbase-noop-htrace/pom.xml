@@ -30,7 +30,7 @@
   <artifactId>hbase-noop-htrace</artifactId>
   <name>Apache HBase Drop-in noop HTrace replacement</name>
   <description>
-    Implmeents the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
+    Implements the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
     dependencies and b) favoring the JIT optimizing it away.
   </description>
   <properties>
@@ -44,6 +44,9 @@
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
+    <!-- Added mockito-all as otherwise we get java.lang.NoClassDefFoundError:
+    org/mockito/stubbing/Answer for hadoop >= 3.2.4 -->
+    <mockito-all.version>1.8.5</mockito-all.version>
   </properties>
   <dependencies>
     <dependency>
@@ -69,6 +72,12 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
