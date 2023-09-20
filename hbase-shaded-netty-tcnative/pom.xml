@@ -101,11 +101,11 @@
             property so netty finds the renamed .so and associates it w/ the relocated netty files.
 
             Add this define when running unit tests:
-            
+
                mvn test -Dorg.apache.hbase.thirdparty.io.netty.packagePrefix=org.apache.hbase.thirdparty. -Dtest=TestNettyIPC
 
             See toward the end of this issue for how to pass config:
-            
+
               https://github.com/netty/netty/issues/6665
 
             TODO: Ensure native works.
