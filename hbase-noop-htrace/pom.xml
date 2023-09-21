@@ -30,7 +30,7 @@
   <artifactId>hbase-noop-htrace</artifactId>
   <name>Apache HBase Drop-in noop HTrace replacement</name>
   <description>
-    Implmeents the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
+    Implements the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
     dependencies and b) favoring the JIT optimizing it away.
   </description>
   <properties>
@@ -38,18 +38,21 @@
     <!-- This library is meant to work with whatever HBase and Hadoop combos we still list
          as recommended. The version here is what we'll test out of the box if you run mvn test
       -->
-    <hbase.stable.version>2.4.8</hbase.stable.version>
+    <hbase.stable.version>2.4.17</hbase.stable.version>
     <!-- should match the slf4j-api version used in the above hbase -->
-    <slf4j.version>1.7.30</slf4j.version>
+    <slf4j.version>1.7.33</slf4j.version>
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
+    <!-- Added mockito-all as otherwise we get java.lang.NoClassDefFoundError:
+    org/mockito/stubbing/Answer for hadoop >= 3.2.4 -->
+    <mockito-all.version>1.8.5</mockito-all.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -69,6 +72,12 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
