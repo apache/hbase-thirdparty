@@ -38,7 +38,7 @@
     <!-- This library is meant to work with whatever HBase and Hadoop combos we still list
          as recommended. The version here is what we'll test out of the box if you run mvn test
       -->
-    <hbase.stable.version>2.5.5</hbase.stable.version>
+    <hbase.stable.version>2.4.17</hbase.stable.version>
     <!-- should match the slf4j-api version used in the above hbase -->
     <slf4j.version>1.7.33</slf4j.version>
     <!-- These maybe need to match the main repo -->
