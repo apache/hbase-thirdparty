@@ -42,13 +42,6 @@
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
       <version>${netty.tcnative.version}</version>
-      <classifier>linux-x86_64</classifier>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>${netty.tcnative.version}</version>
-      <classifier>linux-aarch_64</classifier>
     </dependency>
   </dependencies>
   <build>
@@ -121,7 +114,9 @@
             <configuration>
               <target>
                 <echo message="unjar" />
-                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/" />
+                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/">
+                  <mapper type="regexp" from="META-INF/license/(LICENSE.*.txt)$$" to="META-INF/\1"/>
+                </unzip>
                 <echo message="Rename netty .so in META-INF"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_x86_64.so"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_aarch_64.so"/>
