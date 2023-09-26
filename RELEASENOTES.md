@@ -16,6 +16,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.5 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-27808](https://issues.apache.org/jira/browse/HBASE-27808) | *Major* | **Change flatten mode for oss in our pom file**
+
+Changed the flatten mode from default to oss. It will include these extra section in the published pom files:
+
+name, description, url, developers, scm, inceptionYear, organization, mailingLists, issueManagement, distributionManagement.
+
+
+---
+
+* [HBASE-28095](https://issues.apache.org/jira/browse/HBASE-28095) | *Major* | **[hbase-thirdparty] Bump maven plugin versions**
+
+apache parent pom 23 -\> 30
+maven-release-plugin ? -\> 3.0.1
+maven-clean-plugin ? -\> 3.3.1
+build-helper-maven-plugin 3.2.0 -\> 3.4.0
+buildnumber-maven-plugin 1.4 -\> 3.1.0
+maven-shade-plugin 3.2.4 -\> 3.5.0
+maven-compiler-plugin 3.8.1 -\> 3.11.0
+maven-dependency-plugin 3.2.0 -\> 3.6.0
+maven-source-plugin 3.2.0 -\> 3.3.0
+maven-antrun-plugin 3.0.0 -\> 3.1.0
+maven-enforcer-plugin 3.0.0 -\> 3.4.1
+extra-enforcer-rules 1.4 -\> 1.7.0
+flatten-maven-plugin 1.3.0 -\> 1.5.0
+nexus-staging-maven-plugin 1.6.8 -\> 1.6.13
+
+
+
 # HBASE  thirdparty-4.1.4 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
