@@ -131,8 +131,6 @@
                 <echo message="Rename netty .jnilib in META-INF" />
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_x86_64.jnilib" />
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_aarch_64.jnilib" />
-                <echo message="Remove netty .dll file in META-INF" />
-                <delete file="${project.build.directory}/unpacked/META-INF/native/netty_tcnative_windows_x86_64.dll" />
                 <echo message="Redo jar" />
                 <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
               </target>
