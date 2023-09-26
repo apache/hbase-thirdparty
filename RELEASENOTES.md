@@ -50,6 +50,13 @@ flatten-maven-plugin 1.3.0 -\> 1.5.0
 nexus-staging-maven-plugin 1.6.8 -\> 1.6.13
 
 
+---
+
+* [HBASE-28075](https://issues.apache.org/jira/browse/HBASE-28075) | *Major* | **[hbase-thirdparty] Add shaded netty tcnative module**
+
+Add a hbase-shaded-netty-tcnative module for shading netty-tcnative-boringssl-static.
+
+
 
 # HBASE  thirdparty-4.1.4 Release Notes
 

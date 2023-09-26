@@ -37,6 +37,7 @@
 | [HBASE-28093](https://issues.apache.org/jira/browse/HBASE-28093) | [hbase-thirdparty] Bump thirdparty dependencies |  Major | dependencies, thirdparty |
 | [HBASE-28096](https://issues.apache.org/jira/browse/HBASE-28096) | [hbase-thirdparty] Also relocate the proto files in protobuf-java |  Major | thirdparty |
 | [HBASE-28102](https://issues.apache.org/jira/browse/HBASE-28102) | [hbase-thirdparty] Bump hbase.stable.version to 2.4.17 in hbase-noop-htrace |  Major | thirdparty |
+| [HBASE-28075](https://issues.apache.org/jira/browse/HBASE-28075) | [hbase-thirdparty] Add shaded netty tcnative module |  Major | thirdparty |
 
 
 ## Release thirdparty-4.1.4 - Unreleased (as of 2023-01-18)
