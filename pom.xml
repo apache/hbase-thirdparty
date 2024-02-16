@@ -132,6 +132,7 @@
     <compileSource>1.8</compileSource>
     <java.min.version>${compileSource}</java.min.version>
     <maven.min.version>3.3.3</maven.min.version>
+    <os.maven.version>1.7.1</os.maven.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
     <protobuf.version>3.24.3</protobuf.version>
     <netty.version>4.1.107.Final</netty.version>
@@ -394,6 +395,13 @@
         </executions>
       </plugin>
     </plugins>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>${os.maven.version}</version>
+      </extension>
+    </extensions>
   </build>
   <!--These are the third-party libs we want to relocate-->
   <profiles>
