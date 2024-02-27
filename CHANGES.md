@@ -18,6 +18,21 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.6 - Unreleased (as of 2024-02-27)
+
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28291](https://issues.apache.org/jira/browse/HBASE-28291) | [hbase-thirdparty] Upgrade Netty to 4.1.104.Final |  Major | thirdparty |
+| [HBASE-28279](https://issues.apache.org/jira/browse/HBASE-28279) | Bump up jetty-server, jetty-http to 9.4.53.v20231009 |  Major | thirdparty |
+| [HBASE-28360](https://issues.apache.org/jira/browse/HBASE-28360) | [hbase-thirdparty] Upgrade Netty to 4.1.107.Final |  Major | thirdparty |
+| [HBASE-28369](https://issues.apache.org/jira/browse/HBASE-28369) | Add os-maven-plugin to hbase-thirdparty build |  Major | thirdparty |
+| [HBASE-28374](https://issues.apache.org/jira/browse/HBASE-28374) | [hbase-thirdparty] bump deps for 4.1.6 release |  Major | thirdparty |
+
+
 ## Release thirdparty-4.1.5 - Unreleased (as of 2023-09-27)
 
 

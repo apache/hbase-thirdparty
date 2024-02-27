@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.6 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+
 # HBASE  thirdparty-4.1.5 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
