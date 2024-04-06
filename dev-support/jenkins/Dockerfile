@@ -17,10 +17,11 @@
 # Dockerfile for hbase-operator-tools pre-commit build.
 # https://builds.apache.org/job/PreCommit-HBASE-OPERATOR-TOOLS-Build
 
-FROM maven:3.6-jdk-8
+FROM maven:3.9-eclipse-temurin-8
 
 # hadolint ignore=DL3008
 RUN apt-get -q update && apt-get -q install --no-install-recommends -y \
+       binutils \
        git \
        rsync \
        shellcheck \
