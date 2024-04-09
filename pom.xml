@@ -134,7 +134,7 @@
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
-    <protobuf.version>3.25.2</protobuf.version>
+    <protobuf.version>4.26.1</protobuf.version>
     <netty.version>4.1.108.Final</netty.version>
     <netty.tcnative.version>2.0.61.Final</netty.tcnative.version>
     <guava.version>33.0.0-jre</guava.version>
