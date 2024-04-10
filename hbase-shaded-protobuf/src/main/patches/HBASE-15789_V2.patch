@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/ByteBufferWriter.java b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-index 3970b0ea5..571b0a975 100644
+index e7d9eec8e..e17fefd39 100644
 --- a/src/main/java/com/google/protobuf/ByteBufferWriter.java
 +++ b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-@@ -111,7 +111,7 @@ final class ByteBufferWriter {
+@@ -88,7 +88,7 @@ final class ByteBufferWriter {
      }
    }
 
@@ -359,13 +359,13 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 2569d5dad..bebee3373 100644
+index 8ba729c8e..62aae86ee 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -445,6 +445,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -422,6 +422,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      }
    }
- 
+
 +  /**
 +   * Wraps the given bytes into a {@code ByteString}. Intended for internal only usage.
 +   */
@@ -377,14 +377,13 @@ index 2569d5dad..bebee3373 100644
     * Wraps the given bytes into a {@code ByteString}. Intended for internal usage within the library
     * to force a classload of ByteString before LiteralByteString.
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index ae94ee887..ce1d05875 100644
+index 224ced529..64c3efa37 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -200,6 +200,16 @@ public abstract class CodedInputStream {
-       throw InvalidProtocolBufferException.recursionLimitExceeded();
+@@ -178,6 +178,15 @@ public abstract class CodedInputStream {
      }
    }
-+
+
 +  /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
 +  public static CodedInputStream newInstance(ByteInput buf, boolean bufferIsImmutable) {
 +    return new ByteInputDecoder(buf, bufferIsImmutable);
@@ -397,7 +396,7 @@ index ae94ee887..ce1d05875 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
  
-@@ -3965,4 +3975,652 @@ public abstract class CodedInputStream {
+@@ -3957,4 +3966,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1051,10 +1050,10 @@ index ae94ee887..ce1d05875 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index 7c6823d91..20afe8255 100644
+index d52006754..92ed1f1f7 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
-@@ -219,6 +219,16 @@ final class Utf8 {
+@@ -196,6 +196,16 @@ final class Utf8 {
      }
    }
  
@@ -1071,7 +1070,7 @@ index 7c6823d91..20afe8255 100644
    // These UTF-8 handling methods are copied from Guava's Utf8 class with a modification to throw
    // a protocol buffer local exception. This exception is then caught in CodedOutputStream so it can
    // fallback to more lenient behavior.
-@@ -341,6 +351,24 @@ final class Utf8 {
+@@ -318,6 +328,24 @@ final class Utf8 {
      return processor.decodeUtf8(bytes, index, size);
    }
  
@@ -1096,10 +1095,10 @@ index 7c6823d91..20afe8255 100644
    /**
     * Encodes the given characters to the target {@link ByteBuffer} using UTF-8 encoding.
     *
-@@ -717,6 +745,169 @@ final class Utf8 {
+@@ -694,6 +722,169 @@ final class Utf8 {
        return new String(resultArr, 0, resultPos);
      }
- 
+
 +    public boolean isValidUtf8(ByteInput buffer, int index, int limit) {
 +      return partialIsValidUtf8(COMPLETE, buffer, index, limit) == COMPLETE;
 +    }
