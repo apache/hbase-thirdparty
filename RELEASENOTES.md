@@ -16,6 +16,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.7 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-28495](https://issues.apache.org/jira/browse/HBASE-28495) | *Major* | **[hbase-thirdparty] Fix pre commit build**
+
+Upgrade pre commit build to use docker image maven:3.9-eclipse-temurin-8.
+
+
+---
+
+* [HBASE-28491](https://issues.apache.org/jira/browse/HBASE-28491) | *Major* | **[hbase-thirdparty] Bump netty to 4.1.108.Final for addressing CVE-2024-29025**
+
+Upgrade netty to 4.1.108.Final for addressing CVE-2024-29025
+
+
+---
+
+* [HBASE-28492](https://issues.apache.org/jira/browse/HBASE-28492) | *Major* | **[hbase-thirdparty] Bump dependency versions before releasing**
+
+Bump versions for these dependencies
+
+guava 33.0.0-jre -\> 33.1.0-jre
+error\_prone\_annotations 2.21.1 -\> 2.26.1
+jersey.version 2.41 -\> 2.42
+jackson-jaxrs-json-provider 2.16.1 -\> 2.17.0
+
+
+---
+
+* [HBASE-28493](https://issues.apache.org/jira/browse/HBASE-28493) | *Major* | **[hbase-thirdparty] Bump protobuf version**
+
+Bump protobuf-java from 3.25.2 to 4.26.1.
+
+
+
 # HBASE  thirdparty-4.1.6 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

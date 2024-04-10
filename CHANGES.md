@@ -18,6 +18,27 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.7 - Unreleased (as of 2024-04-10)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28495](https://issues.apache.org/jira/browse/HBASE-28495) | [hbase-thirdparty] Fix pre commit build |  Major | community, jenkins |
+| [HBASE-28491](https://issues.apache.org/jira/browse/HBASE-28491) | [hbase-thirdparty] Bump netty to 4.1.108.Final for addressing CVE-2024-29025 |  Major | dependencies, security, thirdparty |
+| [HBASE-28492](https://issues.apache.org/jira/browse/HBASE-28492) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, thirdparty |
+| [HBASE-28493](https://issues.apache.org/jira/browse/HBASE-28493) | [hbase-thirdparty] Bump protobuf version |  Major | dependencies, Protobufs, thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28407](https://issues.apache.org/jira/browse/HBASE-28407) | [thirdparty] Update release instructions |  Major | thirdparty |
+
+
 ## Release thirdparty-4.1.6 - Unreleased (as of 2024-02-27)
 
 
