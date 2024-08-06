@@ -1,5 +1,5 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 64c3efa37..a5455e7f5 100644
+index 80fd9153c..11de874dd 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
 @@ -179,11 +179,7 @@ public abstract class CodedInputStream {
@@ -16,10 +16,10 @@ index 64c3efa37..a5455e7f5 100644
    }
  
 diff --git a/src/main/java/com/google/protobuf/UnsafeByteOperations.java b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
-index 06121780f..3afb65965 100644
+index 15c1da969..54d2f975a 100644
 --- a/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 +++ b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
-@@ -75,6 +75,17 @@ public final class UnsafeByteOperations {
+@@ -74,6 +74,17 @@ public final class UnsafeByteOperations {
      return ByteString.wrap(buffer);
    }
  
@@ -37,3 +37,4 @@ index 06121780f..3afb65965 100644
    /**
     * Writes the given {@link ByteString} to the provided {@link ByteOutput}. Calling this method may
     * result in multiple operations on the target {@link ByteOutput} (i.e. for roped {@link
+
