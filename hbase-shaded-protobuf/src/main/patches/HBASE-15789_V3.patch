@@ -359,11 +359,11 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 8ba729c8e..62aae86ee 100644
+index 7b2455f12..f906a4774 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -422,6 +422,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
-     }
+@@ -430,6 +430,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+     return new NioByteString(buffer);
    }
 
 +  /**
@@ -376,8 +376,17 @@ index 8ba729c8e..62aae86ee 100644
    /**
     * Wraps the given bytes into a {@code ByteString}. Intended for internal usage within the library
     * to force a classload of ByteString before LiteralByteString.
+@@ -961,8 +968,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+      * @return true for equality of substrings, else false.
+      */
+     abstract boolean equalsRange(ByteString other, int offset, int length);
+-
+-    private LeafByteString() {}
+   }
+ 
+   /**
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 224ced529..64c3efa37 100644
+index 81da41778..80fd9153c 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
 @@ -178,6 +178,15 @@ public abstract class CodedInputStream {
@@ -396,7 +405,7 @@ index 224ced529..64c3efa37 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
  
-@@ -3957,4 +3966,652 @@ public abstract class CodedInputStream {
+@@ -3970,4 +3979,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1265,3 +1274,4 @@ index d52006754..92ed1f1f7 100644
      /**
       * Encodes an input character sequence ({@code in}) to UTF-8 in the target array ({@code out}).
       * For a string, this method is similar to
+
