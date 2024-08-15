@@ -18,6 +18,25 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.8 - Unreleased (as of 2024-08-15)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28763](https://issues.apache.org/jira/browse/HBASE-28763) | [hbase-thirdparty] Bump dependencies for hbase-thirdparty-4.1.8 release |  Major | dependencies, thirdparty |
+| [HBASE-28764](https://issues.apache.org/jira/browse/HBASE-28764) | [hbase-thirdparty] Bump protobuf version from 4.26.1 to 4.27.3 |  Major | . |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28746](https://issues.apache.org/jira/browse/HBASE-28746) | [hbase-thirdparty] Bump netty to latest 4.1.112.Final version |  Major | dependencies, security, thirdparty |
+
+
 ## Release thirdparty-4.1.7 - Unreleased (as of 2024-04-10)
 
 
