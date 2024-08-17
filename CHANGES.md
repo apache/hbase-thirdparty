@@ -18,7 +18,7 @@
 -->
 # HBASE Changelog
 
-## Release thirdparty-4.1.8 - Unreleased (as of 2024-08-15)
+## Release thirdparty-4.1.8 - Unreleased (as of 2024-08-17)
 
 
 
