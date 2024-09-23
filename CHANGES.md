@@ -18,6 +18,25 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.9 - Unreleased (as of 2024-09-23)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28869](https://issues.apache.org/jira/browse/HBASE-28869) | [hbase-thirdparty] Bump protobuf java to 4.27.5+ |  Major | Protobufs, security, thirdparty |
+| [HBASE-28871](https://issues.apache.org/jira/browse/HBASE-28871) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-28794](https://issues.apache.org/jira/browse/HBASE-28794) | [hbase-thirdparty] Enable infra automation: autolink to Jira and 'pull-request-available' label |  Minor | community |
+
+
 ## Release thirdparty-4.1.8 - Unreleased (as of 2024-08-17)
 
 
