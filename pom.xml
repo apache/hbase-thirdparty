@@ -152,15 +152,6 @@
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.17.2</jackson-jaxrs-json-provider.version>
-    <!-- TODO Had added this to see if proprties are passed on via BOM.
-    Will not work unless we make this as parent to hbase, should drop this before commit.
-    Keeping here just for demonstration purpose.
-    -->
-    <internal.protobuf.version>${protobuf.version}</internal.protobuf.version>
-    <netty4.version>${netty.version}</netty4.version>
-    <error-prone.version>${error_prone_annotations.version}</error-prone.version>
-    <jackson.version>${jackson-jaxrs-json-provider.version}</jackson.version>
-    <jackson.databind.version>${jackson-jaxrs-json-provider.version}</jackson.databind.version>
   </properties>
   <build>
     <pluginManagement>
