@@ -53,6 +53,7 @@
     </license>
   </licenses>
   <modules>
+    <module>hbase-thirdparty-bom</module>
     <module>hbase-shaded-protobuf</module>
     <module>hbase-shaded-netty</module>
     <module>hbase-shaded-netty-tcnative</module>
