@@ -48,6 +48,38 @@ HBASE-17087.patch
 HBASE-17239.patch
 ```
 
+### Steps to patch protobuf-java:
+We need to follow these indicative steps in case build fails due to protobuf-java version change.
+
+1) Clone the protobuf git repo:
+    ```sh
+    git clone https://github.com/protocolbuffers/protobuf
+    ```
+2) Checkout to the appropriate release tag
+    ```sh
+    git checkout v29.2
+    ```
+   NOTE: Ensure to update above tag based on your target protobuf-java version. Also, protobuf repo has a special way of versioning so that different languages can have different major versions. For example, here v29.2 maps to 4.28.2 for protobuf-java.
+3) Create a branch for applying the patches:
+    ```sh
+    git checkout -b apply_patches
+    ```
+4) Apply patches from hbase-thirdparty 'src/main/patches' one by one in-order
+    ```sh
+    git apply --directory java/core {PATH_TO_HBASE_THIRDPARTY_CODE}/src/main/patches/HBASE-15789_V3.patch
+    ```
+5) Resolve any conflicts, stage all changes and commit the change
+6) Generate a patch from last commit. Also bump up patch version if there are code changes.
+    ```sh
+    git diff HEAD^ HEAD > HBASE-15789_V4.patch
+    ```
+7) Trim the prefix directory 'java/core' from the generated patch.
+    ```sh
+    sed -i '' 's|java/core/src/main/java/|src/main/java/|g' HBASE-15789_V3.patch
+    ```
+8) Repeat steps 4 to 6 for each patch
+9) Copy updated patches in 'src/main/patches'. Drop stale patches.
+
 Ideally we would be pushing this set up into protobuf project.
 
 Note that this project requires JDK8. This is because a bunch of the code we
