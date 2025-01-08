@@ -43,7 +43,7 @@ rather than to a dir under target because the jar plugin wants src here (its
 hard to convince it otherwise). We also apply some patches. Current set are:
 
 ```
-HBASE-15789_V2.patch
+HBASE-15789_V3.patch
 HBASE-17087.patch
 HBASE-17239.patch
 ```
