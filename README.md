@@ -67,11 +67,11 @@ In case build fails due to protobuf-java version change, we can follow below ste
     ```sh
     git checkout -b apply_patches
     ```
-4) Apply patches from hbase-thirdparty's 'src/main/patches' one by one, in-order. For example:
+4) Apply patches from hbase-thirdparty's 'hbase-shaded-protobuf/src/main/patches' one by one, in-order. For example:
     ```sh
     git apply --directory java/core <BASE_DIR_TO_HBASE_THIRDPARTY_CODE>/hbase-thirdparty/hbase-shaded-protobuf/src/main/patches/HBASE-15789_V3.patch
     ```
-   NOTE: Ensure to update <BASE_DIR_TO_HBASE_THIRDPARTY_CODE> based on your setup.
+   NOTE: Ensure to replace <BASE_DIR_TO_HBASE_THIRDPARTY_CODE> based on your setup.
 5) Resolve any conflicts. Next, stage all changes and commit the change.
 6) Generate a patch from previous commit. Also bump up patch version if there are code changes.
     ```sh
@@ -82,7 +82,7 @@ In case build fails due to protobuf-java version change, we can follow below ste
     sed -i '' 's|java/core/src/main/java/|src/main/java/|g' HBASE-15789_V4.patch
     ```
 8) Repeat steps 4 to 7 for each patch.
-9) Copy updated patches in 'src/main/patches'. Drop stale patches.
+9) Copy updated patches to 'hbase-shaded-protobuf/src/main/patches' in case there was any code conflict. Drop corresponding stale patches.
 
 ---
 
