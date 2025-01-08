@@ -50,6 +50,42 @@ HBASE-17239.patch
 
 Ideally we would be pushing this set up into protobuf project.
 
+### Steps to generate patches for protobuf-java:
+In case build fails due to protobuf-java version change, we can follow below steps to generate new patch files.
+
+1) Clone the protobuf git repo.
+    ```sh
+    git clone https://github.com/protocolbuffers/protobuf
+    ```
+2) Checkout to the appropriate release tag.
+    ```sh
+    cd protobuf
+    git checkout v29.2
+    ```
+   NOTE: Ensure to update above tag based on your target protobuf-java version. Also, protobuf repo has a special way of versioning so that different languages can have different major versions. For example, here v29.2 maps to 4.29.2 for protobuf-java.
+3) Create a branch for applying the patches.
+    ```sh
+    git checkout -b apply_patches
+    ```
+4) Apply patches from hbase-thirdparty's 'hbase-shaded-protobuf/src/main/patches' one by one, in-order. For example:
+    ```sh
+    git apply --directory java/core <BASE_DIR_TO_HBASE_THIRDPARTY_CODE>/hbase-thirdparty/hbase-shaded-protobuf/src/main/patches/HBASE-15789_V3.patch
+    ```
+   NOTE: Ensure to replace <BASE_DIR_TO_HBASE_THIRDPARTY_CODE> based on your setup.
+5) Resolve any conflicts. Next, stage all changes and commit the change.
+6) Generate a patch from previous commit. Also bump up patch version if there are code changes.
+    ```sh
+    git diff HEAD^ HEAD > HBASE-15789_V4.patch
+    ```
+7) Trim the prefix directory 'java/core' from the generated patch.
+    ```sh
+    sed -i '' 's|java/core/src/main/java/|src/main/java/|g' HBASE-15789_V4.patch
+    ```
+8) Repeat steps 4 to 7 for each patch.
+9) Copy updated patches to 'hbase-shaded-protobuf/src/main/patches' in case there was any code conflict. Drop corresponding stale patches.
+
+---
+
 Note that this project requires JDK8. This is because a bunch of the code we
 have in hbase-unsafe is using old APIs that have been removed from more
 modern JDKs. Due to a bug in JDK, we cannot generate this code using a more
