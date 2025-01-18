@@ -206,7 +206,7 @@ final class HBaseUnsafeInternal {
   }
 
   public static void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset,
-      long bytes) {
+    long bytes) {
     UNSAFE.copyMemory(srcBase, srcOffset, destBase, destOffset, bytes);
   }
 
@@ -255,7 +255,7 @@ final class HBaseUnsafeInternal {
   }
 
   public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
-      ProtectionDomain protectionDomain) {
+    ProtectionDomain protectionDomain) {
     return UNSAFE.defineClass(name, b, off, len, loader, protectionDomain);
   }
 

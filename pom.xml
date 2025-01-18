@@ -32,17 +32,15 @@
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
     <version>30</version>
-    <relativePath />
+    <relativePath/>
     <!-- no parent resolution -->
   </parent>
   <groupId>org.apache.hbase.thirdparty</groupId>
   <artifactId>hbase-thirdparty</artifactId>
   <version>${revision}</version>
-  <name>Apache HBase Third-Party Libs</name>
   <packaging>pom</packaging>
-  <description>
-    Packaging of relocated (renamed, shaded) third-party libraries used by hbase.
-  </description>
+  <name>Apache HBase Third-Party Libs</name>
+  <description>Packaging of relocated (renamed, shaded) third-party libraries used by hbase.</description>
   <url>https://hbase.apache.org</url>
   <inceptionYear>2017</inceptionYear>
   <licenses>
@@ -52,32 +50,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <modules>
-    <module>hbase-shaded-protobuf</module>
-    <module>hbase-shaded-netty</module>
-    <module>hbase-shaded-netty-tcnative</module>
-    <module>hbase-shaded-gson</module>
-    <module>hbase-shaded-miscellaneous</module>
-    <module>hbase-shaded-jetty</module>
-    <module>hbase-shaded-jersey</module>
-    <module>hbase-shaded-jackson-jaxrs-json-provider</module>
-    <module>hbase-noop-htrace</module>
-    <module>hbase-unsafe</module>
-  </modules>
-  <scm>
-    <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
-    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/hbase-thirdparty.git</developerConnection>
-    <url>https://git-wip-us.apache.org/repos/asf?p=hbase-thirdparty.git</url>
-  </scm>
-  <issueManagement>
-    <!--File issues for this project against Apache HBase JIRA-->
-    <system>JIRA</system>
-    <url>http://issues.apache.org/jira/browse/HBASE</url>
-  </issueManagement>
-  <ciManagement>
-    <system>hudson</system>
-    <url>http://hudson.zones.apache.org/hudson/view/HBase/job/HBase-TRUNK/</url>
-  </ciManagement>
+  <developers/>
   <mailingLists>
     <mailingList>
       <name>User List</name>
@@ -120,14 +93,37 @@
       <archive>http://mail-archives.apache.org/mod_mbox/hbase-builds/</archive>
     </mailingList>
   </mailingLists>
-  <developers />
+  <modules>
+    <module>hbase-shaded-protobuf</module>
+    <module>hbase-shaded-netty</module>
+    <module>hbase-shaded-netty-tcnative</module>
+    <module>hbase-shaded-gson</module>
+    <module>hbase-shaded-miscellaneous</module>
+    <module>hbase-shaded-jetty</module>
+    <module>hbase-shaded-jersey</module>
+    <module>hbase-shaded-jackson-jaxrs-json-provider</module>
+    <module>hbase-noop-htrace</module>
+    <module>hbase-unsafe</module>
+  </modules>
+  <scm>
+    <connection>scm:git:git://git.apache.org/hbase-thirdparty.git</connection>
+    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/hbase-thirdparty.git</developerConnection>
+    <url>https://git-wip-us.apache.org/repos/asf?p=hbase-thirdparty.git</url>
+  </scm>
+  <issueManagement>
+    <!--File issues for this project against Apache HBase JIRA-->
+    <system>JIRA</system>
+    <url>http://issues.apache.org/jira/browse/HBASE</url>
+  </issueManagement>
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://hudson.zones.apache.org/hudson/view/HBase/job/HBase-TRUNK/</url>
+  </ciManagement>
   <!--TODO-->
   <properties>
     <revision>4.1.10-SNAPSHOT</revision>
     <maven.javadoc.skip>true</maven.javadoc.skip>
-    <maven.build.timestamp.format>
-      yyyy-MM-dd'T'HH:mm
-    </maven.build.timestamp.format>
+    <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <compileSource>1.8</compileSource>
     <java.min.version>${compileSource}</java.min.version>
@@ -151,7 +147,7 @@
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.17.3</jackson-jaxrs-json-provider.version>
-    <spotless.version>2.44.2</spotless.version>
+    <spotless.version>2.30.0</spotless.version>
   </properties>
   <build>
     <pluginManagement>
@@ -228,18 +224,18 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
           <version>3.1.0</version>
-          <executions>
-            <execution>
-              <phase>validate</phase>
-              <goals>
-                <goal>create-timestamp</goal>
-              </goals>
-            </execution>
-          </executions>
           <configuration>
             <timestampFormat>yyyy</timestampFormat>
             <timestampPropertyName>build.year</timestampPropertyName>
           </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>create-timestamp</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -346,16 +342,14 @@
   HBase requires at least version ${maven.min.version} of Maven to properly build from source.
   You appear to be using an older version. You can use either "mvn -version" or
   "mvn enforcer:display-info" to verify what version is active.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build
-                  </message>
+  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireMavenVersion>
                 <!-- The earliest JVM version we verify builds for via ASF Jenkins -->
                 <requireJavaVersion>
                   <version>[${java.min.version},)</version>
                   <message>Java is out of date.
   HBase requires at least version ${java.min.version} of the JDK to properly build from source.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build
-                  </message>
+  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireJavaVersion>
                 <bannedDependencies>
                   <excludes>
@@ -515,10 +509,10 @@
             <artifactId>apache-rat-plugin</artifactId>
             <executions>
               <execution>
-                <phase>package</phase>
                 <goals>
                   <goal>check</goal>
                 </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
@@ -543,8 +537,7 @@
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
   either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
   Non-release builds can temporarily build with a newer JDK version by setting the
-  'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).
-                </message>
+  'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
                 </enforceBytecodeVersion>
               </rules>
             </configuration>

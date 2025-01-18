@@ -176,8 +176,8 @@ public final class HBasePlatformDependent {
       m.setAccessible(true);
       return (Boolean) m.invoke(null);
     } catch (Exception e) {
-      LOG.warn("java.nio.Bits#unaligned() check failed." +
-        "Unsafe based read/write of primitive types won't be used", e);
+      LOG.warn("java.nio.Bits#unaligned() check failed."
+        + "Unsafe based read/write of primitive types won't be used", e);
     }
     return false;
   }
@@ -562,9 +562,9 @@ public final class HBasePlatformDependent {
 
   /**
    * Delegate {@code sun.misc.Signal}.
-   * @param signal the name of the signal, such as 'HUP'.
+   * @param signal  the name of the signal, such as 'HUP'.
    * @param handler the handler of the signal, the first parameter is the number of the signal,
-   *          while the second one is the name of the sinal.
+   *                while the second one is the name of the sinal.
    */
   public static void handle(String signal, BiConsumer<Integer, String> handler) {
     HBaseSignalInternal.handle(signal, handler);

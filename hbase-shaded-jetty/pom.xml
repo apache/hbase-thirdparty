@@ -37,109 +37,7 @@
   </parent>
   <artifactId>hbase-shaded-jetty</artifactId>
   <name>Apache HBase Relocated (Shaded) Jetty Libs</name>
-  <description>
-    Pulls down Jetty, relocates it and makes a far jar.
-  </description>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}</directory>
-              <includes>
-                <include>dependency-reduced-pom.xml</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <createSourcesJar>true</createSourcesJar>
-              <relocations>
-                <relocation>
-                  <pattern>org.eclipse.jetty</pattern>
-                  <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
-                </relocation>
-                <!--
-                This is for relocating the blacklist in
-                org.eclipse.jetty.webapp.WebAppContext.__dftServerClasses,
-                where we have a '-' in front of the class name
-                -->
-                <relocation>
-                  <pattern>-org.eclipse.jetty</pattern>
-                  <shadedPattern>-${rename.offset}.org.eclipse.jetty</shadedPattern>
-                </relocation>
-              </relocations>
-              <artifactSet>
-                <excludes>
-                  <!--
-                      Anything added here needs to be excluded from the jar that pulls it in
-                      also else we give an odd signal in the META-INF/DEPENDENCIES that we
-                      produce. See below for how to exclusion of transitive dependencies.
-                    -->
-                  <exclude>javax.servlet:javax.servlet-api</exclude>
-                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
-                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
-                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
-                    that we've already packaged a services file once. -->
-                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty</exclude>
-                </excludes>
-              </artifactSet>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-                  <addHeader>false</addHeader>
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <!--
-          The webdefault.xml contains some jetty servlet classes which should also be relocated
-          -->
-          <execution>
-            <id>relocate-web-xml</id>
-            <phase>package</phase>
-            <configuration>
-              <target>
-                <echo message="unjar" />
-                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/" />
-                <echo message="Replace content in webdefault.xml" />
-                <replace file="${project.build.directory}/unpacked/${rename.offset.dir}/org/eclipse/jetty/webapp/webdefault.xml">
-                  <replacetoken>org.eclipse.jetty</replacetoken>
-                  <replacevalue>${rename.offset}.org.eclipse.jetty</replacevalue>
-                </replace>
-                <echo message="Redo jar" />
-                <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar" basedir="${project.build.directory}/unpacked" />
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <description>Pulls down Jetty, relocates it and makes a far jar.</description>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -196,6 +94,105 @@
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>${servlet-api.version}</version>
-  </dependency>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>dependency-reduced-pom.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <createSourcesJar>true</createSourcesJar>
+              <relocations>
+                <relocation>
+                  <pattern>org.eclipse.jetty</pattern>
+                  <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
+                </relocation>
+                <!--
+                This is for relocating the blacklist in
+                org.eclipse.jetty.webapp.WebAppContext.__dftServerClasses,
+                where we have a '-' in front of the class name
+                -->
+                <relocation>
+                  <pattern>-org.eclipse.jetty</pattern>
+                  <shadedPattern>-${rename.offset}.org.eclipse.jetty</shadedPattern>
+                </relocation>
+              </relocations>
+              <artifactSet>
+                <excludes>
+                  <!--
+                      Anything added here needs to be excluded from the jar that pulls it in
+                      also else we give an odd signal in the META-INF/DEPENDENCIES that we
+                      produce. See below for how to exclusion of transitive dependencies.
+                    -->
+                  <exclude>javax.servlet:javax.servlet-api</exclude>
+                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
+                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
+                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
+                    that we've already packaged a services file once. -->
+                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty</exclude>
+                </excludes>
+              </artifactSet>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                  <addHeader>false</addHeader>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <!--
+          The webdefault.xml contains some jetty servlet classes which should also be relocated
+          -->
+          <execution>
+            <id>relocate-web-xml</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo message="unjar"/>
+                <unzip dest="${project.build.directory}/unpacked/" src="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                <echo message="Replace content in webdefault.xml"/>
+                <replace file="${project.build.directory}/unpacked/${rename.offset.dir}/org/eclipse/jetty/webapp/webdefault.xml">
+                  <replacetoken>org.eclipse.jetty</replacetoken>
+                  <replacevalue>${rename.offset}.org.eclipse.jetty</replacevalue>
+                </replace>
+                <echo message="Redo jar"/>
+                <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -37,124 +37,7 @@
   </parent>
   <artifactId>hbase-shaded-jersey</artifactId>
   <name>Apache HBase Relocated (Shaded) Jersey Libs</name>
-  <description>
-    Pulls down Jersey, relocates it and makes a far jar.
-  </description>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}</directory>
-              <includes>
-                <include>dependency-reduced-pom.xml</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <createSourcesJar>true</createSourcesJar>
-              <relocations>
-                <relocation>
-                  <pattern>javax.ws.rs</pattern>
-                  <shadedPattern>${rename.offset}.javax.ws.rs</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.glassfish</pattern>
-                  <shadedPattern>${rename.offset}.org.glassfish</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>jersey</pattern>
-                  <shadedPattern>${rename.offset}.jersey</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.sun.research</pattern>
-                  <shadedPattern>${rename.offset}.com.sun.research</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.aopalliance</pattern>
-                  <shadedPattern>${rename.offset}.org.aopalliance</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.jvnet.hk2</pattern>
-                  <shadedPattern>${rename.offset}.org.jvnet.hk2</shadedPattern>
-                </relocation>
-              </relocations>
-              <artifactSet>
-                <excludes>
-                  <!--
-                      Anything added here needs to be excluded from the jar that pulls it in
-                      also else we give an odd signal in the META-INF/DEPENDENCIES that we
-                      produce. See below for how to exclusion of transitive dependencies.
-                    -->
-                  <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
-                  <exclude>jakarta.validation:jakarta.validation-api</exclude>
-                  <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
-                  <exclude>org.javassist:javassist</exclude>
-                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
-                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
-                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
-                    that we've already packaged a services file once. -->
-                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jersey</exclude>
-                </excludes>
-              </artifactSet>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-                  <addHeader>false</addHeader>
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <!--
-          There are some classes under META-INF in jersey-common jar, for supporting multiple jdks,
-          we should also relocate them.
-          -->
-          <execution>
-            <id>relocate-jersey-jdk11-support</id>
-            <phase>package</phase>
-            <configuration>
-              <target>
-                <echo message="unjar" />
-                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/" />
-                <echo message="Rename jersey versions in META-INF" />
-                <mkdir dir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}" />
-                <move todir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}">
-                  <fileset dir="${project.build.directory}/unpacked/META-INF/versions/11" />
-                </move>
-                <echo message="Redo jar" />
-                <jar destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar" basedir="${project.build.directory}/unpacked" />
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <description>Pulls down Jersey, relocates it and makes a far jar.</description>
   <dependencies>
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
@@ -207,4 +90,118 @@
       <version>${javassist.version}</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>dependency-reduced-pom.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <createSourcesJar>true</createSourcesJar>
+              <relocations>
+                <relocation>
+                  <pattern>javax.ws.rs</pattern>
+                  <shadedPattern>${rename.offset}.javax.ws.rs</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.glassfish</pattern>
+                  <shadedPattern>${rename.offset}.org.glassfish</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>jersey</pattern>
+                  <shadedPattern>${rename.offset}.jersey</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.sun.research</pattern>
+                  <shadedPattern>${rename.offset}.com.sun.research</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.aopalliance</pattern>
+                  <shadedPattern>${rename.offset}.org.aopalliance</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.jvnet.hk2</pattern>
+                  <shadedPattern>${rename.offset}.org.jvnet.hk2</shadedPattern>
+                </relocation>
+              </relocations>
+              <artifactSet>
+                <excludes>
+                  <!--
+                      Anything added here needs to be excluded from the jar that pulls it in
+                      also else we give an odd signal in the META-INF/DEPENDENCIES that we
+                      produce. See below for how to exclusion of transitive dependencies.
+                    -->
+                  <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
+                  <exclude>jakarta.validation:jakarta.validation-api</exclude>
+                  <exclude>org.glassfish.hk2.external:jakarta.inject</exclude>
+                  <exclude>org.javassist:javassist</exclude>
+                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
+                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
+                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
+                    that we've already packaged a services file once. -->
+                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jersey</exclude>
+                </excludes>
+              </artifactSet>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                  <addHeader>false</addHeader>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <!--
+          There are some classes under META-INF in jersey-common jar, for supporting multiple jdks,
+          we should also relocate them.
+          -->
+          <execution>
+            <id>relocate-jersey-jdk11-support</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo message="unjar"/>
+                <unzip dest="${project.build.directory}/unpacked/" src="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                <echo message="Rename jersey versions in META-INF"/>
+                <mkdir dir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}"/>
+                <move todir="${project.build.directory}/unpacked/META-INF/versions/11/${rename.offset.dir}">
+                  <fileset dir="${project.build.directory}/unpacked/META-INF/versions/11"/>
+                </move>
+                <echo message="Redo jar"/>
+                <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

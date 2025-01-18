@@ -29,10 +29,8 @@
   </parent>
   <artifactId>hbase-noop-htrace</artifactId>
   <name>Apache HBase Drop-in noop HTrace replacement</name>
-  <description>
-    Implements the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
-    dependencies and b) favoring the JIT optimizing it away.
-  </description>
+  <description>Implements the HTrace APIs with noops and nonsense aimed at a) removing CVE flagged transitive
+    dependencies and b) favoring the JIT optimizing it away.</description>
   <properties>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <!-- This library is meant to work with whatever HBase and Hadoop combos we still list
@@ -87,6 +85,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven.checkstyle.version}</version>
+        <configuration>
+          <configLocation>hbase/checkstyle.xml</configLocation>
+          <suppressionsLocation>hbase/checkstyle-suppressions.xml</suppressionsLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>org.apache.hbase</groupId>
@@ -99,11 +102,6 @@
             <version>${checkstyle.version}</version>
           </dependency>
         </dependencies>
-        <configuration>
-          <configLocation>hbase/checkstyle.xml</configLocation>
-          <suppressionsLocation>hbase/checkstyle-suppressions.xml</suppressionsLocation>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

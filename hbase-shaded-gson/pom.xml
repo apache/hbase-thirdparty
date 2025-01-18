@@ -37,9 +37,14 @@
   </parent>
   <artifactId>hbase-shaded-gson</artifactId>
   <name>Apache HBase Relocated (Shaded) GSON Libs</name>
-  <description>
-    Pulls down GSON, relocates it and makes a far jar.
-  </description>
+  <description>Pulls down GSON, relocates it and makes a far jar.</description>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson.version}</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -60,10 +65,10 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <shadeSourcesContent>true</shadeSourcesContent>
               <createSourcesJar>true</createSourcesJar>
@@ -94,8 +99,7 @@
                 </excludes>
               </artifactSet>
               <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
-                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
                   <addHeader>false</addHeader>
                 </transformer>
@@ -106,11 +110,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>${gson.version}</version>
-    </dependency>
-  </dependencies>
 </project>

@@ -64,10 +64,10 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <shadeSourcesContent>true</shadeSourcesContent>
               <createSourcesJar>true</createSourcesJar>
@@ -115,29 +115,29 @@
         <executions>
           <execution>
             <id>unpack</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
             <phase>package</phase>
             <configuration>
               <target>
-                <echo message="unjar" />
-                <unzip src="${project.build.directory}/${project.artifactId}-${project.version}.jar" dest="${project.build.directory}/unpacked/">
+                <echo message="unjar"/>
+                <unzip dest="${project.build.directory}/unpacked/" src="${project.build.directory}/${project.artifactId}-${project.version}.jar">
                   <patternset>
                     <exclude name="META-INF/LICENSE.txt"/>
                   </patternset>
-                  <mapper type="regexp" from="META-INF/license/(LICENSE.*.txt)$$" to="META-INF/\1"/>
+                  <mapper from="META-INF/license/(LICENSE.*.txt)$$" to="META-INF/\1" type="regexp"/>
                 </unzip>
                 <echo message="Rename netty .so in META-INF"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_x86_64.so"/>
                 <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_aarch_64.so"/>
-                <echo message="Rename netty .jnilib in META-INF" />
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_x86_64.jnilib" />
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_aarch_64.jnilib" />
-                <echo message="Redo jar" />
+                <echo message="Rename netty .jnilib in META-INF"/>
+                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_x86_64.jnilib"/>
+                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_aarch_64.jnilib"/>
+                <echo message="Redo jar"/>
                 <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
               </target>
             </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>

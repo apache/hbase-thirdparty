@@ -28,9 +28,7 @@
   </parent>
   <artifactId>hbase-shaded-protobuf</artifactId>
   <name>Apache HBase Patched and Relocated (Shaded) Protobuf</name>
-  <description>
-    Pulls down protobuf, patches it, compiles, and then relocates/shades.
-  </description>
+  <description>Pulls down protobuf, patches it, compiles, and then relocates/shades.</description>
   <build>
     <plugins>
       <plugin>
@@ -41,15 +39,6 @@
              under 'target' because the jar plugin is dumb, hard to
              make it source from other then src/main/java.-->
         <artifactId>maven-clean-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>pre-generate-sources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>clean</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <filesets>
             <fileset>
@@ -68,6 +57,15 @@
             </fileset>
           </filesets>
         </configuration>
+        <executions>
+          <execution>
+            <id>pre-generate-sources</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <!--Download our dependency src, i.e. protobuf, and
@@ -79,10 +77,10 @@
         <executions>
           <execution>
             <id>unpack</id>
-            <phase>generate-sources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>generate-sources</phase>
             <configuration>
               <!--
                 The protobuf-java has no compile or runtime dependency so we
@@ -131,10 +129,10 @@
         <executions>
           <execution>
             <id>patch</id>
-            <phase>process-sources</phase>
             <goals>
               <goal>apply</goal>
             </goals>
+            <phase>process-sources</phase>
             <configuration>
               <strip>1</strip>
               <patchDirectory>${basedir}/src/main/patches</patchDirectory>
@@ -162,10 +160,10 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <shadeSourcesContent>true</shadeSourcesContent>
               <createSourcesJar>true</createSourcesJar>
