@@ -151,6 +151,7 @@
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.17.3</jackson-jaxrs-json-provider.version>
+    <spotless.version>2.44.2</spotless.version>
   </properties>
   <build>
     <pluginManagement>
@@ -393,6 +394,104 @@
             <phase>clean</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <!-- define a language-specific format -->
+          <java>
+            <includes>
+              <include>**/org/apache/hbase/htrace_noop/**</include>
+              <include>**/org/apache/hadoop/hbase/unsafe/**</include>
+            </includes>
+            <!--
+              e.g., remove the following lines:
+              "* @param paramName"
+              "* @throws ExceptionType"
+              "* @return returnType"'
+              Multiline to allow anchors on newlines
+              See https://errorprone.info/bugpattern/EmptyBlockTag
+            -->
+            <replaceRegex>
+              <name>Remove unhelpful javadoc stubs</name>
+              <searchRegex>(?m)^ *\* *@(?:param|throws|return) *\w* *\n</searchRegex>
+              <replacement/>
+            </replaceRegex>
+            <!--
+              e.g., rewrite
+              /** @return blabla */
+              or
+              /**
+               * @return blabla
+               */
+              to
+              /** Returns blabla */
+              See https://errorprone.info/bugpattern/MissingSummary
+              https://google.github.io/styleguide/javaguide.html#s7.2-summary-fragment
+            -->
+            <replaceRegex>
+              <name>Purge single returns tag multi line</name>
+              <searchRegex>(?m)^ */\*\*\n *\* *@return *(.*) *\n *\*/$</searchRegex>
+              <replacement>/** Returns $1 */</replacement>
+            </replaceRegex>
+            <replaceRegex>
+              <name>Purge single returns tag single line</name>
+              <searchRegex>^ */\*\* *@return *(.*) *\*/$</searchRegex>
+              <replacement>/** Returns $1 */</replacement>
+            </replaceRegex>
+            <!-- apply a specific flavor -->
+            <eclipse>
+              <file>${session.executionRootDirectory}/dev-support/hbase_eclipse_formatter.xml</file>
+            </eclipse>
+            <importOrder>
+              <file>${session.executionRootDirectory}/dev-support/eclipse.importorder</file>
+            </importOrder>
+            <trimTrailingWhitespace/>
+            <endWithNewline/>
+            <removeUnusedImports/>
+          </java>
+          <pom>
+            <sortPom>
+              <expandEmptyElements>false</expandEmptyElements>
+            </sortPom>
+          </pom>
+          <formats>
+            <!-- you can define as many formats as you want, each is independent -->
+            <format>
+              <!-- define the files to apply to -->
+              <includes>
+                <include>**/*.xml</include>
+                <include>**/*.sh</include>
+                <include>**/*.py</include>
+                <include>**/Jenkinsfile*</include>
+                <include>**/*.md</include>
+                <include>*.md</include>
+                <include>**/*.txt</include>
+                <include>*.txt</include>
+              </includes>
+              <excludes>
+                <exclude>**/target/**</exclude>
+                <exclude>**/dependency-reduced-pom.xml</exclude>
+                <exclude>**/.idea/**</exclude>
+              </excludes>
+              <!-- define the steps to apply to those files -->
+              <trimTrailingWhitespace/>
+              <endWithNewline/>
+            </format>
+            <format>
+              <includes>
+                <include>**/org/apache/hbase/htrace_noop/**</include>
+                <include>**/org/apache/hadoop/hbase/unsafe/**</include>
+              </includes>
+              <licenseHeader>
+                <file>${session.executionRootDirectory}/dev-support/license-header</file>
+                <delimiter>package</delimiter>
+              </licenseHeader>
+            </format>
+          </formats>
+        </configuration>
       </plugin>
     </plugins>
     <extensions>

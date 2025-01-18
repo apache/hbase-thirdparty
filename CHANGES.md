@@ -466,4 +466,3 @@
 | JIRA | Summary | Priority | Component |
 |:---- |:---- | :--- |:---- |
 | [HBASE-23052](https://issues.apache.org/jira/browse/HBASE-23052) | hbase-thirdparty version of GSON that works for branch-1 |  Blocker | dependencies |
-
