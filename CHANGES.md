@@ -18,6 +18,20 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.10 - Unreleased (as of 2025-01-18)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29059](https://issues.apache.org/jira/browse/HBASE-29059) | [hbase-thirdparty] Bump dependencies for hbase-thirdparty-4.1.10 release |  Major | dependencies, thirdparty |
+| [HBASE-29060](https://issues.apache.org/jira/browse/HBASE-29060) | [hbase-thirdparty] Bump protobuf version from 4.28.2 to 4.29.2 |  Major | dependencies, thirdparty |
+| [HBASE-29063](https://issues.apache.org/jira/browse/HBASE-29063) | [hbase-thirdparty] Document steps to generate patches for protobuf-java |  Major | community, thirdparty |
+| [HBASE-29085](https://issues.apache.org/jira/browse/HBASE-29085) | [hbase-thirdparty] Add spotless plugin |  Major | build, thirdparty |
+
+
 ## Release thirdparty-4.1.9 - Unreleased (as of 2024-09-23)
 
 

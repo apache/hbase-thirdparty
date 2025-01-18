@@ -16,6 +16,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.10 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-29059](https://issues.apache.org/jira/browse/HBASE-29059) | *Major* | **[hbase-thirdparty] Bump dependencies for hbase-thirdparty-4.1.10 release**
+
+Bump versions for following dependencies,
+	netty 4.1.113.Final -\> 4.1.116.Final
+	netty.tcnative 2.0.66.Final -\> 2.0.69.Final
+	guava 33.3.0-jre -\> 33.4.0-jre
+	error\_prone\_annotations 2.32.0 -\> 2.36.0
+	jersey 2.45 -\> 2.46
+	jackson-jaxrs-json-provider 2.17.2 -\> 2.17.3
+
+
+---
+
+* [HBASE-29060](https://issues.apache.org/jira/browse/HBASE-29060) | *Major* | **[hbase-thirdparty] Bump protobuf version from 4.28.2 to 4.29.2**
+
+Bump protobuf-java version from 4.28.2 to 4.29.2
+
+
+---
+
+* [HBASE-29085](https://issues.apache.org/jira/browse/HBASE-29085) | *Major* | **[hbase-thirdparty] Add spotless plugin**
+
+Add a spotless plugin to format the code.
+
+
+
 # HBASE  thirdparty-4.1.9 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
