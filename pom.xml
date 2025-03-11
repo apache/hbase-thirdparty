@@ -100,6 +100,7 @@
     <module>hbase-shaded-gson</module>
     <module>hbase-shaded-miscellaneous</module>
     <module>hbase-shaded-jetty</module>
+    <module>hbase-shaded-jetty-ee8</module>
     <module>hbase-shaded-jersey</module>
     <module>hbase-shaded-jackson-jaxrs-json-provider</module>
     <module>hbase-noop-htrace</module>
@@ -139,7 +140,9 @@
     <error_prone_annotations.version>2.36.0</error_prone_annotations.version>
     <gson.version>2.11.0</gson.version>
     <jetty.version>9.4.56.v20240826</jetty.version>
+    <jetty12.version>12.0.16</jetty12.version>
     <servlet-api.version>3.1.0</servlet-api.version>
+    <servlet4-api.version>4.0.1</servlet4-api.version>
     <jersey.version>2.46</jersey.version>
     <jakarta.inject.version>2.6.1</jakarta.inject.version>
     <jakarta.ws.rs-api.version>2.1.6</jakarta.ws.rs-api.version>
