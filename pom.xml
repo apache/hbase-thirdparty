@@ -100,7 +100,7 @@
     <module>hbase-shaded-gson</module>
     <module>hbase-shaded-miscellaneous</module>
     <module>hbase-shaded-jetty</module>
-    <module>hbase-shaded-jetty-ee8</module>
+    <module>hbase-shaded-jetty-12-plus</module>
     <module>hbase-shaded-jersey</module>
     <module>hbase-shaded-jackson-jaxrs-json-provider</module>
     <module>hbase-noop-htrace</module>

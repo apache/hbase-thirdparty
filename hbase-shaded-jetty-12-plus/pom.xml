@@ -35,50 +35,13 @@
     <version>${revision}</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>hbase-shaded-jetty-ee8</artifactId>
-  <name>Apache HBase Relocated (Shaded) Jetty Libs: EE8</name>
+  <artifactId>hbase-shaded-jetty-12-plus</artifactId>
+  <name>Apache HBase Relocated (Shaded) Jetty 12+ Libs</name>
   <description>Pulls down Jetty, relocates it and makes a far jar.</description>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>${jetty12.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty.ee8</groupId>
-      <artifactId>jetty-ee8-servlet</artifactId>
-      <version>${jetty12.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty.ee8</groupId>
-      <artifactId>jetty-ee8-security</artifactId>
-      <version>${jetty12.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty.ee8</groupId>
-      <artifactId>jetty-ee8-nested</artifactId>
       <version>${jetty12.version}</version>
       <exclusions>
         <exclusion>
@@ -132,17 +95,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty.ee8</groupId>
-      <artifactId>jetty-ee8-webapp</artifactId>
-      <version>${jetty12.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-util-ajax</artifactId>
       <version>${jetty12.version}</version>
@@ -154,9 +106,102 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet4-api.version}</version>
+      <groupId>org.eclipse.jetty.ee8</groupId>
+      <artifactId>jetty-ee8-servlet</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee8</groupId>
+      <artifactId>jetty-ee8-security</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee8</groupId>
+      <artifactId>jetty-ee8-nested</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee8</groupId>
+      <artifactId>jetty-ee8-webapp</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- TODO Added here just for testing purpose, Drop before merge? -->
+    <dependency>
+      <groupId>org.eclipse.jetty.ee9</groupId>
+      <artifactId>jetty-ee9-servlet</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee9</groupId>
+      <artifactId>jetty-ee9-security</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee9</groupId>
+      <artifactId>jetty-ee9-nested</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee9</groupId>
+      <artifactId>jetty-ee9-webapp</artifactId>
+      <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <build>
@@ -214,7 +259,7 @@
                     Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
                     if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
                     that we've already packaged a services file once. -->
-                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty</exclude>
+                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty-12-plus</exclude>
                 </excludes>
               </artifactSet>
               <transformers>
@@ -250,6 +295,14 @@
                   <replacetoken>org.eclipse.jetty</replacetoken>
                   <replacevalue>${rename.offset}.org.eclipse.jetty</replacevalue>
                 </replace>
+
+                <!-- TODO Added here just for testing purpose, Drop before merge? -->
+                <echo message="Replace content in webdefault-ee9.xml"/>
+                <replace file="${project.build.directory}/unpacked/${rename.offset.dir}/org/eclipse/jetty/ee9/webapp/webdefault-ee9.xml">
+                  <replacetoken>org.eclipse.jetty</replacetoken>
+                  <replacevalue>${rename.offset}.org.eclipse.jetty</replacevalue>
+                </replace>
+
                 <echo message="Redo jar"/>
                 <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
               </target>
