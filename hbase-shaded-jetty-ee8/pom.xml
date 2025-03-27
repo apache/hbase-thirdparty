@@ -233,7 +233,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <!--
-          The webdefault.xml contains some jetty servlet classes which should also be relocated
+          The webdefault-ee8.xml contains some jetty servlet classes which should also be relocated
           -->
           <execution>
             <id>relocate-web-xml</id>
