@@ -100,7 +100,9 @@
     <module>hbase-shaded-gson</module>
     <module>hbase-shaded-miscellaneous</module>
     <module>hbase-shaded-jetty</module>
-    <module>hbase-shaded-jetty-12-plus</module>
+    <module>hbase-shaded-jetty-12-plus-core</module>
+    <module>hbase-shaded-jetty-12-plus-ee8</module>
+    <module>hbase-shaded-jetty-12-plus-ee9</module>
     <module>hbase-shaded-jersey</module>
     <module>hbase-shaded-jackson-jaxrs-json-provider</module>
     <module>hbase-noop-htrace</module>
@@ -142,7 +144,6 @@
     <jetty.version>9.4.56.v20240826</jetty.version>
     <jetty12.version>12.0.18</jetty12.version>
     <servlet-api.version>3.1.0</servlet-api.version>
-    <servlet4-api.version>4.0.1</servlet4-api.version>
     <jersey.version>2.46</jersey.version>
     <jakarta.inject.version>2.6.1</jakarta.inject.version>
     <jakarta.ws.rs-api.version>2.1.6</jakarta.ws.rs-api.version>
@@ -243,7 +244,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.5.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
