@@ -40,11 +40,6 @@
   <description>Pulls down Jetty EE8, relocates it and makes a far jar.</description>
   <dependencies>
     <dependency>
-      <groupId>org.apache.hbase.thirdparty</groupId>
-      <artifactId>hbase-shaded-jetty-12-plus-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.jetty.ee8</groupId>
       <artifactId>jetty-ee8-servlet</artifactId>
       <version>${jetty12.version}</version>
@@ -124,9 +119,6 @@
                 <relocation>
                   <pattern>org.eclipse.jetty</pattern>
                   <shadedPattern>${rename.offset}.org.eclipse.jetty</shadedPattern>
-                  <excludes>
-                    <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty-12-plus-core</exclude>
-                  </excludes>
                 </relocation>
                 <!--
                 This is for relocating the blacklist in
@@ -146,6 +138,17 @@
                      produce. See below for how to exclusion of transitive dependencies.
                    -->
                   <exclude>org.slf4j:slf4j-api</exclude>
+                  <!--Exclude jetty core jars: we get a shaded version in adjacent module. -->
+                  <exclude>org.eclipse.jetty:jetty-server</exclude>
+                  <exclude>org.eclipse.jetty:jetty-http</exclude>
+                  <exclude>org.eclipse.jetty:jetty-util</exclude>
+                  <exclude>org.eclipse.jetty:jetty-io</exclude>
+                  <exclude>org.eclipse.jetty:jetty-jmx</exclude>
+                  <exclude>org.eclipse.jetty:jetty-util-ajax</exclude>
+                  <exclude>org.eclipse.jetty:jetty-security</exclude>
+                  <exclude>org.eclipse.jetty:jetty-session</exclude>
+                  <exclude>org.eclipse.jetty:jetty-ee</exclude>
+                  <exclude>org.eclipse.jetty:jetty-xml</exclude>
                   <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
                     Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
                     if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
