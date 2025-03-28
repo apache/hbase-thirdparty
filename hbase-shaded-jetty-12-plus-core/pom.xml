@@ -109,21 +109,45 @@
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-security</artifactId>
       <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-session</artifactId>
       <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   <dependency>
     <groupId>org.eclipse.jetty</groupId>
     <artifactId>jetty-ee</artifactId>
     <version>${jetty12.version}</version>
+    <exclusions>
+      <exclusion>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+      </exclusion>
+    </exclusions>
   </dependency>
     <dependency>
     <groupId>org.eclipse.jetty</groupId>
     <artifactId>jetty-xml</artifactId>
     <version>${jetty12.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <build>
