@@ -102,7 +102,6 @@
     <module>hbase-shaded-jetty</module>
     <module>hbase-shaded-jetty-12-plus-core</module>
     <module>hbase-shaded-jetty-12-plus-ee8</module>
-    <module>hbase-shaded-jetty-12-plus-ee9</module>
     <module>hbase-shaded-jersey</module>
     <module>hbase-shaded-jackson-jaxrs-json-provider</module>
     <module>hbase-noop-htrace</module>
