@@ -204,7 +204,7 @@
                     Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
                     if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
                     that we've already packaged a services file once. -->
-                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty-12-plus-e8</exclude>
+                  <exclude>org.apache.hbase.thirdparty:hbase-shaded-jetty-12-plus-ee8</exclude>
                 </excludes>
               </artifactSet>
               <transformers>
