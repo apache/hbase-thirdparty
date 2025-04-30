@@ -36,10 +36,9 @@
     <!-- This library is meant to work with whatever HBase and Hadoop combos we still list
          as recommended. The version here is what we'll test out of the box if you run mvn test
       -->
-    <hbase.stable.version>2.5.11</hbase.stable.version>
+    <hbase.stable.version>2.4.17</hbase.stable.version>
     <!-- should match the slf4j-api version used in the above hbase -->
     <slf4j.version>1.7.33</slf4j.version>
-    <log4j2.version>2.17.2</log4j2.version>
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
@@ -69,20 +68,8 @@
     <!-- TODO why does hbase-shaded testing-util need this but not declare it? -->
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j2.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-1.2-api</artifactId>
-      <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
