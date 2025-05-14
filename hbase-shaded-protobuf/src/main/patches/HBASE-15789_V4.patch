@@ -643,25 +643,25 @@ index fbdabf225..cd6f80779 100644
 +    @Override
 +    public void readGroup(int fieldNumber, MessageLite.Builder builder,
 +        ExtensionRegistryLite extensionRegistry) throws IOException {
-+      if (recursionDepth >= recursionLimit) {
++      if (messageDepth + groupDepth >= recursionLimit) {
 +        throw InvalidProtocolBufferException.recursionLimitExceeded();
 +      }
-+      ++recursionDepth;
++      ++groupDepth;
 +      builder.mergeFrom(this, extensionRegistry);
 +      checkLastTagWas(WireFormat.makeTag(fieldNumber, WireFormat.WIRETYPE_END_GROUP));
-+      --recursionDepth;
++      --groupDepth;
 +    }
 +
 +    @Override
 +    public <T extends MessageLite> T readGroup(int fieldNumber, Parser<T> parser,
 +        ExtensionRegistryLite extensionRegistry) throws IOException {
-+      if (recursionDepth >= recursionLimit) {
++      if (messageDepth + groupDepth >= recursionLimit) {
 +        throw InvalidProtocolBufferException.recursionLimitExceeded();
 +      }
-+      ++recursionDepth;
++      ++groupDepth;
 +      T result = parser.parsePartialFrom(this, extensionRegistry);
 +      checkLastTagWas(WireFormat.makeTag(fieldNumber, WireFormat.WIRETYPE_END_GROUP));
-+      --recursionDepth;
++      --groupDepth;
 +      return result;
 +    }
 +
@@ -675,14 +675,14 @@ index fbdabf225..cd6f80779 100644
 +    public void readMessage(MessageLite.Builder builder, ExtensionRegistryLite extensionRegistry)
 +        throws IOException {
 +      final int length = readRawVarint32();
-+      if (recursionDepth >= recursionLimit) {
++      if (messageDepth + groupDepth >= recursionLimit) {
 +        throw InvalidProtocolBufferException.recursionLimitExceeded();
 +      }
 +      final int oldLimit = pushLimit(length);
-+      ++recursionDepth;
++      ++messageDepth;
 +      builder.mergeFrom(this, extensionRegistry);
 +      checkLastTagWas(0);
-+      --recursionDepth;
++      --messageDepth;
 +      popLimit(oldLimit);
 +    }
 +
@@ -690,14 +690,14 @@ index fbdabf225..cd6f80779 100644
 +    public <T extends MessageLite> T readMessage(Parser<T> parser,
 +        ExtensionRegistryLite extensionRegistry) throws IOException {
 +      int length = readRawVarint32();
-+      if (recursionDepth >= recursionLimit) {
++      if (messageDepth + groupDepth >= recursionLimit) {
 +        throw InvalidProtocolBufferException.recursionLimitExceeded();
 +      }
 +      final int oldLimit = pushLimit(length);
-+      ++recursionDepth;
++      ++messageDepth;
 +      T result = parser.parsePartialFrom(this, extensionRegistry);
 +      checkLastTagWas(0);
-+      --recursionDepth;
++      --messageDepth;
 +      popLimit(oldLimit);
 +      return result;
 +    }
