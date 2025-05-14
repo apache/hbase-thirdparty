@@ -359,10 +359,10 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 7b2455f12..f906a4774 100644
+index 558d5a6ab..28795acc2 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -430,6 +430,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -429,6 +429,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      return new NioByteString(buffer);
    }
 
@@ -383,13 +383,13 @@ index 7b2455f12..f906a4774 100644
 -
 -    private LeafByteString() {}
    }
- 
+
    /**
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 81da41778..80fd9153c 100644
+index fbdabf225..cd6f80779 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -178,6 +178,15 @@ public abstract class CodedInputStream {
+@@ -191,6 +191,15 @@ public abstract class CodedInputStream {
      }
    }
 
@@ -404,8 +404,8 @@ index 81da41778..80fd9153c 100644
 +
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
- 
-@@ -3970,4 +3979,652 @@ public abstract class CodedInputStream {
+
+@@ -3943,4 +3952,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1065,7 +1065,7 @@ index d52006754..92ed1f1f7 100644
 @@ -196,6 +196,16 @@ final class Utf8 {
      }
    }
- 
+
 +  private static int incompleteStateFor(ByteInput bytes, int index, int limit) {
 +    int byte1 = bytes.read(index - 1);
 +    switch (limit - index) {
@@ -1082,7 +1082,7 @@ index d52006754..92ed1f1f7 100644
 @@ -318,6 +328,24 @@ final class Utf8 {
      return processor.decodeUtf8(bytes, index, size);
    }
- 
+
 +  /**
 +   * Determines if the given {@link ByteInput} is a valid UTF-8 string.
 +   *

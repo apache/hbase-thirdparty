@@ -1,10 +1,10 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 80fd9153c..11de874dd 100644
+index cd6f80779..3c6d8e878 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -179,11 +179,7 @@ public abstract class CodedInputStream {
+@@ -192,11 +192,7 @@ public abstract class CodedInputStream {
    }
- 
+
    /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
 -  public static CodedInputStream newInstance(ByteInput buf, boolean bufferIsImmutable) {
 -    return new ByteInputDecoder(buf, bufferIsImmutable);
@@ -14,7 +14,7 @@ index 80fd9153c..11de874dd 100644
 +  static CodedInputStream newInstance(ByteInput buf, int off, int len, boolean bufferIsImmutable) {
      return new ByteInputDecoder(buf, off, len, bufferIsImmutable);
    }
- 
+
 diff --git a/src/main/java/com/google/protobuf/UnsafeByteOperations.java b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 index 15c1da969..54d2f975a 100644
 --- a/src/main/java/com/google/protobuf/UnsafeByteOperations.java
@@ -22,7 +22,7 @@ index 15c1da969..54d2f975a 100644
 @@ -74,6 +74,17 @@ public final class UnsafeByteOperations {
      return ByteString.wrap(buffer);
    }
- 
+
 +  /**
 +   * An unsafe operation that returns a {@link ByteString} that is backed by the provided buffer.
 +   * @param buffer the ByteInput buffer to be wrapped
