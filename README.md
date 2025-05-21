@@ -73,16 +73,16 @@ In case build fails due to protobuf-java version change, we can follow below ste
     ```
    NOTE: Ensure to replace <BASE_DIR_TO_HBASE_THIRDPARTY_CODE> based on your setup.
 5) Resolve any conflicts. Next, stage all changes and commit the change.
-6) Generate a patch from previous commit. Also bump up patch version if there are code changes.
+6) Generate a patch from previous commit and save the patch file, if there are code changes/conflict.
     ```sh
-    git diff HEAD^ HEAD > HBASE-15789_V4.patch
+    git diff HEAD^ HEAD > HBASE-15789.patch
     ```
 7) Trim the prefix directory 'java/core' from the generated patch.
     ```sh
-    sed -i '' 's|java/core/src/main/java/|src/main/java/|g' HBASE-15789_V4.patch
+    sed -i '' 's|java/core/src/main/java/|src/main/java/|g' HBASE-15789.patch
     ```
 8) Repeat steps 4 to 7 for each patch.
-9) Copy updated patches to 'hbase-shaded-protobuf/src/main/patches' in case there was any code conflict. Drop corresponding stale patches.
+9) Copy and overwrite old patches at 'hbase-shaded-protobuf/src/main/patches' with the updated patches, in case there was any code changes/conflict.
 
 ---
 
