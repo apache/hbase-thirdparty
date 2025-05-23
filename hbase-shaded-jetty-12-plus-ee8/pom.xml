@@ -247,6 +247,23 @@
           </execution>
         </executions>
       </plugin>
+      <!-- This module relocates Jetty 12+ EE8 dependencies compiled with JDK 17, hence, overriding the project-level
+      restriction on maxJdkVersion of 'compileSource'! See HBASE-29354-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules>
+            <enforceBytecodeVersion>
+              <maxJdkVersion>17</maxJdkVersion>
+              <ignoreOptionals>true</ignoreOptionals>
+              <ignoredScopes>
+                <ignoredScope>test</ignoredScope>
+              </ignoredScopes>
+            </enforceBytecodeVersion>
+          </rules>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
