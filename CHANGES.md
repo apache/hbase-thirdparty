@@ -18,6 +18,27 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.11 - Unreleased (as of 2025-05-27)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29304](https://issues.apache.org/jira/browse/HBASE-29304) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, security, thirdparty |
+| [HBASE-29303](https://issues.apache.org/jira/browse/HBASE-29303) | [hbase-thirdparty] Bump protobuf java to 4.30.2 |  Major | Protobufs, thirdparty |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29126](https://issues.apache.org/jira/browse/HBASE-29126) | Bump netty4 to 4.1.119.Final |  Major | dependencies, thirdparty |
+| [HBASE-28885](https://issues.apache.org/jira/browse/HBASE-28885) | [hbase-thirdparty] Bump hbase.stable.version to 2.5.11 in hbase-noop-htrace |  Minor | thirdparty |
+| [HBASE-29343](https://issues.apache.org/jira/browse/HBASE-29343) | Stop versioning protobuf patches in hbase-thirdparty |  Major | Protobufs, thirdparty |
+
+
 ## Release thirdparty-4.1.10 - Unreleased (as of 2025-01-18)
 
 

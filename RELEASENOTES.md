@@ -16,6 +16,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.11 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-29304](https://issues.apache.org/jira/browse/HBASE-29304) | *Major* | **[hbase-thirdparty] Bump dependency versions before releasing**
+
+\* netty 4.1.119.Final -\> 4.1.121.Final
+\* netty.tcnative 2.0.69.Final -\> 2.0.71.Final
+\* guava 33.4.0-jre -\> 33.4.8-jre
+\* error\_prone\_annotations 2.36.0 -\> 2.38.0
+\* gson 2.11.0 -\> 2.13.1
+\* jetty 9.4.56.v20240826 -\> 9.4.57.v20241219
+\* jetty-12-plus 12.0.20 -\> 12.0.21
+\* jackson-jaxrs-json-provider 2.17.3 -\> 2.19.0
+
+
+---
+
+* [HBASE-29303](https://issues.apache.org/jira/browse/HBASE-29303) | *Major* | **[hbase-thirdparty] Bump protobuf java to 4.30.2**
+
+Bump protobuf version from 4.29.2 to 4.30.2
+
+
+
 # HBASE  thirdparty-4.1.10 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
