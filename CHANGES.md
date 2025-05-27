@@ -28,6 +28,7 @@
 |:---- |:---- | :--- |:---- |
 | [HBASE-29304](https://issues.apache.org/jira/browse/HBASE-29304) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, security, thirdparty |
 | [HBASE-29303](https://issues.apache.org/jira/browse/HBASE-29303) | [hbase-thirdparty] Bump protobuf java to 4.30.2 |  Major | Protobufs, thirdparty |
+| [HBASE-29358](https://issues.apache.org/jira/browse/HBASE-29358) | Update description of hbase-thirdparty repo |  Major | . |
 
 
 ### OTHER:
