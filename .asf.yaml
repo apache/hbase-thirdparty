@@ -20,7 +20,7 @@
 # of the project and make sure to discuss the changes with dev@ before committing.
 
 github:
-  description: "Mirror of Apache HBase Third Party Libs"
+  description: "Apache HBase Third Party Libs"
   homepage: https://hbase.apache.org/
   labels:
     - database
