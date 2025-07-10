@@ -103,6 +103,15 @@ Starting with version 4.1.12, this project requires JDK 8 and JDK 17 to accommod
 
 Jetty 12 requires JDK 17 for compilation, but HBase 2.x deployments cannot move to Jetty 12 for JDK 8 compatibility. Our solution provides a single release containing modules for both JDK versions, eliminating the need for separate branches or releases.
 
+### Why toolchains are required?
+Maven needs explicit toolchain configuration to automatically select JDK 8 for existing modules and JDK 17 for Jetty 12 modules. Environment variables alone are insufficient.
+
+### Files
+- `generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
+- `toolchains.xml` - Generated Maven toolchains configuration file (not checked in)
+
+## Build/Deploy
+
 ### Local Development Setup
 
 1. **Install both JDK versions**: JDK 8 and JDK 17
@@ -113,14 +122,15 @@ Jetty 12 requires JDK 17 for compilation, but HBase 2.x deployments cannot move 
    ```
 3. **Choose your toolchain setup approach** (see options below)
 
-#### Toolchain Setup Options
+### Toolchain Setup Options
 
-**Option 1: Project-local toolchains.xml (Recommended)**
+**Option 1: Project-local toolchains.xml**
 ```sh
 # Generate and use project-specific toolchains
 export JAVA8_HOME=/path/to/your/jdk8
 export JAVA17_HOME=/path/to/your/jdk17
- ./dev-support/generate-toolchains.sh
+./dev-support/generate-toolchains.sh
+
 mvn clean install -t toolchains.xml
 ```
 
@@ -129,12 +139,11 @@ mvn clean install -t toolchains.xml
 # Setup toolchains in ~/.m2/ directory
 export JAVA8_HOME=/path/to/your/jdk8
 export JAVA17_HOME=/path/to/your/jdk17
- ./dev-support/generate-toolchains.sh
+./dev-support/generate-toolchains.sh
 cp toolchains.xml ~/.m2/toolchains.xml
+
 mvn clean install
 ```
-
-**Why toolchains are required:** Maven needs explicit toolchain configuration to automatically select JDK 8 for legacy modules and JDK 17 for Jetty 12 modules. Environment variables alone are insufficient.
 
 ### CI/Jenkins Setup
 
@@ -148,19 +157,6 @@ Simply run the toolchain generation script and build:
 mvn clean install -t ./toolchains.xml
 ```
 
-### Files
-- `generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
-- `toolchains.xml` - Generated Maven toolchains configuration file (not checked in)
-
-## Build/Deploy
-
-To build, make sure that your environment uses JDK8, then just run:
-
-```sh
-mvn clean package
-```
-
-**Note**: If you have Maven toolchains configured (recommended), the build will automatically use the appropriate JDK version for each module.
 
 ## Release
 
