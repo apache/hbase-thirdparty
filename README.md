@@ -92,6 +92,66 @@ modern JDKs. Due to a bug in JDK, we cannot generate this code using a more
 modern version of the JDK. See
 [HBASE-26773](https://issues.apache.org/jira/browse/HBASE-26773) for details.
 
+## Jetty 12 and Dual JDK Requirement
+
+Starting with version 4.1.12, this project requires JDK 8 and JDK 17 to accommodate different HBase versions:
+
+- **HBase 2.x**: Uses JDK 8 compatible modules (including `hbase-shaded-jetty` with Jetty 9)
+- **HBase 3.x**: Uses JDK 17 modules (including `hbase-shaded-jetty-12-plus-*` with Jetty 12)
+
+### Why Dual JDK Support?
+
+Jetty 12 requires JDK 17 for compilation, but HBase 2.x deployments cannot move to Jetty 12 for JDK 8 compatibility. Our solution provides a single release containing modules for both JDK versions, eliminating the need for separate branches or releases.
+
+### Local Development Setup
+
+1. **Install both JDK versions**: JDK 8 and JDK 17
+2. **Set environment variables**:
+   ```sh
+   export JAVA8_HOME=/path/to/your/jdk8
+   export JAVA17_HOME=/path/to/your/jdk17
+   ```
+3. **Choose your toolchain setup approach** (see options below)
+
+#### Toolchain Setup Options
+
+**Option 1: Project-local toolchains.xml (Recommended)**
+```sh
+# Generate and use project-specific toolchains
+export JAVA8_HOME=/path/to/your/jdk8
+export JAVA17_HOME=/path/to/your/jdk17
+ ./dev-support/generate-toolchains.sh
+mvn clean install -t toolchains.xml
+```
+
+**Option 2: Global Maven toolchains setup**
+```sh
+# Setup toolchains in ~/.m2/ directory
+export JAVA8_HOME=/path/to/your/jdk8
+export JAVA17_HOME=/path/to/your/jdk17
+ ./dev-support/generate-toolchains.sh
+cp toolchains.xml ~/.m2/toolchains.xml
+mvn clean install
+```
+
+**Why toolchains are required:** Maven needs explicit toolchain configuration to automatically select JDK 8 for legacy modules and JDK 17 for Jetty 12 modules. Environment variables alone are insufficient.
+
+### CI/Jenkins Setup
+
+For Jenkins/CI environments, the project auto-detects Java installations at standard paths:
+- Java 8: `/usr/lib/jvm/java-8`
+- Java 17: `/usr/lib/jvm/java-17`
+
+Simply run the toolchain generation script and build:
+```sh
+./generate-toolchains.sh
+mvn clean install -t ./toolchains.xml
+```
+
+### Files
+- `generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
+- `toolchains.xml` - Generated Maven toolchains configuration file (not checked in)
+
 ## Build/Deploy
 
 To build, make sure that your environment uses JDK8, then just run:
@@ -99,6 +159,8 @@ To build, make sure that your environment uses JDK8, then just run:
 ```sh
 mvn clean package
 ```
+
+**Note**: If you have Maven toolchains configured (recommended), the build will automatically use the appropriate JDK version for each module.
 
 ## Release
 

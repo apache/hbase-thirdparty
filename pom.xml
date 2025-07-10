@@ -127,8 +127,15 @@
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
+    <!-- Project level compilation properties -->
     <compileSource>1.8</compileSource>
     <java.min.version>${compileSource}</java.min.version>
+    <!-- Project level Java toolchain JDK version -->
+    <toolchain.jdk.version>${compileSource}</toolchain.jdk.version>
+    <!-- Project level bytecode enforcement control properties -->
+    <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
+
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
@@ -250,8 +257,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <source>${compileSource}</source>
+            <target>${compileSource}</target>
           </configuration>
         </plugin>
         <plugin>
@@ -280,6 +287,11 @@
           <version>3.4.1</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-toolchains-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
           <version>1.5.0</version>
@@ -299,6 +311,24 @@
             </fileset>
           </filesets>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${toolchain.jdk.version}</version>
+            </jdk>
+          </toolchains>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -522,28 +552,65 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <configuration>
-              <rules>
-                <enforceBytecodeVersion>
-                  <maxJdkVersion>${compileSource}</maxJdkVersion>
-                  <ignoreClasses>
-                    <ignoreClass>module-info</ignoreClass>
-                    <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
-                    <ignoreClass>**.glassfish.jersey.internal.jsr166.JerseyFlowSubscriber*</ignoreClass>
-                  </ignoreClasses>
-                  <ignoreOptionals>true</ignoreOptionals>
-                  <ignoredScopes>
-                    <ignoredScope>test</ignoredScope>
-                  </ignoredScopes>
-                  <message>HBase has unsupported dependencies.
+            <executions>
+              <!-- JDK 8 enforcement for all modules except Jetty 12 -->
+              <execution>
+                <id>enforce-jdk8-bytecode</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <rules>
+                    <enforceBytecodeVersion>
+                      <maxJdkVersion>${compileSource}</maxJdkVersion>
+                      <ignoreClasses>
+                        <ignoreClass>module-info</ignoreClass>
+                        <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
+                        <ignoreClass>**.glassfish.jersey.internal.jsr166.JerseyFlowSubscriber*</ignoreClass>
+                      </ignoreClasses>
+                      <ignoreOptionals>true</ignoreOptionals>
+                      <ignoredScopes>
+                        <ignoredScope>test</ignoredScope>
+                      </ignoredScopes>
+                      <message>HBase has unsupported dependencies.
   HBase requires that all dependencies be compiled with version ${compileSource} or earlier
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
   either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
   Non-release builds can temporarily build with a newer JDK version by setting the
   'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
-                </enforceBytecodeVersion>
-              </rules>
-            </configuration>
+                    </enforceBytecodeVersion>
+                  </rules>
+                  <skip>${skipJdk8BytecodeCheck}</skip>
+                </configuration>
+              </execution>
+              <!-- JDK 17 enforcement for Jetty 12 modules only -->
+              <execution>
+                <id>enforce-jdk17-bytecode</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <rules>
+                    <enforceBytecodeVersion>
+                      <maxJdkVersion>17</maxJdkVersion>
+                      <ignoreClasses>
+                        <ignoreClass>module-info</ignoreClass>
+                      </ignoreClasses>
+                      <ignoreOptionals>true</ignoreOptionals>
+                      <ignoredScopes>
+                        <ignoredScope>test</ignoredScope>
+                      </ignoredScopes>
+                      <message>Some modules require JDK 17 bytecode compatibility.
+  For example, Jetty 12 modules (hbase-shaded-jetty-12-plus-*) require dependencies compiled with JDK 17.
+  These modules are intended for HBase 3.x which supports JDK 17+.</message>
+                    </enforceBytecodeVersion>
+                  </rules>
+                  <skip>${skipJdk17BytecodeCheck}</skip>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

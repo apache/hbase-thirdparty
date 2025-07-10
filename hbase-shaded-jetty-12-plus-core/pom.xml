@@ -38,6 +38,15 @@
   <artifactId>hbase-shaded-jetty-12-plus-core</artifactId>
   <name>Apache HBase Relocated (Shaded) Jetty 12+ Libs: Core</name>
   <description>Pulls down Jetty core, relocates it and makes a far jar.</description>
+  <properties>
+    <!-- Override to use JDK 17 for compilation -->
+    <compileSource>17</compileSource>
+    <!-- Override toolchain JDK version -->
+    <toolchain.jdk.version>${compileSource}</toolchain.jdk.version>
+    <!-- Override bytecode enforcement for Jetty 12 modules -->
+    <skipJdk8BytecodeCheck>true</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>false</skipJdk17BytecodeCheck>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -127,21 +136,21 @@
         </exclusion>
       </exclusions>
     </dependency>
-  <dependency>
-    <groupId>org.eclipse.jetty</groupId>
-    <artifactId>jetty-ee</artifactId>
-    <version>${jetty-12-plus.version}</version>
-    <exclusions>
-      <exclusion>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-      </exclusion>
-    </exclusions>
-  </dependency>
     <dependency>
-    <groupId>org.eclipse.jetty</groupId>
-    <artifactId>jetty-xml</artifactId>
-    <version>${jetty-12-plus.version}</version>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-ee</artifactId>
+      <version>${jetty-12-plus.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-xml</artifactId>
+      <version>${jetty-12-plus.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -200,7 +209,7 @@
                      produce. See below for how to exclusion of transitive dependencies.
                    -->
                   <exclude>org.slf4j:slf4j-api</exclude>
-                 <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
+                  <!-- On the "next" build, exclude a lingering shaded jar if it exists (user did not `clean`).
                    Maven will happily pick up the previous shaded jar and try to include that in the N+1th build
                    if we don't exclude it. This will result in a failure in the ServicesResourceTransformer claiming
                    that we've already packaged a services file once. -->

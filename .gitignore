@@ -8,3 +8,4 @@ hbase-shaded-protobuf/src/main/resources
 .idea
 *.iml
 .flattened-pom.xml
+toolchains.xml
