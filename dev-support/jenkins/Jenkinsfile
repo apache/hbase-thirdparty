@@ -55,7 +55,7 @@ pipeline {
         ARCHIVE_PATTERN_LIST = '*.dump'
         SET_JAVA_HOME = "/usr/lib/jvm/java-8"
         JAVA8_HOME = "/usr/lib/jvm/java-8"
-        JAVA17_HOME = "/usr/lib/jvm/java-17
+        JAVA17_HOME = "/usr/lib/jvm/java-17"
         PLUGINS = 'all'
     }
 
