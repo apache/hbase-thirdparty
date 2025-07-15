@@ -41,6 +41,14 @@
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
+    <!-- Override parent's JDK 17 settings to force JDK 8 for hbase-unsafe -->
+    <compileSource>${java.min.version}</compileSource>
+    <toolchain.jdk.version>${compileSource}</toolchain.jdk.version>
+    <!-- Override bytecode enforcement for hbase-unsafe -->
+    <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
+    <!-- Override project level argline-->
+    <argLine/>
   </properties>
   <dependencies>
     <dependency>

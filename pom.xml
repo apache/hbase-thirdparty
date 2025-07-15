@@ -128,13 +128,13 @@
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <!-- Project level compilation properties -->
-    <compileSource>1.8</compileSource>
-    <java.min.version>${compileSource}</java.min.version>
+    <compileSource>17</compileSource>
+    <java.min.version>1.8</java.min.version>
     <!-- Project level Java toolchain JDK version -->
     <toolchain.jdk.version>${compileSource}</toolchain.jdk.version>
     <!-- Project level bytecode enforcement control properties -->
-    <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
-    <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
+    <skipJdk8BytecodeCheck>true</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>false</skipJdk17BytecodeCheck>
 
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
@@ -158,6 +158,27 @@
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.19.0</jackson-jaxrs-json-provider.version>
     <spotless.version>2.30.0</spotless.version>
+
+    <!-- Below is copied from hbase project -->
+    <hbase-surefire.jdk17.flags>-Dorg.apache.hbase.thirdparty.io.netty.tryReflectionSetAccessible=true
+      --add-modules jdk.unsupported
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/jdk.internal.ref=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-exports java.base/jdk.internal.misc=ALL-UNNAMED
+      --add-exports java.security.jgss/sun.security.krb5=ALL-UNNAMED
+      --add-exports java.base/sun.net.dns=ALL-UNNAMED
+      --add-exports java.base/sun.net.util=ALL-UNNAMED
+      --add-opens java.base/jdk.internal.util.random=ALL-UNNAMED
+      --add-opens java.base/sun.security.x509=ALL-UNNAMED
+      --add-opens java.base/sun.security.util=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED</hbase-surefire.jdk17.flags>
+    <argLine>${hbase-surefire.jdk17.flags}</argLine>
   </properties>
   <build>
     <pluginManagement>
@@ -553,7 +574,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
-              <!-- JDK 8 enforcement for all modules except Jetty 12 -->
+              <!-- JDK 8 enforcement for hbase-unsafe module only-->
               <execution>
                 <id>enforce-jdk8-bytecode</id>
                 <goals>
@@ -563,7 +584,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>${compileSource}</maxJdkVersion>
+                      <maxJdkVersion>${java.min.version}</maxJdkVersion>
                       <ignoreClasses>
                         <ignoreClass>module-info</ignoreClass>
                         <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
@@ -574,7 +595,7 @@
                         <ignoredScope>test</ignoredScope>
                       </ignoredScopes>
                       <message>HBase has unsupported dependencies.
-  HBase requires that all dependencies be compiled with version ${compileSource} or earlier
+  hbase-unsafe requires to be compiled with version 1.8
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
   either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
   Non-release builds can temporarily build with a newer JDK version by setting the
@@ -584,7 +605,7 @@
                   <skip>${skipJdk8BytecodeCheck}</skip>
                 </configuration>
               </execution>
-              <!-- JDK 17 enforcement for Jetty 12 modules only -->
+              <!-- JDK 17 enforcement for all modules except hbase-unsafe -->
               <execution>
                 <id>enforce-jdk17-bytecode</id>
                 <goals>
@@ -594,7 +615,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>17</maxJdkVersion>
+                      <maxJdkVersion>${compileSource}</maxJdkVersion>
                       <ignoreClasses>
                         <ignoreClass>module-info</ignoreClass>
                       </ignoreClasses>
