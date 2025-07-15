@@ -53,7 +53,7 @@ pipeline {
         DOCKERFILE_REL = "${SRC_REL}/dev-support/jenkins/Dockerfile"
         YETUS_DRIVER_REL = "${SRC_REL}/dev-support/jenkins/jenkins_precommit_github_yetus.sh"
         ARCHIVE_PATTERN_LIST = '*.dump'
-        SET_JAVA_HOME = "/usr/lib/jvm/java-8"
+        SET_JAVA_HOME = "/usr/lib/jvm/java-17"
         JAVA8_HOME = "/usr/lib/jvm/java-8"
         JAVA17_HOME = "/usr/lib/jvm/java-17"
         PLUGINS = 'all'
@@ -149,7 +149,7 @@ pipeline {
             }
             tools {
                 // this needs to be set to the jdk that ought to be used to build releases on the branch the Jenkinsfile is stored in.
-                jdk "jdk_1.8_latest"
+                jdk "jdk_17_latest"
             }
             stages {
                 stage ('setup') {
@@ -165,6 +165,17 @@ pipeline {
                             dir ("component") {
                                 echo 'Build the htrace replacement artifact.'
                                 checkout scm
+                                sh label: 'Generate and setup toolchains', script: '''#!/bin/bash -e
+                                    echo "Generating toolchains.xml"
+                                    ./dev-support/generate-toolchains.sh
+
+                                    echo "Setting up Maven toolchains"
+                                    mkdir -p ~/.m2
+                                    cp toolchains.xml ~/.m2/toolchains.xml
+
+                                    echo "Toolchains setup complete"
+                                    cat ~/.m2/toolchains.xml
+                                '''
                                 sh 'mvn -DskipTests -pl hbase-noop-htrace clean package'
                             }
                             dir ("tools") {
