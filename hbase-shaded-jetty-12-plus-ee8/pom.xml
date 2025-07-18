@@ -38,6 +38,11 @@
   <artifactId>hbase-shaded-jetty-12-plus-ee8</artifactId>
   <name>Apache HBase Relocated (Shaded) Jetty 12+ Libs: EE8</name>
   <description>Pulls down Jetty EE8, relocates it and makes a far jar.</description>
+  <properties>
+    <!-- Override bytecode enforcement for jetty modules -->
+    <skipJdk8BytecodeCheck>true</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>false</skipJdk17BytecodeCheck>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty.ee8</groupId>

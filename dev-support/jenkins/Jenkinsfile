@@ -165,17 +165,6 @@ pipeline {
                             dir ("component") {
                                 echo 'Build the htrace replacement artifact.'
                                 checkout scm
-                                sh label: 'Generate and setup toolchains', script: '''#!/bin/bash -e
-                                    echo "Generating toolchains.xml"
-                                    ./dev-support/generate-toolchains.sh
-
-                                    echo "Setting up Maven toolchains"
-                                    mkdir -p ~/.m2
-                                    cp toolchains.xml ~/.m2/toolchains.xml
-
-                                    echo "Toolchains setup complete"
-                                    cat ~/.m2/toolchains.xml
-                                '''
                                 sh 'mvn -DskipTests -pl hbase-noop-htrace clean package'
                             }
                             dir ("tools") {

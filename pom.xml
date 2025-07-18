@@ -128,13 +128,17 @@
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <!-- Project level compilation properties -->
-    <compileSource>17</compileSource>
     <java.min.version>1.8</java.min.version>
+    <java.secondary.version>17</java.secondary.version>
+    <releaseTarget>8</releaseTarget>
+    <maven.compiler.source>${releaseTarget}</maven.compiler.source>
+    <maven.compiler.target>${releaseTarget}</maven.compiler.target>
+    <maven.compiler.release>${releaseTarget}</maven.compiler.release>
     <!-- Project level Java toolchain JDK version -->
-    <toolchain.jdk.version>${compileSource}</toolchain.jdk.version>
+    <toolchain.jdk.version>${java.secondary.version}</toolchain.jdk.version>
     <!-- Project level bytecode enforcement control properties -->
-    <skipJdk8BytecodeCheck>true</skipJdk8BytecodeCheck>
-    <skipJdk17BytecodeCheck>false</skipJdk17BytecodeCheck>
+    <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
 
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
@@ -276,11 +280,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
-          <configuration>
-            <source>${compileSource}</source>
-            <target>${compileSource}</target>
-          </configuration>
+          <version>3.13.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -615,7 +615,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>${compileSource}</maxJdkVersion>
+                      <maxJdkVersion>${java.secondary.version}</maxJdkVersion>
                       <ignoreClasses>
                         <ignoreClass>module-info</ignoreClass>
                       </ignoreClasses>

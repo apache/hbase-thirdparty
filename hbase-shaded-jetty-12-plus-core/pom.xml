@@ -38,6 +38,11 @@
   <artifactId>hbase-shaded-jetty-12-plus-core</artifactId>
   <name>Apache HBase Relocated (Shaded) Jetty 12+ Libs: Core</name>
   <description>Pulls down Jetty core, relocates it and makes a far jar.</description>
+  <properties>
+    <!-- Override bytecode enforcement for jetty modules -->
+    <skipJdk8BytecodeCheck>true</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>false</skipJdk17BytecodeCheck>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>

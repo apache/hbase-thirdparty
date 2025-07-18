@@ -105,6 +105,21 @@ RUN mkdir -p /usr/lib/jvm && \
 
 # configure default environment for Yetus
 ENV MAVEN_HOME='/opt/maven'
+ 
+# create a wrapper for mvn to always pass the toolchains.xml file
+RUN mv /opt/maven/bin/mvn /opt/maven/bin/mvn-original && \
+    cat > /opt/maven/bin/mvn <<'EOF'
+#!/bin/bash
+TOOLCHAIN="${BASEDIR}/dev-support/toolchains-jenkins.xml"
+if [ -f "$TOOLCHAIN" ]; then
+  echo "Bypassed mvn and added: -t ${TOOLCHAIN} as OPTS!"
+  exec ${MAVEN_HOME}/bin/mvn-original "$@" -t "$TOOLCHAIN"
+else
+  echo "Unexpected: ${TOOLCHAIN} file is missing!"
+  exec ${MAVEN_HOME}/bin/mvn-original "$@"
+fi
+EOF
+RUN chmod +x /opt/maven/bin/mvn && cat /opt/maven/bin/mvn
 
 CMD ["/bin/bash"]
 
