@@ -42,7 +42,7 @@
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
     <!-- Override parent's JDK 17 settings to force JDK 8 for hbase-unsafe -->
-    <toolchain.jdk.version>${java.min.version}</toolchain.jdk.version>
+    <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
     <!-- Override project level argline-->
     <argLine/>
   </properties>

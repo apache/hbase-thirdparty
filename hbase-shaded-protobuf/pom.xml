@@ -34,7 +34,7 @@
     hbase-shaded-protobuf must be built with JDK 8 because it depends on internal Java APIs such as
     sun.misc.Unsafe. These internal APIs are inaccessible when compiling with newer JDKs using the
     release setting in Maven. -->
-    <toolchain.jdk.version>${java.min.version}</toolchain.jdk.version>
+    <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
   </properties>
   <build>
     <plugins>

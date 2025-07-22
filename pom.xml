@@ -128,12 +128,12 @@
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <!-- Project level compilation properties -->
-    <java.min.version>1.8</java.min.version>
+    <hbase.unsafe.and.protobuf.java.version>1.8</hbase.unsafe.and.protobuf.java.version>
     <java.secondary.version>17</java.secondary.version>
-    <releaseTarget>8</releaseTarget>
-    <maven.compiler.source>${releaseTarget}</maven.compiler.source>
-    <maven.compiler.target>${releaseTarget}</maven.compiler.target>
-    <maven.compiler.release>${releaseTarget}</maven.compiler.release>
+    <java.release.version>8</java.release.version>
+    <maven.compiler.source>${java.release.version}</maven.compiler.source>
+    <maven.compiler.target>${java.release.version}</maven.compiler.target>
+    <maven.compiler.release>${java.release.version}</maven.compiler.release>
     <!-- Project level Java toolchain JDK version -->
     <toolchain.jdk.version>${java.secondary.version}</toolchain.jdk.version>
     <!-- Project level bytecode enforcement control properties -->
@@ -400,9 +400,9 @@
                 </requireMavenVersion>
                 <!-- The earliest JVM version we verify builds for via ASF Jenkins -->
                 <requireJavaVersion>
-                  <version>[${java.min.version},)</version>
+                  <version>[${hbase.unsafe.and.protobuf.java.version},)</version>
                   <message>Java is out of date.
-  HBase requires at least version ${java.min.version} of the JDK to properly build from source.
+  HBase requires at least version ${hbase.unsafe.and.protobuf.java.version} of the JDK to properly build from source.
   See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireJavaVersion>
                 <bannedDependencies>
@@ -574,7 +574,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
-              <!-- JDK 8 enforcement for hbase-unsafe module only-->
+              <!-- JDK 8 enforcement for all modules except jetty-12-plus* -->
               <execution>
                 <id>enforce-jdk8-bytecode</id>
                 <goals>
@@ -584,7 +584,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>${java.min.version}</maxJdkVersion>
+                      <maxJdkVersion>${hbase.unsafe.and.protobuf.java.version}</maxJdkVersion>
                       <ignoreClasses>
                         <ignoreClass>module-info</ignoreClass>
                         <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
@@ -605,7 +605,7 @@
                   <skip>${skipJdk8BytecodeCheck}</skip>
                 </configuration>
               </execution>
-              <!-- JDK 17 enforcement for all modules except hbase-unsafe -->
+              <!-- JDK 17 enforcement jetty-12-plus* modules only-->
               <execution>
                 <id>enforce-jdk17-bytecode</id>
                 <goals>
