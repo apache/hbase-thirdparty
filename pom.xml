@@ -129,13 +129,11 @@
     <buildDate>${maven.build.timestamp}</buildDate>
     <!-- Project level compilation properties -->
     <hbase.unsafe.and.protobuf.java.version>1.8</hbase.unsafe.and.protobuf.java.version>
-    <java.secondary.version>17</java.secondary.version>
+    <java.version>17</java.version>
     <java.release.version>8</java.release.version>
-    <maven.compiler.source>${java.release.version}</maven.compiler.source>
-    <maven.compiler.target>${java.release.version}</maven.compiler.target>
     <maven.compiler.release>${java.release.version}</maven.compiler.release>
     <!-- Project level Java toolchain JDK version -->
-    <toolchain.jdk.version>${java.secondary.version}</toolchain.jdk.version>
+    <toolchain.jdk.version>${java.version}</toolchain.jdk.version>
     <!-- Project level bytecode enforcement control properties -->
     <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
     <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
@@ -615,7 +613,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>${java.secondary.version}</maxJdkVersion>
+                      <maxJdkVersion>${java.version}</maxJdkVersion>
                       <ignoreClasses>
                         <ignoreClass>module-info</ignoreClass>
                       </ignoreClasses>

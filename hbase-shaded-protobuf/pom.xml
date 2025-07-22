@@ -35,6 +35,8 @@
     sun.misc.Unsafe. These internal APIs are inaccessible when compiling with newer JDKs using the
     release setting in Maven. -->
     <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
+    <maven.compiler.source>${java.release.version}</maven.compiler.source>
+    <maven.compiler.target>${java.release.version}</maven.compiler.target>
   </properties>
   <build>
     <plugins>
