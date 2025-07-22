@@ -117,7 +117,7 @@ The project uses Maven enforcer plugin profiles to ensure these requirements are
 Maven needs explicit toolchain configuration to automatically select JDK 8 for hbase-unsafe and hbase-shaded-protobuf modules, and JDK 17 for all other modules including Jetty 12 modules. Environment variables alone are insufficient.
 
 ### Files
-- `generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
+- `dev-support/generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
 - `toolchains.xml` - Generated Maven toolchains configuration file (not checked in)
 
 ## Build/Deploy
@@ -139,8 +139,11 @@ Maven needs explicit toolchain configuration to automatically select JDK 8 for h
 # Generate and use project-specific toolchains
 export JAVA8_HOME=/path/to/your/jdk8
 export JAVA17_HOME=/path/to/your/jdk17
+
+# Below command will generate toolchains.xml in project root
 ./dev-support/generate-toolchains.sh
 
+# Run build by passing toolchains.xml file to maven
 mvn clean install -t toolchains.xml
 ```
 
@@ -149,9 +152,14 @@ mvn clean install -t toolchains.xml
 # Setup toolchains in ~/.m2/ directory
 export JAVA8_HOME=/path/to/your/jdk8
 export JAVA17_HOME=/path/to/your/jdk17
+
+# Below command will generate toolchains.xml in project root
 ./dev-support/generate-toolchains.sh
+
+# Copy the generated file to global .m2 directory
 cp toolchains.xml ~/.m2/toolchains.xml
 
+# Run build as usual
 mvn clean install
 ```
 
