@@ -36,6 +36,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -qq update && \
     wget='1.21.2-*' \
     shellcheck='0.8.0-*' \
     patch='2.7.6-*' \
+    libxml2-dev='2.9.13+dfsg-*' \
+    libxml2-utils='2.9.13+dfsg-*' \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
