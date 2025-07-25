@@ -29,7 +29,7 @@ fi
 
 declare -i missing_env=0
 declare -a required_envs=(
-  # these ENV variables define the required API with Jenkinsfile_GitHub
+  # these ENV variables define the required API with Jenkinsfile
   "ARCHIVE_PATTERN_LIST"
   "BUILD_URL_ARTIFACTS"
   "DOCKERFILE"
