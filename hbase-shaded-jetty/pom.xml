@@ -37,7 +37,7 @@
   </parent>
   <artifactId>hbase-shaded-jetty</artifactId>
   <name>Apache HBase Relocated (Shaded) Jetty Libs</name>
-  <description>Pulls down Jetty, relocates it and makes a far jar.</description>
+  <description>Pulls down Jetty 9, relocates it and makes a fat jar.</description>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
