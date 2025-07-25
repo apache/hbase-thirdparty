@@ -51,6 +51,7 @@ pipeline {
         // Branch or tag name.  Yetus release tags are 'rel/X.Y.Z'
         YETUS_VERSION = '0.15.0'
         DOCKERFILE_REL = "${SRC_REL}/dev-support/jenkins/Dockerfile"
+        CACHE_APACHE_ARTIFACT_REL = "${SRC_REL}/dev-support/jenkins/cache-apache-project-artifact.sh"
         YETUS_DRIVER_REL = "${SRC_REL}/dev-support/jenkins/jenkins_precommit_github_yetus.sh"
         ARCHIVE_PATTERN_LIST = '*.dump'
         SET_JAVA_HOME = "/usr/lib/jvm/java-17"
@@ -71,6 +72,7 @@ pipeline {
                 SOURCEDIR = "${WORKDIR}/${SRC_REL}"
                 PATCHDIR = "${WORKDIR}/${PATCH_REL}"
                 DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
+                CACHE_APACHE_ARTIFACT = "${WORKDIR}/${CACHE_APACHE_ARTIFACT_REL}"
                 YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
                 YETUSDIR = "${WORKDIR}/${YETUS_REL}"
                 BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
@@ -81,7 +83,11 @@ pipeline {
                 }
                 dir("${YETUSDIR}") {
                     sh'''#!/usr/bin/env bash
-                      wget https://dlcdn.apache.org/yetus/${YETUS_VERSION}/apache-yetus-${YETUS_VERSION}-bin.tar.gz && \
+                      "${CACHE_APACHE_ARTIFACT}" \
+                        --keys 'https://downloads.apache.org/yetus/KEYS' \
+                        --verify-tar-gz \
+                        ./apache-yetus-${YETUS_VERSION}-bin.tar.gz \
+                        yetus/${YETUS_VERSION}/apache-yetus-${YETUS_VERSION}-bin.tar.gz && \
                       tar --strip-components=1 -xzf apache-yetus-${YETUS_VERSION}-bin.tar.gz && \
                       rm apache-yetus-${YETUS_VERSION}-bin.tar.gz
                     '''
