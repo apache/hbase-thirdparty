@@ -86,19 +86,128 @@ In case build fails due to protobuf-java version change, we can follow below ste
 
 ---
 
-Note that this project requires JDK8. This is because a bunch of the code we
-have in hbase-unsafe is using old APIs that have been removed from more
-modern JDKs. Due to a bug in JDK, we cannot generate this code using a more
-modern version of the JDK. See
-[HBASE-26773](https://issues.apache.org/jira/browse/HBASE-26773) for details.
+## Dual JDK Requirements
+
+Starting with version 4.1.12, this project requires both JDK 8 and JDK 17 to accommodate different HBase versions:
+
+- **HBase 2.x**: Uses JDK 8 compatible modules (including `hbase-shaded-jetty` with Jetty 9)
+- **HBase 3.x**: Uses JDK 17 modules (including `hbase-shaded-jetty-12-plus-*` with Jetty 12)
+
+Jetty 12 requires JDK 17 for compilation, but HBase 2.x deployments cannot move to Jetty 12 for JDK 8 compatibility. Our solution provides a single release containing modules for both JDK versions, eliminating the need for separate branches or releases.
+
+### JDK 8 Required Modules
+
+This project has specific JDK requirements for different modules:
+
+- **hbase-unsafe**: Must be built with JDK 8 because it uses old APIs that have been removed from more modern JDKs. Due to a bug in JDK, we cannot generate this code using a more modern version of the JDK. See [HBASE-26773](https://issues.apache.org/jira/browse/HBASE-26773) for details.
+- **hbase-shaded-protobuf**: Must be built with JDK 8 because it depends on internal Java APIs such as `sun.misc.Unsafe`. These internal APIs are inaccessible when compiling with newer JDKs but release target set to JDK 8.
+
+### JDK 17 Compilation with JDK 8 Target
+
+**All other modules** (including Jetty 12 modules) use JDK 17 for compilation but with release target set to JDK 8.
+
+### Maven Enforcer Plugin Profiles
+
+The project uses Maven enforcer plugin profiles to ensure these requirements are met:
+- **enforce-jdk8-bytecode**: Ensures hbase-unsafe and hbase-shaded-protobuf are built with JDK 8.
+- **enforce-jdk17-bytecode**: For **Jetty 12 modules** (hbase-shaded-jetty-12-plus-*), the enforcer plugin allows JDK 17 bytecode to be included from Jetty 12 dependencies, while still using JDK 8 as the release target.
+
+### Why toolchains are required?
+
+Maven needs explicit toolchain configuration to automatically select JDK 8 for hbase-unsafe and hbase-shaded-protobuf modules, and JDK 17 for all other modules including Jetty 12 modules. Environment variables alone are insufficient.
+
+### Files
+- `dev-support/generate-toolchains.sh` - Script to generate toolchains.xml with configurable paths
+- `toolchains.xml` - Generated Maven toolchains configuration file (not checked in)
 
 ## Build/Deploy
 
-To build, make sure that your environment uses JDK8, then just run:
+### Local Development Setup
 
+1. **Install both JDK versions**: JDK 8 and JDK 17
+2. **Set environment variables**:
+   ```sh
+   export JAVA8_HOME=/path/to/your/jdk8
+   export JAVA17_HOME=/path/to/your/jdk17
+   ```
+3. **Choose your toolchain setup approach** (see options below)
+
+### Toolchain Setup Options
+
+**Option 1: Project-local toolchains.xml**
 ```sh
-mvn clean package
+# Generate and use project-specific toolchains
+export JAVA8_HOME=/path/to/your/jdk8
+export JAVA17_HOME=/path/to/your/jdk17
+
+# Below command will generate toolchains.xml in project root
+./dev-support/generate-toolchains.sh
+
+# Run build by passing toolchains.xml file to maven
+mvn clean install -t toolchains.xml
 ```
+
+**Option 2: Global Maven toolchains setup**
+```sh
+# Setup toolchains in ~/.m2/ directory
+export JAVA8_HOME=/path/to/your/jdk8
+export JAVA17_HOME=/path/to/your/jdk17
+
+# Below command will generate toolchains.xml in project root
+./dev-support/generate-toolchains.sh
+
+# Copy the generated file to global .m2 directory
+cp toolchains.xml ~/.m2/toolchains.xml
+
+# Run build as usual
+mvn clean install
+```
+
+### CI/Jenkins Setup
+
+The Jenkins CI environment uses a Docker-based build system that automatically handles the dual JDK requirements without any manual configuration.
+
+#### Multi-JDK Docker Environment
+
+The Jenkins build uses a custom Dockerfile (`dev-support/jenkins/Dockerfile`) that:
+- Downloads and installs both JDK 8 (Adoptium Temurin) and JDK 17 (Adoptium Temurin)
+- Places them at standardized paths:
+  - Java 8: `/usr/lib/jvm/java-8`
+  - Java 17: `/usr/lib/jvm/java-17`
+- Includes Maven 3.9.8 for the build process
+
+#### Maven Wrapper with Automatic Toolchains
+
+The Docker image creates a Maven wrapper that automatically handles toolchain configuration by replacing the original `mvn` command with a wrapper that always passes the `-t ${BASEDIR}/dev-support/toolchains-jenkins.xml` parameter to ensure the correct toolchains file is used for every Maven invocation.
+
+#### Automatic JDK Selection
+
+The system uses a pre-configured toolchains file (`dev-support/toolchains-jenkins.xml`) that:
+- Defines JDK 1.8 toolchain pointing to `/usr/lib/jvm/java-8`
+- Defines JDK 17 toolchain pointing to `/usr/lib/jvm/java-17`
+- Allows Maven to automatically select the correct JDK for each module based on the toolchain requirements in their POMs
+
+#### Jenkins Build Process
+
+In Jenkins, the build process is completely automated:
+1. Docker container starts with both JDKs pre-installed
+2. Maven wrapper automatically passes the toolchains configuration
+3. Each module uses the appropriate JDK version:
+   - `hbase-unsafe` and `hbase-shaded-protobuf`: Built with JDK 8
+   - All other modules: Built with JDK 17 (with JDK 8 release target)
+4. No manual toolchain setup or environment configuration required
+
+#### Environment Variables
+
+The Jenkinsfile sets the following environment variables:
+```bash
+SET_JAVA_HOME="/usr/lib/jvm/java-17"    # Default JDK for the build
+JAVA8_HOME="/usr/lib/jvm/java-8"        # JDK 8 location
+JAVA17_HOME="/usr/lib/jvm/java-17"      # JDK 17 location
+```
+
+This automated setup ensures consistent builds across all Jenkins jobs without requiring developers or maintainers to manually configure toolchains in the CI environment.
+
 
 ## Release
 

@@ -100,6 +100,8 @@
     <module>hbase-shaded-gson</module>
     <module>hbase-shaded-miscellaneous</module>
     <module>hbase-shaded-jetty</module>
+    <module>hbase-shaded-jetty-12-plus-core</module>
+    <module>hbase-shaded-jetty-12-plus-ee8</module>
     <module>hbase-shaded-jersey</module>
     <module>hbase-shaded-jackson-jaxrs-json-provider</module>
     <module>hbase-noop-htrace</module>
@@ -125,8 +127,17 @@
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
-    <compileSource>1.8</compileSource>
-    <java.min.version>${compileSource}</java.min.version>
+    <!-- Project level compilation properties -->
+    <hbase.unsafe.and.protobuf.java.version>1.8</hbase.unsafe.and.protobuf.java.version>
+    <java.version>17</java.version>
+    <java.release.version>8</java.release.version>
+    <maven.compiler.release>${java.release.version}</maven.compiler.release>
+    <!-- Project level Java toolchain JDK version -->
+    <toolchain.jdk.version>${java.version}</toolchain.jdk.version>
+    <!-- Project level bytecode enforcement control properties -->
+    <skipJdk8BytecodeCheck>false</skipJdk8BytecodeCheck>
+    <skipJdk17BytecodeCheck>true</skipJdk17BytecodeCheck>
+
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
@@ -139,6 +150,7 @@
     <error_prone_annotations.version>2.38.0</error_prone_annotations.version>
     <gson.version>2.13.1</gson.version>
     <jetty.version>9.4.57.v20241219</jetty.version>
+    <jetty-12-plus.version>12.0.22</jetty-12-plus.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <jersey.version>2.46</jersey.version>
     <jakarta.inject.version>2.6.1</jakarta.inject.version>
@@ -148,6 +160,27 @@
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.19.0</jackson-jaxrs-json-provider.version>
     <spotless.version>2.30.0</spotless.version>
+
+    <!-- Below is copied from hbase project -->
+    <hbase-surefire.jdk17.flags>-Dorg.apache.hbase.thirdparty.io.netty.tryReflectionSetAccessible=true
+      --add-modules jdk.unsupported
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/jdk.internal.ref=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-exports java.base/jdk.internal.misc=ALL-UNNAMED
+      --add-exports java.security.jgss/sun.security.krb5=ALL-UNNAMED
+      --add-exports java.base/sun.net.dns=ALL-UNNAMED
+      --add-exports java.base/sun.net.util=ALL-UNNAMED
+      --add-opens java.base/jdk.internal.util.random=ALL-UNNAMED
+      --add-opens java.base/sun.security.x509=ALL-UNNAMED
+      --add-opens java.base/sun.security.util=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED</hbase-surefire.jdk17.flags>
+    <argLine>${hbase-surefire.jdk17.flags}</argLine>
   </properties>
   <build>
     <pluginManagement>
@@ -245,11 +278,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
+          <version>3.13.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -277,6 +306,11 @@
           <version>3.4.1</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-toolchains-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
           <version>1.5.0</version>
@@ -296,6 +330,24 @@
             </fileset>
           </filesets>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${toolchain.jdk.version}</version>
+            </jdk>
+          </toolchains>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -346,9 +398,9 @@
                 </requireMavenVersion>
                 <!-- The earliest JVM version we verify builds for via ASF Jenkins -->
                 <requireJavaVersion>
-                  <version>[${java.min.version},)</version>
+                  <version>[${hbase.unsafe.and.protobuf.java.version},)</version>
                   <message>Java is out of date.
-  HBase requires at least version ${java.min.version} of the JDK to properly build from source.
+  HBase requires at least version ${hbase.unsafe.and.protobuf.java.version} of the JDK to properly build from source.
   See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireJavaVersion>
                 <bannedDependencies>
@@ -519,28 +571,65 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <configuration>
-              <rules>
-                <enforceBytecodeVersion>
-                  <maxJdkVersion>${compileSource}</maxJdkVersion>
-                  <ignoreClasses>
-                    <ignoreClass>module-info</ignoreClass>
-                    <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
-                    <ignoreClass>**.glassfish.jersey.internal.jsr166.JerseyFlowSubscriber*</ignoreClass>
-                  </ignoreClasses>
-                  <ignoreOptionals>true</ignoreOptionals>
-                  <ignoredScopes>
-                    <ignoredScope>test</ignoredScope>
-                  </ignoredScopes>
-                  <message>HBase has unsupported dependencies.
-  HBase requires that all dependencies be compiled with version ${compileSource} or earlier
+            <executions>
+              <!-- JDK 8 enforcement for all modules except jetty-12-plus* -->
+              <execution>
+                <id>enforce-jdk8-bytecode</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <rules>
+                    <enforceBytecodeVersion>
+                      <maxJdkVersion>${hbase.unsafe.and.protobuf.java.version}</maxJdkVersion>
+                      <ignoreClasses>
+                        <ignoreClass>module-info</ignoreClass>
+                        <ignoreClass>**.glassfish.jersey.internal.jsr166.SubmissionPublisher*</ignoreClass>
+                        <ignoreClass>**.glassfish.jersey.internal.jsr166.JerseyFlowSubscriber*</ignoreClass>
+                      </ignoreClasses>
+                      <ignoreOptionals>true</ignoreOptionals>
+                      <ignoredScopes>
+                        <ignoredScope>test</ignoredScope>
+                      </ignoredScopes>
+                      <message>HBase has unsupported dependencies.
+  hbase-unsafe requires to be compiled with version 1.8
   of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
   either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
   Non-release builds can temporarily build with a newer JDK version by setting the
   'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
-                </enforceBytecodeVersion>
-              </rules>
-            </configuration>
+                    </enforceBytecodeVersion>
+                  </rules>
+                  <skip>${skipJdk8BytecodeCheck}</skip>
+                </configuration>
+              </execution>
+              <!-- JDK 17 enforcement jetty-12-plus* modules only-->
+              <execution>
+                <id>enforce-jdk17-bytecode</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <phase>verify</phase>
+                <configuration>
+                  <rules>
+                    <enforceBytecodeVersion>
+                      <maxJdkVersion>${java.version}</maxJdkVersion>
+                      <ignoreClasses>
+                        <ignoreClass>module-info</ignoreClass>
+                      </ignoreClasses>
+                      <ignoreOptionals>true</ignoreOptionals>
+                      <ignoredScopes>
+                        <ignoredScope>test</ignoredScope>
+                      </ignoredScopes>
+                      <message>Some modules require JDK 17 bytecode compatibility.
+  For example, Jetty 12 modules (hbase-shaded-jetty-12-plus-*) require dependencies compiled with JDK 17.
+  These modules are intended for HBase 3.x which supports JDK 17+.</message>
+                    </enforceBytecodeVersion>
+                  </rules>
+                  <skip>${skipJdk17BytecodeCheck}</skip>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

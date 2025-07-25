@@ -29,6 +29,15 @@
   <artifactId>hbase-shaded-protobuf</artifactId>
   <name>Apache HBase Patched and Relocated (Shaded) Protobuf</name>
   <description>Pulls down protobuf, patches it, compiles, and then relocates/shades.</description>
+  <properties>
+    <!-- Override parent's JDK 17 settings to force JDK 8 for hbase-shaded-protobuf.
+    hbase-shaded-protobuf must be built with JDK 8 because it depends on internal Java APIs such as
+    sun.misc.Unsafe. These internal APIs are inaccessible when compiling with newer JDKs using the
+    release setting in Maven. -->
+    <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
+    <maven.compiler.source>${java.release.version}</maven.compiler.source>
+    <maven.compiler.target>${java.release.version}</maven.compiler.target>
+  </properties>
   <build>
     <plugins>
       <plugin>
