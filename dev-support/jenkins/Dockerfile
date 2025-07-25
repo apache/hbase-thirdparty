@@ -153,11 +153,7 @@ if [ -n "$TOOLCHAIN" ]; then
   "${MAVEN_HOME}/bin/mvn-original" "$@" -t "$TOOLCHAIN"
   exit_code=$?
 else
-  echo "Warning: toolchains-jenkins.xml file not found in any expected location!"
-  echo "Searched locations:"
-  for location in "${TOOLCHAIN_LOCATIONS[@]}"; do
-    echo "  - $location"
-  done
+  echo "Error: toolchains-jenkins.xml file not found in any expected location, please fix the build environment!"
   echo "Proceeding without toolchains configuration..."
   echo "Executing: ${MAVEN_HOME}/bin/mvn-original $@"
   "${MAVEN_HOME}/bin/mvn-original" "$@"
