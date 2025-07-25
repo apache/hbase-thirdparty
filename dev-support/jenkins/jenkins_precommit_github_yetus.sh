@@ -29,7 +29,7 @@ fi
 
 declare -i missing_env=0
 declare -a required_envs=(
-  # these ENV variables define the required API with Jenkinsfile_GitHub
+  # these ENV variables define the required API with Jenkinsfile
   "ARCHIVE_PATTERN_LIST"
   "BUILD_URL_ARTIFACTS"
   "DOCKERFILE"
@@ -56,7 +56,7 @@ if [ ${missing_env} -gt 0 ]; then
 fi
 
 # TODO (HBASE-23900): cannot assume test-patch runs directly from sources
-TESTPATCHBIN="${YETUSDIR}/precommit/src/main/shell/test-patch.sh"
+TESTPATCHBIN="${YETUSDIR}/bin/test-patch"
 
 # this must be clean for every run
 rm -rf "${PATCHDIR}"
@@ -88,8 +88,8 @@ YETUS_ARGS+=("--basedir=${SOURCEDIR}")
 # lots of different output formats
 YETUS_ARGS+=("--console-report-file=${PATCHDIR}/console.txt")
 # enable writing back to Github
-YETUS_ARGS+=("--github-password=${GITHUB_PASSWORD}")
-YETUS_ARGS+=("--github-user=${GITHUB_USER}")
+YETUS_ARGS+=("--github-token=${GITHUB_PASSWORD}")
+YETUS_ARGS+=("--github-write-comment")
 # auto-kill any surefire stragglers during unit test runs
 YETUS_ARGS+=("--reapermode=kill")
 # set relatively high limits for ASF machines

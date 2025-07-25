@@ -49,7 +49,7 @@ pipeline {
         PATCH_REL = 'output'
         YETUS_REL = 'yetus'
         // Branch or tag name.  Yetus release tags are 'rel/X.Y.Z'
-        YETUS_VERSION = 'rel/0.12.0'
+        YETUS_VERSION = '0.15.0'
         DOCKERFILE_REL = "${SRC_REL}/dev-support/jenkins/Dockerfile"
         YETUS_DRIVER_REL = "${SRC_REL}/dev-support/jenkins/jenkins_precommit_github_yetus.sh"
         ARCHIVE_PATTERN_LIST = '*.dump'
@@ -71,6 +71,7 @@ pipeline {
                 SOURCEDIR = "${WORKDIR}/${SRC_REL}"
                 PATCHDIR = "${WORKDIR}/${PATCH_REL}"
                 DOCKERFILE = "${WORKDIR}/${DOCKERFILE_REL}"
+                CACHE_APACHE_ARTIFACT = "${WORKDIR}/tools/cache-apache-project-artifact.sh"
                 YETUS_DRIVER = "${WORKDIR}/${YETUS_DRIVER_REL}"
                 YETUSDIR = "${WORKDIR}/${YETUS_REL}"
                 BUILD_URL_ARTIFACTS = "artifact/${WORKDIR_REL}/${PATCH_REL}"
@@ -79,12 +80,25 @@ pipeline {
                 dir("${SOURCEDIR}") {
                     checkout scm
                 }
+                dir("${WORKDIR}") {
+                    sh'''#!/usr/bin/env bash
+                      set -e
+                      mkdir -p tools
+                      curl -L -O https://raw.githubusercontent.com/apache/hbase/HEAD/dev-support/jenkins-scripts/cache-apache-project-artifact.sh
+                      mv cache-apache-project-artifact.sh tools/
+                      chmod +x tools/cache-apache-project-artifact.sh
+                    '''
+                }
                 dir("${YETUSDIR}") {
-                    checkout([
-                      $class           : 'GitSCM',
-                      branches         : [[name: "${YETUS_VERSION}"]],
-                      userRemoteConfigs: [[url: 'https://github.com/apache/yetus.git']]]
-                    )
+                    sh'''#!/usr/bin/env bash
+                      "${CACHE_APACHE_ARTIFACT}" \
+                        --keys 'https://downloads.apache.org/yetus/KEYS' \
+                        --verify-tar-gz \
+                        ./apache-yetus-${YETUS_VERSION}-bin.tar.gz \
+                        yetus/${YETUS_VERSION}/apache-yetus-${YETUS_VERSION}-bin.tar.gz && \
+                      tar --strip-components=1 -xzf apache-yetus-${YETUS_VERSION}-bin.tar.gz && \
+                      rm apache-yetus-${YETUS_VERSION}-bin.tar.gz
+                    '''
                 }
                 dir("${WORKDIR}") {
                     withCredentials([
