@@ -121,7 +121,6 @@
     <system>hudson</system>
     <url>http://hudson.zones.apache.org/hudson/view/HBase/job/HBase-TRUNK/</url>
   </ciManagement>
-  <!--TODO-->
   <properties>
     <revision>4.1.12-SNAPSHOT</revision>
     <maven.javadoc.skip>true</maven.javadoc.skip>
