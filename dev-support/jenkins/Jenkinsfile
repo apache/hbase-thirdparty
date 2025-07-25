@@ -80,6 +80,15 @@ pipeline {
                 dir("${SOURCEDIR}") {
                     checkout scm
                 }
+                dir("${WORKDIR}") {
+                    sh'''#!/usr/bin/env bash
+                      set -e
+                      mkdir -p tools
+                      curl -L -O https://raw.githubusercontent.com/apache/hbase/HEAD/dev-support/jenkins-scripts/cache-apache-project-artifact.sh
+                      mv cache-apache-project-artifact.sh tools/
+                      chmod +x tools/cache-apache-project-artifact.sh
+                    '''
+                }
                 dir("${YETUSDIR}") {
                     sh'''#!/usr/bin/env bash
                       "${CACHE_APACHE_ARTIFACT}" \
