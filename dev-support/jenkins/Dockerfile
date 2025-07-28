@@ -36,6 +36,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -qq update && \
     wget='1.21.2-*' \
     shellcheck='0.8.0-*' \
     patch='2.7.6-*' \
+    libxml2-dev='2.9.13+dfsg-*' \
+    libxml2-utils='2.9.13+dfsg-*' \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
@@ -110,14 +112,56 @@ ENV MAVEN_HOME='/opt/maven'
 RUN mv /opt/maven/bin/mvn /opt/maven/bin/mvn-original && \
     cat > /opt/maven/bin/mvn <<'EOF'
 #!/bin/bash
-TOOLCHAIN="${BASEDIR}/dev-support/toolchains-jenkins.xml"
-if [ -f "$TOOLCHAIN" ]; then
-  echo "Added: -t ${TOOLCHAIN} to mvn flags!"
-  exec ${MAVEN_HOME}/bin/mvn-original "$@" -t "$TOOLCHAIN"
-else
-  echo "Unexpected: ${TOOLCHAIN} file is missing!"
-  exec ${MAVEN_HOME}/bin/mvn-original "$@"
+
+echo "Maven wrapper called with args: $@"
+echo "Current working directory: $(pwd)"
+echo "BASEDIR environment variable: ${BASEDIR:-'(not set)'}"
+echo "MAVEN_HOME: ${MAVEN_HOME:-'(not set)'}"
+
+# Ensure Maven home exists
+if [ ! -d "${MAVEN_HOME}" ]; then
+  echo "ERROR: MAVEN_HOME directory does not exist: ${MAVEN_HOME}"
+  exit 1
 fi
+
+if [ ! -f "${MAVEN_HOME}/bin/mvn-original" ]; then
+  echo "ERROR: mvn-original not found at: ${MAVEN_HOME}/bin/mvn-original"
+  exit 1
+fi
+
+# Try multiple possible locations for the toolchains file
+TOOLCHAIN_LOCATIONS=(
+  "${BASEDIR}/dev-support/toolchains-jenkins.xml"
+  "$(pwd)/dev-support/toolchains-jenkins.xml"
+  "./dev-support/toolchains-jenkins.xml"
+  "../dev-support/toolchains-jenkins.xml"
+)
+
+TOOLCHAIN=""
+for location in "${TOOLCHAIN_LOCATIONS[@]}"; do
+  echo "Checking for toolchains file at: $location"
+  if [ -f "$location" ]; then
+    TOOLCHAIN="$location"
+    echo "Found toolchains file at: $TOOLCHAIN"
+    break
+  fi
+done
+
+if [ -n "$TOOLCHAIN" ]; then
+  echo "Added: -t ${TOOLCHAIN} to mvn flags!"
+  echo "Executing: ${MAVEN_HOME}/bin/mvn-original $@ -t $TOOLCHAIN"
+  "${MAVEN_HOME}/bin/mvn-original" "$@" -t "$TOOLCHAIN"
+  exit_code=$?
+else
+  echo "Error: toolchains-jenkins.xml file not found in any expected location, please fix the build environment!"
+  echo "Proceeding without toolchains configuration..."
+  echo "Executing: ${MAVEN_HOME}/bin/mvn-original $@"
+  "${MAVEN_HOME}/bin/mvn-original" "$@"
+  exit_code=$?
+fi
+
+echo "Maven execution completed with exit code: $exit_code"
+exit $exit_code
 EOF
 RUN chmod +x /opt/maven/bin/mvn && cat /opt/maven/bin/mvn
 
