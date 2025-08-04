@@ -56,8 +56,10 @@ pipeline {
         SET_JAVA_HOME = "/usr/lib/jvm/java-17"
         JAVA8_HOME = "/usr/lib/jvm/java-8"
         JAVA17_HOME = "/usr/lib/jvm/java-17"
+        WORKDIR_REL = "yetus-precommit-check"
+        WORKDIR = "${WORKSPACE}/${WORKDIR_REL}"
         PLUGINS = 'all'
-        PERSONALITY = "${SRC_REL}/dev-support/jenkins/hbase-personality.sh"
+        PERSONALITY = "${WORKDIR}/${SRC_REL}/dev-support/jenkins/hbase-personality.sh"
     }
 
 
