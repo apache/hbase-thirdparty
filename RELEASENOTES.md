@@ -16,6 +16,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.12 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-29225](https://issues.apache.org/jira/browse/HBASE-29225) | *Major* | **[hbase-thirdparty] Add module for Jetty 12 with EE8 and add support for toolchain based JDK selection**
+
+We add two new set of modules which we will use for Jetty 12 migration:
+\* hbase-shaded-jetty-12-plus-core: Contains shaded jetty 12 core jars
+\* hbase-shaded-jetty-12-plus-ee8: Contains shaded jetty EE8 specific jars
+
+Also now to build hbase-thirdparty, we need both JDK 8 and JDK 17. For this, developers need to setup toolchains in their systems. Going forward we will be compiling all the modules except hbase-unsafe and hbase-shaded-protobuf with JDK 17 but targeted to JDK 8 release. For hbase-unsafe and hbase-shaded-protobuf, they will build as usual with JDK 8. Also we have relieved enforcer to enforce JDK17 bytecode for jetty-12-plus-\* modules only.
+
+
+---
+
+* [HBASE-29489](https://issues.apache.org/jira/browse/HBASE-29489) | *Major* | **[hbase-thirdparty] Bump protobuf java to 4.31.1**
+
+Bump protobuf version from 4.30.2 to 4.31.1
+
+
+---
+
+* [HBASE-29488](https://issues.apache.org/jira/browse/HBASE-29488) | *Major* | **[hbase-thirdparty] Bump dependency versions before releasing**
+
+\* netty 4.1.121.Final -\> 4.1.123.Final
+\* netty.tcnative 2.0.71.Final -\> 2.0.72.Final
+\* error\_prone\_annotations 2.38.0 -\> 2.41.0
+\* jetty-12-plus 12.0.22 -\> 12.0.23
+\* jersey 2.46 -\> 2.47
+\* jackson-jaxrs-json-provider 2.19.0 -\> 2.19.2
+
+
+
 # HBASE  thirdparty-4.1.11 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.

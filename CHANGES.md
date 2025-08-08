@@ -18,6 +18,20 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.12 - Unreleased (as of 2025-08-08)
+
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29225](https://issues.apache.org/jira/browse/HBASE-29225) | [hbase-thirdparty] Add module for Jetty 12 with EE8 and add support for toolchain based JDK selection |  Major | java, security, thirdparty |
+| [HBASE-29465](https://issues.apache.org/jira/browse/HBASE-29465) | [hbase-thirdparty] Update yetus to a newer version |  Major | build, scripts, thirdparty |
+| [HBASE-29489](https://issues.apache.org/jira/browse/HBASE-29489) | [hbase-thirdparty] Bump protobuf java to 4.31.1 |  Major | Protobufs, thirdparty |
+| [HBASE-29488](https://issues.apache.org/jira/browse/HBASE-29488) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, security, thirdparty |
+
+
 ## Release thirdparty-4.1.11 - Unreleased (as of 2025-05-27)
 
 
