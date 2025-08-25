@@ -254,15 +254,6 @@ final class HBaseUnsafeInternal {
     return UNSAFE.pageSize();
   }
 
-  public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
-    ProtectionDomain protectionDomain) {
-    return UNSAFE.defineClass(name, b, off, len, loader, protectionDomain);
-  }
-
-  public static Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
-    return UNSAFE.defineAnonymousClass(hostClass, data, cpPatches);
-  }
-
   public static Object allocateInstance(Class<?> cls) throws InstantiationException {
     return UNSAFE.allocateInstance(cls);
   }
