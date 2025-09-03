@@ -20,7 +20,6 @@ package org.apache.hadoop.hbase.unsafe;
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.security.ProtectionDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Unsafe;
@@ -252,15 +251,6 @@ final class HBaseUnsafeInternal {
 
   public static int pageSize() {
     return UNSAFE.pageSize();
-  }
-
-  public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
-    ProtectionDomain protectionDomain) {
-    return UNSAFE.defineClass(name, b, off, len, loader, protectionDomain);
-  }
-
-  public static Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
-    return UNSAFE.defineAnonymousClass(hostClass, data, cpPatches);
   }
 
   public static Object allocateInstance(Class<?> cls) throws InstantiationException {
