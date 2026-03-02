@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.security.ProtectionDomain;
 import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -401,15 +400,6 @@ public final class HBasePlatformDependent {
 
   public static int pageSize() {
     return HBaseUnsafeInternal.pageSize();
-  }
-
-  public static Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,
-    ProtectionDomain protectionDomain) {
-    return HBaseUnsafeInternal.defineClass(name, b, off, len, loader, protectionDomain);
-  }
-
-  public static Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches) {
-    return HBaseUnsafeInternal.defineAnonymousClass(hostClass, data, cpPatches);
   }
 
   public static Object allocateInstance(Class<?> cls) throws InstantiationException {
