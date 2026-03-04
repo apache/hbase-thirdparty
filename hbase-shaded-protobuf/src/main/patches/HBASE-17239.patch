@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index cd6f80779..3c6d8e878 100644
+index 1cfd5765d..3308cebdd 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -192,11 +192,7 @@ public abstract class CodedInputStream {
+@@ -201,11 +201,7 @@ public abstract class CodedInputStream {
    }
 
    /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
@@ -37,4 +37,3 @@ index 15c1da969..54d2f975a 100644
    /**
     * Writes the given {@link ByteString} to the provided {@link ByteOutput}. Calling this method may
     * result in multiple operations on the target {@link ByteOutput} (i.e. for roped {@link
-
