@@ -18,6 +18,27 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.13 - Unreleased (as of 2026-03-06)
+
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29565](https://issues.apache.org/jira/browse/HBASE-29565) | [hbase-thirdparty] Exclude org.jspecify from hbase-shaded-miscellaneous |  Major | thirdparty |
+| [HBASE-29685](https://issues.apache.org/jira/browse/HBASE-29685) | [hbase-thirdparty] Bump netty4 to 4.1.127.Final |  Trivial | security, thirdparty |
+| [HBASE-29545](https://issues.apache.org/jira/browse/HBASE-29545) | [hbase-thirdparty] remove usage of Unsafe.defineClass |  Major | thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-29943](https://issues.apache.org/jira/browse/HBASE-29943) | [hbase-thirdparty] Bump dependency versions before releasing |  Major | dependencies, security, thirdparty |
+| [HBASE-29942](https://issues.apache.org/jira/browse/HBASE-29942) | [hbase-thirdparty] Bump protobuf java to 4.34.0 |  Major | Protobufs, thirdparty |
+
+
 ## Release thirdparty-4.1.12 - Unreleased (as of 2025-08-08)
 
 
