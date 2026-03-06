@@ -13,10 +13,10 @@ index e7d9eec8e..e17fefd39 100644
      byte[] buffer = getBuffer();
 diff --git a/src/main/java/com/google/protobuf/ByteInput.java b/src/main/java/com/google/protobuf/ByteInput.java
 new file mode 100644
-index 000000000..37c3824a3
+index 000000000..190aac07b
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInput.java
-@@ -0,0 +1,81 @@
+@@ -0,0 +1,86 @@
 +// Protocol Buffers - Google's data interchange format
 +// Copyright 2008 Google Inc.  All rights reserved.
 +// https://developers.google.com/protocol-buffers/
@@ -94,16 +94,21 @@ index 000000000..37c3824a3
 +  public abstract int read(int offset, ByteBuffer out);
 +
 +  /**
++   * Get a long value from the given offset
++   */
++  public abstract long getLong(int offset);
++
++  /**
 +   * @return Total number of bytes in this ByteInput.
 +   */
 +  public abstract int size();
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteInputByteString.java b/src/main/java/com/google/protobuf/ByteInputByteString.java
 new file mode 100644
-index 000000000..320977290
+index 000000000..3493393c8
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInputByteString.java
-@@ -0,0 +1,254 @@
+@@ -0,0 +1,235 @@
 +// Protocol Buffers - Google's data interchange format
 +// Copyright 2008 Google Inc.  All rights reserved.
 +// https://developers.google.com/protocol-buffers/
@@ -265,30 +270,11 @@ index 000000000..320977290
 +  }
 +
 +  @Override
-+  protected int partialIsValidUtf8(int state, int offset, int length) {
-+    int off = getAbsoluteOffset(offset);
-+    return Utf8.partialIsValidUtf8(state, buffer, off, off + length);
-+  }
-+
-+  @Override
-+  public boolean equals(Object other) {
-+    if (other == this) {
-+      return true;
-+    }
-+    if (!(other instanceof ByteString)) {
-+      return false;
-+    }
-+    ByteString otherString = ((ByteString) other);
-+    if (size() != otherString.size()) {
-+      return false;
-+    }
-+    if (size() == 0) {
-+      return true;
-+    }
++  public boolean equalsInternal(ByteString other) {
 +    if (other instanceof RopeByteString) {
-+      return other.equals(this);
++      return other.equalsInternal(this);
 +    }
-+    return Arrays.equals(this.toByteArray(), otherString.toByteArray());
++    return Arrays.equals(this.toByteArray(), other.toByteArray());
 +  }
 +
 +  @Override
@@ -359,11 +345,11 @@ index 000000000..320977290
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 558d5a6ab..28795acc2 100644
+index 900f98850..6789cafdf 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -429,6 +429,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
-     return new NioByteString(buffer);
+@@ -457,6 +457,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+     }
    }
 
 +  /**
@@ -376,7 +362,7 @@ index 558d5a6ab..28795acc2 100644
    /**
     * Wraps the given bytes into a {@code ByteString}. Intended for internal usage within the library
     * to force a classload of ByteString before LiteralByteString.
-@@ -961,8 +968,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -1042,8 +1049,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
       * @return true for equality of substrings, else false.
       */
      abstract boolean equalsRange(ByteString other, int offset, int length);
@@ -386,10 +372,10 @@ index 558d5a6ab..28795acc2 100644
 
    /**
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index fbdabf225..cd6f80779 100644
+index 0d68d1797..1cfd5765d 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -191,6 +191,15 @@ public abstract class CodedInputStream {
+@@ -200,6 +200,15 @@ public abstract class CodedInputStream {
      }
    }
 
@@ -405,7 +391,7 @@ index fbdabf225..cd6f80779 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
 
-@@ -3943,4 +3952,652 @@ public abstract class CodedInputStream {
+@@ -2605,4 +2614,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1059,219 +1045,110 @@ index fbdabf225..cd6f80779 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index d52006754..92ed1f1f7 100644
+index 5abe89dc2..60a4de572 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
-@@ -196,6 +196,16 @@ final class Utf8 {
+@@ -122,6 +122,10 @@ final class Utf8 {
      }
    }
 
-+  private static int incompleteStateFor(ByteInput bytes, int index, int limit) {
-+    int byte1 = bytes.read(index - 1);
-+    switch (limit - index) {
-+      case 0: return incompleteStateFor(byte1);
-+      case 1: return incompleteStateFor(byte1, bytes.read(index));
-+      case 2: return incompleteStateFor(byte1, bytes.read(index), bytes.read(index + 1));
-+      default: throw new AssertionError();
-+    }
++  static boolean isValidUtf8(ByteInput buffer, int offset, int limit) {
++    return processor.isValidUtf8ByteInput(buffer, offset, limit);
 +  }
 +
    // These UTF-8 handling methods are copied from Guava's Utf8 class with a modification to throw
    // a protocol buffer local exception. This exception is then caught in CodedOutputStream so it can
    // fallback to more lenient behavior.
-@@ -318,6 +328,24 @@ final class Utf8 {
-     return processor.decodeUtf8(bytes, index, size);
+@@ -266,6 +270,16 @@ final class Utf8 {
+     return i - index;
    }
 
-+  /**
-+   * Determines if the given {@link ByteInput} is a valid UTF-8 string.
-+   *
-+   * @param buffer the buffer to check.
-+   */
-+  static boolean isValidUtf8(ByteInput buffer, int index, int limit) {
-+    return processor.isValidUtf8(buffer, index, limit);
++  private static int estimateConsecutiveAscii(ByteInput buffer, int index, int limit) {
++    int i = index;
++    final int lim = limit - 7;
++    // This simple loop stops when we encounter a byte >= 0x80 (i.e. non-ASCII).
++    // To speed things up further, we're reading longs instead of bytes so we use a mask to
++    // determine if any byte in the current long is non-ASCII.
++    for (; i < lim && (buffer.getLong(i) & ASCII_MASK_LONG) == 0; i += 8) {}
++    return i - index;
 +  }
 +
-+  /**
-+   * Determines if the given {@link ByteInput} is a partially valid UTF-8 string.
-+   *
-+   * @param buffer the buffer to check.
-+   */
-+  static int partialIsValidUtf8(int state, ByteInput buffer, int index, int limit) {
-+    return processor.partialIsValidUtf8(state, buffer, index, limit);
-+  }
-+
-   /**
-    * Encodes the given characters to the target {@link ByteBuffer} using UTF-8 encoding.
-    *
-@@ -694,6 +722,169 @@ final class Utf8 {
-       return new String(resultArr, 0, resultPos);
+   /** A processor of UTF-8 strings, providing methods for checking validity and encoding. */
+   abstract static class Processor {
+     /**
+@@ -357,6 +371,75 @@ final class Utf8 {
+       }
      }
 
-+    public boolean isValidUtf8(ByteInput buffer, int index, int limit) {
-+      return partialIsValidUtf8(COMPLETE, buffer, index, limit) == COMPLETE;
-+    }
++    protected boolean isValidUtf8ByteInput(ByteInput buffer, int index, int limit) {
++      index += estimateConsecutiveAscii(buffer, index, limit);
 +
-+    int partialIsValidUtf8(int state, ByteInput bytes, int index, int limit) {
-+      if (state != COMPLETE) {
-+        // The previous decoding operation was incomplete (or malformed).
-+        // We look for a well-formed sequence consisting of bytes from
-+        // the previous decoding operation (stored in state) together
-+        // with bytes from the array slice.
-+        //
-+        // We expect such "straddler characters" to be rare.
-+
-+        if (index >= limit) {  // No bytes? No progress.
-+          return state;
-+        }
-+        int byte1 = (byte) state;
-+        // byte1 is never ASCII.
-+        if (byte1 < (byte) 0xE0) {
-+          // two-byte form
-+
-+          // Simultaneously checks for illegal trailing-byte in
-+          // leading position and overlong 2-byte form.
-+          if (byte1 < (byte) 0xC2
-+              // byte2 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
-+          }
-+        } else if (byte1 < (byte) 0xF0) {
-+          // three-byte form
-+
-+          // Get byte2 from saved state or array
-+          int byte2 = (byte) ~(state >> 8);
-+          if (byte2 == 0) {
-+            byte2 = bytes.read(index++);
-+            if (index >= limit) {
-+              return incompleteStateFor(byte1, byte2);
-+            }
-+          }
-+          if (byte2 > (byte) 0xBF
-+              // overlong? 5 most significant bits must not all be zero
-+              || (byte1 == (byte) 0xE0 && byte2 < (byte) 0xA0)
-+              // illegal surrogate codepoint?
-+              || (byte1 == (byte) 0xED && byte2 >= (byte) 0xA0)
-+              // byte3 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
-+          }
-+        } else {
-+          // four-byte form
-+
-+          // Get byte2 and byte3 from saved state or array
-+          int byte2 = (byte) ~(state >> 8);
-+          int byte3 = 0;
-+          if (byte2 == 0) {
-+            byte2 = bytes.read(index++);
-+            if (index >= limit) {
-+              return incompleteStateFor(byte1, byte2);
-+            }
-+          } else {
-+            byte3 = (byte) (state >> 16);
-+          }
-+          if (byte3 == 0) {
-+            byte3 = bytes.read(index++);
-+            if (index >= limit) {
-+              return incompleteStateFor(byte1, byte2, byte3);
-+            }
-+          }
-+
-+          // If we were called with state == MALFORMED, then byte1 is 0xFF,
-+          // which never occurs in well-formed UTF-8, and so we will return
-+          // MALFORMED again below.
-+
-+          if (byte2 > (byte) 0xBF
-+              // Check that 1 <= plane <= 16.  Tricky optimized form of:
-+              // if (byte1 > (byte) 0xF4 ||
-+              //     byte1 == (byte) 0xF0 && byte2 < (byte) 0x90 ||
-+              //     byte1 == (byte) 0xF4 && byte2 > (byte) 0x8F)
-+              || (((byte1 << 28) + (byte2 - (byte) 0x90)) >> 30) != 0
-+              // byte3 trailing-byte test
-+              || byte3 > (byte) 0xBF
-+              // byte4 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
-+          }
-+        }
-+      }
-+
-+      return partialIsValidUtf8(bytes, index, limit);
-+    }
-+
-+    private static int partialIsValidUtf8(ByteInput bytes, int index, int limit) {
-+      // Optimize for 100% ASCII (Hotspot loves small simple top-level loops like this).
-+      // This simple loop stops when we encounter a byte >= 0x80 (i.e. non-ASCII).
-+      while (index < limit && bytes.read(index) >= 0) {
-+        index++;
-+      }
-+
-+      return (index >= limit) ? COMPLETE : partialIsValidUtf8NonAscii(bytes, index, limit);
-+    }
-+
-+    private static int partialIsValidUtf8NonAscii(ByteInput bytes, int index, int limit) {
-+      for (;;) {
-+        int byte1, byte2;
-+
++      for (; ; ) {
 +        // Optimize for interior runs of ASCII bytes.
++        int byte1;
 +        do {
 +          if (index >= limit) {
-+            return COMPLETE;
++            return true;
 +          }
-+        } while ((byte1 = bytes.read(index++)) >= 0);
++        } while ((byte1 = buffer.read(index++)) >= 0);
 +
++        // If we're here byte1 is not ASCII. Only need to handle 2-4 byte forms.
 +        if (byte1 < (byte) 0xE0) {
-+          // two-byte form
-+
++          // Two-byte form (110xxxxx 10xxxxxx)
 +          if (index >= limit) {
 +            // Incomplete sequence
-+            return byte1;
++            return false;
 +          }
 +
 +          // Simultaneously checks for illegal trailing-byte in
 +          // leading position and overlong 2-byte form.
-+          if (byte1 < (byte) 0xC2
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
++          if (byte1 < (byte) 0xC2 || buffer.read(index) > (byte) 0xBF) {
++            return false;
 +          }
++          index++;
 +        } else if (byte1 < (byte) 0xF0) {
-+          // three-byte form
++          // Three-byte form (1110xxxx 10xxxxxx 10xxxxxx)
++          if (index >= limit - 1) {
++            // Incomplete sequence
++            return false;
++          }
 +
-+          if (index >= limit - 1) { // incomplete sequence
-+            return incompleteStateFor(bytes, index, limit);
++          byte byte2 = buffer.read(index++);
++          if (byte2 > (byte) 0xBF
++                  // overlong? 5 most significant bits must not all be zero
++                  || (byte1 == (byte) 0xE0 && byte2 < (byte) 0xA0)
++                  // check for illegal surrogate codepoints
++                  || (byte1 == (byte) 0xED && byte2 >= (byte) 0xA0)
++                  // byte3 trailing-byte test
++                  || buffer.read(index) > (byte) 0xBF) {
++            return false;
 +          }
-+          if ((byte2 = bytes.read(index++)) > (byte) 0xBF
-+              // overlong? 5 most significant bits must not all be zero
-+              || (byte1 == (byte) 0xE0 && byte2 < (byte) 0xA0)
-+              // check for illegal surrogate codepoints
-+              || (byte1 == (byte) 0xED && byte2 >= (byte) 0xA0)
-+              // byte3 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
-+          }
++          index++;
 +        } else {
-+          // four-byte form
-+
-+          if (index >= limit - 2) {  // incomplete sequence
-+            return incompleteStateFor(bytes, index, limit);
++          // Four-byte form (1110xxxx 10xxxxxx 10xxxxxx 10xxxxxx)
++          if (index >= limit - 2) {
++            // Incomplete sequence
++            return false;
 +          }
-+          if ((byte2 = bytes.read(index++)) > (byte) 0xBF
-+              // Check that 1 <= plane <= 16.  Tricky optimized form of:
-+              // if (byte1 > (byte) 0xF4 ||
-+              //     byte1 == (byte) 0xF0 && byte2 < (byte) 0x90 ||
-+              //     byte1 == (byte) 0xF4 && byte2 > (byte) 0x8F)
-+              || (((byte1 << 28) + (byte2 - (byte) 0x90)) >> 30) != 0
-+              // byte3 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF
-+              // byte4 trailing-byte test
-+              || bytes.read(index++) > (byte) 0xBF) {
-+            return MALFORMED;
++
++          // TODO: Consider using getInt() to improve performance.
++          int byte2 = buffer.read(index++);
++          if (byte2 > (byte) 0xBF
++                  // Check that 1 <= plane <= 16.  Tricky optimized form of:
++                  // if (byte1 > (byte) 0xF4 ||
++                  //     byte1 == (byte) 0xF0 && byte2 < (byte) 0x90 ||
++                  //     byte1 == (byte) 0xF4 && byte2 > (byte) 0x8F)
++                  || (((byte1 << 28) + (byte2 - (byte) 0x90)) >> 30) != 0
++                  // byte3 trailing-byte test
++                  || buffer.read(index++) > (byte) 0xBF
++                  // byte4 trailing-byte test
++                  || buffer.read(index++) > (byte) 0xBF) {
++            return false;
 +          }
 +        }
 +      }
 +    }
 +
      /**
-      * Encodes an input character sequence ({@code in}) to UTF-8 in the target array ({@code out}).
-      * For a string, this method is similar to
-
+      * Decodes the given byte array slice into a {@link String}.
+      *
