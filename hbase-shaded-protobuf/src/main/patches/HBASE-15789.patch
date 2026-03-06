@@ -94,9 +94,9 @@ index 000000000..190aac07b
 +  public abstract int read(int offset, ByteBuffer out);
 +
 +  /**
-+   * Get a long value from the given offset
++   * Reads a long value from the given offset.
 +   */
-+  public abstract long getLong(int offset);
++  public abstract long readLong(int offset);
 +
 +  /**
 +   * @return Total number of bytes in this ByteInput.
@@ -1069,7 +1069,7 @@ index 5abe89dc2..60a4de572 100644
 +    // This simple loop stops when we encounter a byte >= 0x80 (i.e. non-ASCII).
 +    // To speed things up further, we're reading longs instead of bytes so we use a mask to
 +    // determine if any byte in the current long is non-ASCII.
-+    for (; i < lim && (buffer.getLong(i) & ASCII_MASK_LONG) == 0; i += 8) {}
++    for (; i < lim && (buffer.readLong(i) & ASCII_MASK_LONG) == 0; i += 8) {}
 +    return i - index;
 +  }
 +
