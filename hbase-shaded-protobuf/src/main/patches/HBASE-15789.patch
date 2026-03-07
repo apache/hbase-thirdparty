@@ -13,7 +13,7 @@ index e7d9eec8e..e17fefd39 100644
      byte[] buffer = getBuffer();
 diff --git a/src/main/java/com/google/protobuf/ByteInput.java b/src/main/java/com/google/protobuf/ByteInput.java
 new file mode 100644
-index 000000000..190aac07b
+index 000000000..8fa95a213
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInput.java
 @@ -0,0 +1,86 @@
@@ -372,10 +372,37 @@ index 900f98850..6789cafdf 100644
 
    /**
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 0d68d1797..1cfd5765d 100644
+index 0d68d1797..08b61797b 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -200,6 +200,15 @@ public abstract class CodedInputStream {
+@@ -122,20 +122,12 @@ public abstract class CodedInputStream {
+   /** Create a new CodedInputStream wrapping the given byte array slice. */
+   static CodedInputStream newInstance(
+       final byte[] buf, final int off, final int len, final boolean bufferIsImmutable) {
+-    final ArrayDecoder result;
+-    switch (varintExperiment) {
+-      case NEW_ALL_CASES:
+-        result = new ArrayDecoderNewVarintAllCases(buf, off, len, bufferIsImmutable);
+-        break;
+-      case NEW_TAGS_LENGTHS_UNSIGNED_ONLY:
+-        result = new ArrayDecoderNewVarintTagsLengthsOnly(buf, off, len, bufferIsImmutable);
+-        break;
+-      case CONTROL:
+-      default:
+-        result = new ArrayDecoderOldVarint(buf, off, len, bufferIsImmutable);
+-        break;
+-    }
+-
++    // Using VarintExperiment here may cause class loading error because of recursive loading, as
++    // the initialization for ByteString.EMPTY will call this method and loading CodedInputStream
++    // also needs ByteString.EMPTY. So here we just simply the code to always use the old varint
++    // implementation. Should be changed to other implementation if future protobuf release changes
++    // the default implementation.
++    final ArrayDecoder result = new ArrayDecoderOldVarint(buf, off, len, bufferIsImmutable);
+     try {
+       // Some uses of CodedInputStream can be more efficient if they know
+       // exactly how many bytes are available.  By pushing the end point of the
+@@ -200,6 +192,15 @@ public abstract class CodedInputStream {
      }
    }
 
@@ -391,7 +418,7 @@ index 0d68d1797..1cfd5765d 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
 
-@@ -2605,4 +2614,652 @@ public abstract class CodedInputStream {
+@@ -2605,4 +2606,652 @@ public abstract class CodedInputStream {
        }
      }
    }
@@ -1045,7 +1072,7 @@ index 0d68d1797..1cfd5765d 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index 5abe89dc2..60a4de572 100644
+index 5abe89dc2..0d0af5097 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
 @@ -122,6 +122,10 @@ final class Utf8 {
