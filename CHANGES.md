@@ -18,7 +18,7 @@
 -->
 # HBASE Changelog
 
-## Release thirdparty-4.1.13 - Unreleased (as of 2026-03-06)
+## Release thirdparty-4.1.13 - Unreleased (as of 2026-03-07)
 
 
 
