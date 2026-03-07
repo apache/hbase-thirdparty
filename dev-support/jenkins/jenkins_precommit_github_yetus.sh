@@ -40,6 +40,7 @@ declare -a required_envs=(
   "SET_JAVA_HOME"
   "SOURCEDIR"
   "YETUSDIR"
+  "PERSONALITY"
 )
 # Validate params
 for required_env in "${required_envs[@]}"; do
@@ -85,6 +86,8 @@ fi
 YETUS_ARGS+=("--patch-dir=${PATCHDIR}")
 # where the source is located
 YETUS_ARGS+=("--basedir=${SOURCEDIR}")
+YETUS_ARGS+=("--project=hbase-thirdparty")
+YETUS_ARGS+=("--personality=${PERSONALITY}")
 # lots of different output formats
 YETUS_ARGS+=("--console-report-file=${PATCHDIR}/console.txt")
 # enable writing back to Github
