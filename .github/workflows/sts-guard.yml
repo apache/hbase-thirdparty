@@ -1,0 +1,44 @@
+# Guard workflow: cancels any workflow run whose name does not start with "STS".
+# This protects the fork from upstream workflows that may be added after syncing.
+#
+# CONVENTION: All StackVista workflows in this fork MUST have a name starting
+# with "STS" (e.g., "STS Build & Publish"). Any workflow without this prefix
+# will be automatically cancelled by this guard. This includes upstream
+# workflows that may appear after syncing.
+#
+# IMPORTANT: When syncing with upstream, always review changes under .github/
+# before merging. Malicious upstream workflows could exfiltrate secrets once
+# merged into the default branch — and could bypass this guard by using the
+# "STS" prefix. Run:
+#
+#   git fetch upstream
+#   git diff master...upstream/master -- .github/
+#
+# Delete any non-STS workflow files before pushing.
+
+name: STS Guard
+
+on:
+  workflow_run:
+    workflows: ['*']
+    types: [requested]
+
+permissions:
+  actions: write
+
+jobs:
+  cancel-non-sts:
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.workflow_run.name, 'STS') }}
+    steps:
+      - name: Cancel non-STS workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runId = context.payload.workflow_run.id;
+            console.log(`Cancelling non-STS workflow run ${runId}: "${context.payload.workflow_run.name}"`);
+            await github.rest.actions.cancelWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });

@@ -1,0 +1,85 @@
+# StackVista fork workflow — prefixed with "sts-" to avoid collisions with upstream.
+# All STS workflow names MUST start with "STS" — the sts-guard.yml cancels any
+# workflow that doesn't match this prefix.
+#
+# When syncing with upstream, review .github/ changes before merging:
+#   git fetch upstream
+#   git diff master...upstream/master -- .github/
+
+name: STS Build & Publish
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'production' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK 8
+        uses: actions/setup-java@v4
+        id: setup-jdk8
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        id: setup-jdk17
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Generate toolchains
+        run: ./dev-support/generate-toolchains.sh
+        env:
+          JAVA8_HOME: ${{ steps.setup-jdk8.outputs.path }}
+          JAVA17_HOME: ${{ steps.setup-jdk17.outputs.path }}
+
+      - name: Generate Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'SETTINGS'
+          <settings>
+            <servers>
+              <server>
+                <id>gitlab</id>
+                <username>${env.GITLAB_REGISTRY_USER}</username>
+                <password>${env.GITLAB_REGISTRY_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          SETTINGS
+        env:
+          GITLAB_REGISTRY_USER: ${{ secrets.GITLAB_PACKAGE_REGISTRY_USER }}
+          GITLAB_REGISTRY_TOKEN: ${{ secrets.GITLAB_PACKAGE_REGISTRY_PASSWORD }}
+
+      - name: Compute version
+        id: version
+        run: |
+          BASE="4.1.14-sts-$(date +%Y%m%d)"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "revision=${BASE}-SNAPSHOT" >> "$GITHUB_OUTPUT"
+          else
+            echo "revision=${BASE}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and deploy
+        run: |
+          mvn clean deploy \
+            -t toolchains.xml \
+            -Drevision=${{ steps.version.outputs.revision }} \
+            -DskipTests \
+            -DaltReleaseDeploymentRepository=gitlab::default::${{ secrets.GITLAB_PACKAGE_REGISTRY_MAVEN_URL }} \
+            -DaltSnapshotDeploymentRepository=gitlab::default::${{ secrets.GITLAB_PACKAGE_REGISTRY_MAVEN_SNAPSHOT_URL }}
+        env:
+          JAVA_HOME: ${{ steps.setup-jdk17.outputs.path }}
+          GITLAB_REGISTRY_USER: ${{ secrets.GITLAB_PACKAGE_REGISTRY_USER }}
+          GITLAB_REGISTRY_TOKEN: ${{ secrets.GITLAB_PACKAGE_REGISTRY_PASSWORD }}
