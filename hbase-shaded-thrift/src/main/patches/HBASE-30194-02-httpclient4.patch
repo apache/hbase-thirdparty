@@ -1,0 +1,129 @@
+diff --git a/src/main/java/org/apache/thrift/THttpClientResponseHandler.java b/src/main/java/org/apache/thrift/THttpClientResponseHandler.java
+--- a/src/main/java/org/apache/thrift/THttpClientResponseHandler.java
++++ b/src/main/java/org/apache/thrift/THttpClientResponseHandler.java
+@@ -4,18 +4,18 @@
+ import java.io.ByteArrayOutputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+-import org.apache.hc.core5.http.ClassicHttpResponse;
+-import org.apache.hc.core5.http.HttpEntity;
+-import org.apache.hc.core5.http.HttpException;
+-import org.apache.hc.core5.http.HttpStatus;
+-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
++import org.apache.http.HttpEntity;
++import org.apache.http.HttpResponse;
++import org.apache.http.HttpStatus;
++import org.apache.http.client.ResponseHandler;
++import org.apache.http.client.ClientProtocolException;
+ 
+-public class THttpClientResponseHandler implements HttpClientResponseHandler<InputStream> {
++public class THttpClientResponseHandler implements ResponseHandler<InputStream> {
+   @Override
+-  public InputStream handleResponse(ClassicHttpResponse response)
+-      throws HttpException, IOException {
++  public InputStream handleResponse(HttpResponse response)
++      throws ClientProtocolException, IOException {
+     try (InputStream is = response.getEntity().getContent()) {
+-      int responseCode = response.getCode();
++      int responseCode = response.getStatusLine().getStatusCode();
+       if (responseCode != HttpStatus.SC_OK) {
+         throw new IOException("HTTP Response code: " + responseCode);
+       }
+diff --git a/src/main/java/org/apache/thrift/transport/THttpClient.java b/src/main/java/org/apache/thrift/transport/THttpClient.java
+--- a/src/main/java/org/apache/thrift/transport/THttpClient.java
++++ b/src/main/java/org/apache/thrift/transport/THttpClient.java
+@@ -27,13 +27,11 @@
+ import java.util.Collections;
+ import java.util.HashMap;
+ import java.util.Map;
+-import org.apache.hc.client5.http.classic.HttpClient;
+-import org.apache.hc.client5.http.classic.methods.HttpPost;
+-import org.apache.hc.client5.http.config.ConnectionConfig;
+-import org.apache.hc.client5.http.config.RequestConfig;
+-import org.apache.hc.core5.http.HttpHost;
+-import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+-import org.apache.hc.core5.util.Timeout;
++import org.apache.http.HttpHost;
++import org.apache.http.client.HttpClient;
++import org.apache.http.client.config.RequestConfig;
++import org.apache.http.client.methods.HttpPost;
++import org.apache.http.entity.ByteArrayEntity;
+ import org.apache.thrift.TConfiguration;
+ import org.apache.thrift.THttpClientResponseHandler;
+ 
+@@ -138,9 +136,9 @@
+       this.client = client;
+       this.host =
+           new HttpHost(
+-              url_.getProtocol(),
+               url_.getHost(),
+-              -1 == url_.getPort() ? url_.getDefaultPort() : url_.getPort());
++              -1 == url_.getPort() ? url_.getDefaultPort() : url_.getPort(),
++              url_.getProtocol());
+     } catch (IOException iox) {
+       throw new TTransportException(iox);
+     }
+@@ -153,9 +151,9 @@
+       this.client = client;
+       this.host =
+           new HttpHost(
+-              url_.getProtocol(),
+               url_.getHost(),
+-              -1 == url_.getPort() ? url_.getDefaultPort() : url_.getPort());
++              -1 == url_.getPort() ? url_.getDefaultPort() : url_.getPort(),
++              url_.getProtocol());
+     } catch (IOException iox) {
+       throw new TTransportException(iox);
+     }
+@@ -166,10 +164,8 @@
+   }
+ 
+   /**
+-   * Use instead {@link
+-   * org.apache.hc.client5.http.impl.io.BasicHttpClientConnectionManager#setConnectionConfig} or
+-   * {@link
+-   * org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager#setDefaultConnectionConfig}
++   * Use instead a {@link RequestConfig} pre-configured on the underlying Apache HttpClient (e.g.
++   * via {@code HttpClientBuilder#setDefaultRequestConfig}).
+    */
+   @Deprecated
+   public void setReadTimeout(int timeout) {
+@@ -233,25 +229,14 @@
+   }
+ 
+   private RequestConfig getRequestConfig() {
+-    RequestConfig requestConfig = RequestConfig.DEFAULT;
++    RequestConfig.Builder builder = RequestConfig.custom();
+     if (connectTimeout_ > 0) {
+-      requestConfig =
+-          RequestConfig.copy(requestConfig)
+-              .setConnectionRequestTimeout(Timeout.ofMilliseconds(connectTimeout_))
+-              .build();
++      builder.setConnectTimeout(connectTimeout_).setConnectionRequestTimeout(connectTimeout_);
+     }
+-    return requestConfig;
+-  }
+-
+-  private ConnectionConfig getConnectionConfig() {
+-    ConnectionConfig connectionConfig = ConnectionConfig.DEFAULT;
+     if (readTimeout_ > 0) {
+-      connectionConfig =
+-          ConnectionConfig.copy(connectionConfig)
+-              .setSocketTimeout(Timeout.ofMilliseconds(readTimeout_))
+-              .build();
++      builder.setSocketTimeout(readTimeout_);
+     }
+-    return connectionConfig;
++    return builder.build();
+   }
+ 
+   private static Map<String, String> getDefaultHeaders() {
+@@ -279,7 +264,7 @@
+       if (null != customHeaders_) {
+         customHeaders_.forEach(post::addHeader);
+       }
+-      post.setEntity(new ByteArrayEntity(data, null));
++      post.setEntity(new ByteArrayEntity(data));
+       inputStream_ = client.execute(this.host, post, new THttpClientResponseHandler());
+     } catch (IOException ioe) {
+       // Abort method so the connection gets released back to the connection manager

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!--
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.hbase.thirdparty</groupId>
+    <artifactId>hbase-thirdparty</artifactId>
+    <version>${revision}</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <artifactId>hbase-shaded-thrift</artifactId>
+  <name>Apache HBase Patched and Relocated (Shaded) Thrift</name>
+  <description>Pulls down libthrift, patches it, compiles, and then relocates/shades.</description>
+  <properties>
+    <!-- Override parent's JDK 17 settings to force JDK 8 for hbase-shaded-thrift, matching the
+    other source-distribution shaded modules in this project (e.g. hbase-shaded-protobuf). The
+    patches we apply put libthrift back on the javax.servlet and Apache HttpClient 4.x surface,
+    which are Java 8 friendly. -->
+    <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
+    <maven.compiler.source>${java.release.version}</maven.compiler.source>
+    <maven.compiler.target>${java.release.version}</maven.compiler.target>
+    <thrift.source.version>0.23.0</thrift.source.version>
+  </properties>
+  <!--
+    The patched libthrift sources reference slf4j-api, javax.servlet-api, Apache HttpClient/Core
+    4.x, and commons-lang3 at compile time. These are NOT shaded; downstream consumers must
+    provide their own runtime versions (hbase-thrift already does). We declare them as provided
+    scope so they participate in compilation but never get bundled into the shaded jar.
+  -->
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.36</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.4.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <!--Clean needs to purge src/main/java since this is where
+             the unpack of libthrift is overlaid. Do it for usual
+             clean goal but also before we unpack in case patches
+             delete/add files. We use src/main/java instead of dir
+             under 'target' because the jar plugin is dumb, hard to
+             make it source from other then src/main/java.-->
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/src/main/java</directory>
+              <includes>
+                <include>**/**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/src/main/resources</directory>
+              <includes>
+                <include>**/**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pre-generate-sources</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--Download our dependency src, i.e. libthrift, and
+             unpack it. Overlays src/main/java so ready for
+            compile-time (the jar plugin expects src in
+            src/main/java)-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <!--
+                The libthrift compile dependencies (slf4j, javax.servlet, httpclient, ...) are
+                declared as provided above, not here. We only unpack the source jar here.
+              -->
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.thrift</groupId>
+                  <artifactId>libthrift</artifactId>
+                  <version>${thrift.source.version}</version>
+                  <classifier>sources</classifier>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${basedir}/src/main/java</outputDirectory>
+                  <includes>**/**</includes>
+                </artifactItem>
+                <!-- for the bundled LICENSE.txt / NOTICE.txt of libthrift -->
+                <artifactItem>
+                  <groupId>org.apache.thrift</groupId>
+                  <artifactId>libthrift</artifactId>
+                  <version>${thrift.source.version}</version>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${basedir}/src/main/resources</outputDirectory>
+                  <includes>META-INF/LICENSE.txt,META-INF/NOTICE.txt</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <!--Apply our patches to the unpacked libthrift src-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-patch-plugin</artifactId>
+        <configuration>
+          <targetDirectory>${basedir}</targetDirectory>
+          <skipApplication>false</skipApplication>
+        </configuration>
+        <executions>
+          <execution>
+            <id>patch</id>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>process-sources</phase>
+            <configuration>
+              <strip>1</strip>
+              <patchDirectory>${basedir}/src/main/patches</patchDirectory>
+              <patchTrackingFile>${project.build.directory}/patches-applied.txt</patchTrackingFile>
+              <naturalOrderProcessing>true</naturalOrderProcessing>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!--Above we built a jar. Now at package step, do relocation/shade-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <createSourcesJar>true</createSourcesJar>
+              <relocations>
+                <relocation>
+                  <pattern>org.apache.thrift</pattern>
+                  <shadedPattern>${rename.offset}.org.apache.thrift</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

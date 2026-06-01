@@ -95,6 +95,7 @@
   </mailingLists>
   <modules>
     <module>hbase-shaded-protobuf</module>
+    <module>hbase-shaded-thrift</module>
     <module>hbase-shaded-netty</module>
     <module>hbase-shaded-netty-tcnative</module>
     <module>hbase-shaded-gson</module>
@@ -245,6 +246,10 @@
               <exclude>**/src/main/java/com/google/protobuf/**</exclude>
               <exclude>**/src/main/resources/google/**</exclude>
               <exclude>**/src/main/java/META-INF/**</exclude>
+              <!--Exclude the unpacked libthrift src and bundled license/notice-->
+              <exclude>**/hbase-shaded-thrift/src/main/java/org/apache/thrift/**</exclude>
+              <exclude>**/hbase-shaded-thrift/src/main/resources/META-INF/LICENSE.txt</exclude>
+              <exclude>**/hbase-shaded-thrift/src/main/resources/META-INF/NOTICE.txt</exclude>
             </excludes>
           </configuration>
         </plugin>

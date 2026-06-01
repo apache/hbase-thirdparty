@@ -1,0 +1,39 @@
+diff --git a/src/main/java/org/apache/thrift/server/TServlet.java b/src/main/java/org/apache/thrift/server/TServlet.java
+--- a/src/main/java/org/apache/thrift/server/TServlet.java
++++ b/src/main/java/org/apache/thrift/server/TServlet.java
+@@ -1,9 +1,9 @@
+ package org.apache.thrift.server;
+ 
+-import jakarta.servlet.ServletException;
+-import jakarta.servlet.http.HttpServlet;
+-import jakarta.servlet.http.HttpServletRequest;
+-import jakarta.servlet.http.HttpServletResponse;
++import javax.servlet.ServletException;
++import javax.servlet.http.HttpServlet;
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpServletResponse;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+diff --git a/src/main/java/org/apache/thrift/server/TExtensibleServlet.java b/src/main/java/org/apache/thrift/server/TExtensibleServlet.java
+--- a/src/main/java/org/apache/thrift/server/TExtensibleServlet.java
++++ b/src/main/java/org/apache/thrift/server/TExtensibleServlet.java
+@@ -19,12 +19,12 @@
+ 
+ package org.apache.thrift.server;
+ 
+-import jakarta.servlet.ServletConfig;
+-import jakarta.servlet.ServletContext;
+-import jakarta.servlet.ServletException;
+-import jakarta.servlet.http.HttpServlet;
+-import jakarta.servlet.http.HttpServletRequest;
+-import jakarta.servlet.http.HttpServletResponse;
++import javax.servlet.ServletConfig;
++import javax.servlet.ServletContext;
++import javax.servlet.ServletException;
++import javax.servlet.http.HttpServlet;
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpServletResponse;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
