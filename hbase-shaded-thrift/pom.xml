@@ -37,7 +37,6 @@
     <toolchain.jdk.version>${hbase.unsafe.and.protobuf.java.version}</toolchain.jdk.version>
     <maven.compiler.source>${java.release.version}</maven.compiler.source>
     <maven.compiler.target>${java.release.version}</maven.compiler.target>
-    <thrift.source.version>0.23.0</thrift.source.version>
   </properties>
   <!--
     The patched libthrift sources reference slf4j-api, javax.servlet-api, Apache HttpClient/Core
@@ -138,7 +137,7 @@
                 <artifactItem>
                   <groupId>org.apache.thrift</groupId>
                   <artifactId>libthrift</artifactId>
-                  <version>${thrift.source.version}</version>
+                  <version>${thrift.version}</version>
                   <classifier>sources</classifier>
                   <type>jar</type>
                   <overWrite>true</overWrite>
@@ -149,7 +148,7 @@
                 <artifactItem>
                   <groupId>org.apache.thrift</groupId>
                   <artifactId>libthrift</artifactId>
-                  <version>${thrift.source.version}</version>
+                  <version>${thrift.version}</version>
                   <type>jar</type>
                   <overWrite>true</overWrite>
                   <outputDirectory>${basedir}/src/main/resources</outputDirectory>

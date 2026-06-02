@@ -2,6 +2,8 @@
 **/dependency-reduced-pom.xml
 hbase-shaded-protobuf/src/main/java
 hbase-shaded-protobuf/src/main/resources
+hbase-shaded-thrift/src/main/java
+hbase-shaded-thrift/src/main/resources
 .project
 .settings
 .classpath
