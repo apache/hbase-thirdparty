@@ -42,49 +42,49 @@
     The patched libthrift sources reference slf4j-api, javax.servlet-api, Apache HttpClient/Core
     4.x, and commons-lang3 at compile time. These are NOT shaded; downstream consumers must
     provide their own runtime versions (hbase-thrift already does). We declare them as provided
-    scope so they participate in compilation but never get bundled into the shaded jar.
+    scope so they participate in compilation but never get bundled into the shaded jar. All
+    versions come from properties in the parent pom so they stay aligned with what the rest of
+    HBase expects at runtime.
   -->
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version>
+      <version>${slf4j.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
+      <version>${servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.13</version>
+      <version>${httpclient.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpcore</artifactId>
-      <version>4.4.13</version>
+      <version>${httpcore.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
+      <version>${commons-lang3.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <!--Clean needs to purge src/main/java since this is where
-             the unpack of libthrift is overlaid. Do it for usual
-             clean goal but also before we unpack in case patches
-             delete/add files. We use src/main/java instead of dir
-             under 'target' because the jar plugin is dumb, hard to
-             make it source from other then src/main/java.-->
+        <!-- Clean needs to purge src/main/java since this is where we overlay the unpack of
+             libthrift. Do it for usual clean goal but also before we unpack in case patches
+             delete/add files. We use src/main/java instead of dir under 'target' because the
+             jar plugin is dumb, hard to make it source from other then src/main/java. -->
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
           <filesets>

@@ -160,6 +160,15 @@
     <javassist.version>3.30.2-GA</javassist.version>
     <jackson-jaxrs-json-provider.version>2.21.1</jackson-jaxrs-json-provider.version>
     <spotless.version>2.30.0</spotless.version>
+    <!--
+      Compile-time deps used by the patched libthrift sources in hbase-shaded-thrift. The
+      shaded thrift jar does NOT bundle these. We set them at 'provided' scope at compile
+      time and downstream consumers supply them.
+    -->
+    <slf4j.version>1.7.36</slf4j.version>
+    <httpclient.version>4.5.13</httpclient.version>
+    <httpcore.version>4.4.13</httpcore.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
 
     <!-- Below is copied from hbase project -->
     <hbase-surefire.jdk17.flags>-Dorg.apache.hbase.thirdparty.io.netty.tryReflectionSetAccessible=true
