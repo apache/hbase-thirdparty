@@ -39,7 +39,7 @@
     <hbase.stable.version>2.5.11</hbase.stable.version>
     <!-- should match the slf4j-api version used in the above hbase -->
     <slf4j.version>1.7.33</slf4j.version>
-    <log4j2.version>2.17.2</log4j2.version>
+    <log4j2.version>2.25.4</log4j2.version>
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
