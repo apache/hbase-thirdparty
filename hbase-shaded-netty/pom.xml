@@ -127,12 +127,13 @@
               <target>
                 <echo message="unjar"/>
                 <unzip dest="${project.build.directory}/unpacked/" src="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                <echo message="Rename netty .so in META-INF"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_transport_native_epoll_aarch_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_aarch_64.so"/>
-                <echo message="Rename netty .jnilib in META-INF"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_kqueue_x86_64.jnilib"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_resolver_dns_native_macos_x86_64.jnilib"/>
+                <echo message="Relocate all netty native libs in META-INF to match the shaded package prefix"/>
+                <move todir="${project.build.directory}/unpacked/META-INF/native">
+                  <fileset dir="${project.build.directory}/unpacked/META-INF/native">
+                    <include name="libnetty_*"/>
+                  </fileset>
+                  <globmapper from="libnetty_*" to="liborg_apache_hbase_thirdparty_netty_*"/>
+                </move>
                 <echo message="Redo jar"/>
                 <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
               </target>
