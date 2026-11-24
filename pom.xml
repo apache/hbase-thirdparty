@@ -137,7 +137,7 @@
     <maven.min.version>3.3.3</maven.min.version>
     <os.maven.version>1.7.1</os.maven.version>
     <rename.offset>org.apache.hbase.thirdparty</rename.offset>
-    <protobuf.version>4.34.0</protobuf.version>
+    <protobuf.version>4.36.2</protobuf.version>
     <!-- libthrift sources jar pulled, patched, and shaded by hbase-shaded-thrift. The patches
     under hbase-shaded-thrift/src/main/patches were authored against this exact version and will
     not apply cleanly against any other. -->
@@ -465,6 +465,12 @@
               <include>**/org/apache/hbase/htrace_noop/**</include>
               <include>**/org/apache/hadoop/hbase/unsafe/**</include>
             </includes>
+            <excludes>
+              <!-- The include patterns above also match compiled classes under the build
+              output directory, e.g. target/classes/**.class, which are binary and must not
+              be fed to the formatters. -->
+              <exclude>**/target/**</exclude>
+            </excludes>
             <!--
               e.g., remove the following lines:
               "* @param paramName"
@@ -544,6 +550,10 @@
                 <include>**/org/apache/hbase/htrace_noop/**</include>
                 <include>**/org/apache/hadoop/hbase/unsafe/**</include>
               </includes>
+              <excludes>
+                <!-- See the excludes of the java section above for the reason. -->
+                <exclude>**/target/**</exclude>
+              </excludes>
               <licenseHeader>
                 <file>${session.executionRootDirectory}/dev-support/license-header</file>
                 <delimiter>package</delimiter>
