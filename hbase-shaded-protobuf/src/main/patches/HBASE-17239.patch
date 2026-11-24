@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 08b61797b..09294cbab 100644
+index ca5f407b3b..888cc792be 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -193,11 +193,7 @@ public abstract class CodedInputStream {
+@@ -198,11 +198,7 @@ public abstract class CodedInputStream {
    }
 
    /** Create a new CodedInputStream wrapping the given {@link ByteInput}. */
@@ -16,7 +16,7 @@ index 08b61797b..09294cbab 100644
    }
 
 diff --git a/src/main/java/com/google/protobuf/UnsafeByteOperations.java b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
-index 15c1da969..54d2f975a 100644
+index 15c1da9690..54d2f975ae 100644
 --- a/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 +++ b/src/main/java/com/google/protobuf/UnsafeByteOperations.java
 @@ -74,6 +74,17 @@ public final class UnsafeByteOperations {
