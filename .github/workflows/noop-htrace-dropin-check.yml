@@ -1,0 +1,286 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# yamllint disable rule:line-length
+---
+name: Noop HTrace Drop-in Check
+
+# Builds the hbase-noop-htrace drop-in replacement, swaps it in for the htrace
+# jars shipped in the released HBase and Hadoop binary distributions, and runs a
+# single process smoke test against the resulting installs.
+#
+# Only the Hadoop 2 line still carries HTrace, so that is the only combination
+# with something to swap:
+# - the Hadoop 2 flavor of the HBase binary distribution bundles htrace-core4
+#   in lib/client-facing-thirdparty (the shaded clients shade in Hadoop classes
+#   which load org.apache.htrace.core);
+# - Hadoop 2.x ships htrace-core4 in share/hadoop/*/lib.
+# The Hadoop 3 flavor of the binary distribution is built against Hadoop 3.4.x
+# and carries no htrace at all, and Hadoop 3.3.2+ dropped it as well, so there
+# is nothing to replace there. The drop-in replaces the remaining jars to get
+# rid of their CVE-flagged transitive dependencies while keeping the API
+# surface. Keep the matrix in sync with the HBase/Hadoop combinations we still
+# list as recommended.
+"on":
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'hbase-noop-htrace/**'
+      - 'dev-support/**'
+      - 'pom.xml'
+      - '.github/workflows/noop-htrace-dropin-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  noop-htrace-dropin-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Default (Hadoop 2 flavor) binary distribution on top of Hadoop 2.x:
+          # htrace jars are swapped in both the HBase and the Hadoop install.
+          - name: 'hadoop2-flavor'
+            hbase-version: '2.5.16'
+            hbase-artifact-suffix: ''
+            hadoop-version: '2.10.2'
+
+    name: hbase-${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }}.hadoop-${{ matrix.hadoop-version }}
+
+    env:
+      HBASE_VERSION: ${{ matrix.hbase-version }}
+      HBASE_ARTIFACT_SUFFIX: ${{ matrix.hbase-artifact-suffix }}
+      HADOOP_VERSION: ${{ matrix.hadoop-version }}
+      # Where the smoke test scripts are fetched from: the apache/hbase release
+      # tag matching the binary distribution under test. A release tag is
+      # immutable and keeps the script in lockstep with the tested version,
+      # unlike a branch such as master which drifts under our feet. The binary
+      # tarball itself carries no commit metadata to pin by. Override this with
+      # a commit sha to try out a script change before it lands in a release.
+      # HBASE-29930 moved the script to dev-support/integration-test/.
+      HBASE_SCRIPTS_REF: "rel/${{ matrix.hbase-version }}"
+
+    steps:
+      - name: Checkout hbase-thirdparty
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK 17 (builds hbase-noop-htrace)
+        id: jdk17
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up JDK 8 (runs HBase and Hadoop)
+        id: jdk8
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Maven cache
+        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
+        with:
+          path: ~/.m2
+          key: hbase-thirdparty-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            hbase-thirdparty-m2-
+
+      - name: Download cache for release tarballs
+        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
+        with:
+          path: cache
+          key: noop-htrace-dropin-downloads-hbase-${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }}-hadoop-${{ matrix.hadoop-version }}
+
+      - name: Download HBase ${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }} binary tarball
+        run: |
+          mkdir -p cache hbase/downloads
+          dev-support/jenkins-scripts/cache-apache-project-artifact.sh \
+            --working-dir hbase/downloads \
+            --keys 'https://downloads.apache.org/hbase/KEYS' \
+            "cache/hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-bin.tar.gz" \
+            "hbase/${HBASE_VERSION}/hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-bin.tar.gz"
+
+      - name: Download Hadoop ${{ matrix.hadoop-version }} tarball
+        run: |
+          mkdir -p hadoop/downloads
+          dev-support/jenkins-scripts/cache-apache-project-artifact.sh \
+            --working-dir hadoop/downloads \
+            --keys 'https://downloads.apache.org/hadoop/common/KEYS' \
+            "cache/hadoop-${HADOOP_VERSION}-bin.tar.gz" \
+            "hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz"
+
+      - name: Build hbase-noop-htrace
+        env:
+          JAVA8_HOME: ${{ steps.jdk8.outputs.path }}
+          JAVA17_HOME: ${{ steps.jdk17.outputs.path }}
+        run: |
+          ./dev-support/generate-toolchains.sh
+          mvn -B -t toolchains.xml -DskipTests -pl hbase-noop-htrace clean package
+
+      - name: Install HBase and Hadoop, dropping in the noop htrace replacement
+        run: |
+          noop_htrace="$(ls -1 hbase-noop-htrace/target/hbase-noop-htrace-*.jar | head -n 1)"
+          if [ -z "${noop_htrace}" ]; then
+            echo "failed to find htrace noop replacement. did building step work?" >&2
+            exit 1
+          fi
+          echo "NOOP_HTRACE=${noop_htrace}" >> "$GITHUB_ENV"
+          mkdir hbase-install hadoop-install
+          # record the htrace jars each tarball ships; used by the job summary
+          tar -tzf "cache/hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-bin.tar.gz" \
+            | grep -E 'htrace[^/]*\.jar$' | sort > htrace-jars-hbase.txt || true
+          tar -tzf "cache/hadoop-${HADOOP_VERSION}-bin.tar.gz" \
+            | grep -E 'htrace[^/]*\.jar$' | sort > htrace-jars-hadoop.txt || true
+          dev-support/jenkins/swap_htrace_jar.sh \
+            hbase-install "cache/hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-bin.tar.gz" "${noop_htrace}"
+          dev-support/jenkins/swap_htrace_jar.sh \
+            hadoop-install "cache/hadoop-${HADOOP_VERSION}-bin.tar.gz" "${noop_htrace}"
+
+      - name: Verify the htrace jars were swapped out
+        run: |
+          noop_name="$(basename "${NOOP_HTRACE}")"
+          {
+            echo "## Noop HTrace Drop-in Check: hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX} × hadoop-${HADOOP_VERSION}"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| HBase binary distribution | \`hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-bin.tar.gz\` |"
+            echo "| Hadoop binary distribution | \`hadoop-${HADOOP_VERSION}.tar.gz\` |"
+            echo "| Drop-in replacement | \`${noop_name}\` |"
+            echo
+            echo "### Drop-in swap"
+            echo
+            echo "| Distribution | htrace jar removed | noop jar placed |"
+            echo "|---|---|---|"
+            for dist in hbase hadoop; do
+              if [ ! -s "htrace-jars-${dist}.txt" ]; then
+                echo "| ${dist} | (no htrace jars in this distribution) | |"
+                continue
+              fi
+              while read -r jar; do
+                rel="${jar#*/}"
+                dir="$(dirname "${rel}")"
+                echo "| ${dist} | \`${rel}\` | \`${dir}/${noop_name}\` |"
+              done < "htrace-jars-${dist}.txt"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          leftover="$(find hbase-install hadoop-install -name 'htrace*.jar' -print)"
+          if [ -n "${leftover}" ]; then
+            echo "::error::htrace jars still present after the drop-in swap: ${leftover}"
+            exit 1
+          fi
+          noop_count="$(find hbase-install hadoop-install -name 'hbase-noop-htrace*.jar' | wc -l)"
+          if [ "${noop_count}" -lt 1 ]; then
+            echo "::error::the noop htrace replacement was not placed into the installs"
+            exit 1
+          fi
+
+      - name: Download smoke test script from apache/hbase
+        run: |
+          curl -fsSL -o pseudo-distributed-test.sh \
+            "https://raw.githubusercontent.com/apache/hbase/${HBASE_SCRIPTS_REF}/dev-support/integration-test/pseudo-distributed-test.sh"
+          chmod +x pseudo-distributed-test.sh
+
+      - name: Run single process smoke test on Hadoop ${{ matrix.hadoop-version }}
+        id: smoke
+        env:
+          JAVA_HOME: ${{ steps.jdk8.outputs.path }}
+        run: |
+          set -x
+          mkdir -p "hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}.hadoop-${HADOOP_VERSION}"
+          ./pseudo-distributed-test.sh \
+            --single-process \
+            --working-dir "hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}.hadoop-${HADOOP_VERSION}" \
+            hbase-install \
+            hadoop-install/bin/hadoop \
+            hadoop-install/share/hadoop/yarn/timelineservice \
+            hadoop-install/share/hadoop/yarn/test/hadoop-yarn-server-tests-*-tests.jar \
+            hadoop-install/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-*-tests.jar \
+            hadoop-install/bin/mapred
+
+      - name: Publish Job Summary
+        if: always()
+        env:
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+        run: |
+          workdir="hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}.hadoop-${HADOOP_VERSION}"
+          {
+            echo
+            echo "### Installs"
+            echo
+            if [ -x hbase-install/bin/hbase ]; then
+              echo "- HBase: \`$(hbase-install/bin/hbase version 2>/dev/null | grep ^HBase | head -n 1 | cut -d' ' -f2-)\`"
+            else
+              echo "- HBase: (install missing)"
+            fi
+            if [ -x hadoop-install/bin/hadoop ]; then
+              echo "- Hadoop: \`$(hadoop-install/bin/hadoop version 2>/dev/null | head -n 1 | cut -d' ' -f2-)\`"
+            else
+              echo "- Hadoop: (install missing)"
+            fi
+            echo
+            echo "### Smoke test"
+            echo
+            case "${SMOKE_OUTCOME}" in
+              success) echo "✅ Single process pseudo-distributed smoke test **passed**." ;;
+              skipped) echo "⚠️ Single process pseudo-distributed smoke test did not run." ;;
+              *) echo "❌ Single process pseudo-distributed smoke test **failed**." ;;
+            esac
+            echo
+            echo "Full logs are uploaded in the \`noop-htrace-dropin-hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}-hadoop-${HADOOP_VERSION}-output\` artifact (kept for 7 days)."
+            if [ "${SMOKE_OUTCOME}" != "success" ] && [ -d "${workdir}" ]; then
+              echo
+              echo "### Smoke test log tail"
+              for f in "${workdir}"/*.err "${workdir}"/*.log; do
+                [ -s "${f}" ] || continue
+                echo
+                echo "<details><summary>${f}</summary>"
+                echo
+                echo '```'
+                tail -n 30 "${f}"
+                echo '```'
+                echo "</details>"
+              done
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Collect logs
+        if: always()
+        run: |
+          find "hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}.hadoop-${HADOOP_VERSION}" hbase-install hadoop-install \
+            -type d -name logs 2>/dev/null | \
+            xargs -r zip -qr "hbase-${HBASE_VERSION}${HBASE_ARTIFACT_SUFFIX}.hadoop-${HADOOP_VERSION}.logs.zip"
+
+      - name: Publish Results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: noop-htrace-dropin-hbase-${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }}-hadoop-${{ matrix.hadoop-version }}-output
+          path: |
+            hbase-${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }}.hadoop-${{ matrix.hadoop-version }}
+            hbase-${{ matrix.hbase-version }}${{ matrix.hbase-artifact-suffix }}.hadoop-${{ matrix.hadoop-version }}.logs.zip
+          retention-days: 7
+          if-no-files-found: ignore

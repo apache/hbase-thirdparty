@@ -163,6 +163,25 @@ cp toolchains.xml ~/.m2/toolchains.xml
 mvn clean install
 ```
 
+### CI/GitHub Actions Setup
+
+PR-level precommit CI runs on GitHub Actions (see `.github/workflows/`), in parallel with the legacy Jenkins jobs which are kept until the Actions setup is proven stable.
+
+- `yetus-precommit-check.yml` - Apache Yetus `test-patch` precommit check (what Jenkins calls "precommit checks"), run in the Docker image defined by `dev-support/jenkins/Dockerfile` and driven by `dev-support/jenkins/jenkins_precommit_github_yetus.sh`. Also runs `zizmor` over `.github/workflows/` when a PR touches workflows. Results are published as a GitHub Actions job summary plus an artifact kept for 7 days.
+- `noop-htrace-dropin-check.yml` - Builds `hbase-noop-htrace`, swaps it in for the htrace jars inside the released HBase and Hadoop binary tarballs (via `dev-support/jenkins/swap_htrace_jar.sh`), asserts the htrace jars are really gone, and runs a single process smoke test against the resulting installs, publishing a job summary with the swap details and the smoke test result. HBase 2.5+ code no longer uses HTrace, but the Hadoop 2 flavor of its binary distribution still bundles `htrace-core4` in `lib/client-facing-thirdparty` because the shaded clients shade in Hadoop classes which load `org.apache.htrace.core`, and Hadoop 2.x ships htrace-core4 itself. The Hadoop 3 flavor is built against Hadoop 3.4.x and carries no htrace at all, and Hadoop 3.3.2+ dropped it as well, so the matrix only covers the HBase 2.5.x Hadoop 2 flavor on Hadoop 2.10.2.
+
+Supporting scripts:
+
+- `dev-support/jenkins-scripts/cache-apache-project-artifact.sh` - Downloads and GPG-verifies Apache release artifacts (the Yetus release, HBase and Hadoop tarballs).
+- `dev-support/yetus_console_to_md.py` - Renders the Yetus console report as Markdown for the GitHub Actions job summary.
+
+Notes:
+
+- On GitHub Actions the Yetus run cannot post comments on pull requests coming from forks (the automatically provided `GITHUB_TOKEN` is read-only there), so results are reported through the job summary and the uploaded artifacts instead of PR comments.
+- The dual-JDK build is handled exactly like on Jenkins: `dev-support/generate-toolchains.sh` together with `dev-support/toolchains-jenkins.xml`. The workflows install Temurin 8 and 17 and generate `toolchains.xml` before invoking Maven.
+- The smoke test script `pseudo-distributed-test.sh` is fetched at runtime from `apache/hbase` (`dev-support/integration-test/pseudo-distributed-test.sh`; it used to live at `dev-support/hbase_nightly_pseudo-distributed-test.sh` before HBASE-29930).
+- If these checks become required status checks in branch protection, note that `noop-htrace-dropin-check.yml` only runs on PRs touching `hbase-noop-htrace/`, `dev-support/`, `pom.xml` or the workflow file itself.
+
 ### CI/Jenkins Setup
 
 The Jenkins CI environment uses a Docker-based build system that automatically handles the dual JDK requirements without any manual configuration.

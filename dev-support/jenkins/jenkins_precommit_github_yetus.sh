@@ -29,9 +29,9 @@ fi
 
 declare -i missing_env=0
 declare -a required_envs=(
-  # these ENV variables define the required API with Jenkinsfile
+  # these ENV variables define the required API with the Jenkinsfile and the
+  # GitHub Actions workflows under .github/workflows/
   "ARCHIVE_PATTERN_LIST"
-  "BUILD_URL_ARTIFACTS"
   "DOCKERFILE"
   "GITHUB_PASSWORD"
   "GITHUB_USER"
@@ -48,6 +48,12 @@ for required_env in "${required_envs[@]}"; do
     missing_env=${missing_env}+1
   fi
 done
+
+# BUILD_URL_ARTIFACTS is required for Jenkins but set by Yetus itself for GitHub Actions
+if [[ "${GITHUB_ACTIONS}" != "true" ]] && [[ -z "${BUILD_URL_ARTIFACTS}" ]]; then
+  echo "[ERROR] Required environment variable 'BUILD_URL_ARTIFACTS' is not set."
+  missing_env=${missing_env}+1
+fi
 
 if [ ${missing_env} -gt 0 ]; then
   echo "[ERROR] Please set the required environment variables before invoking. If this error is " \
@@ -70,7 +76,10 @@ mkdir "${PATCHDIR}/machine"
 # Otherwise exit, because we don't want HBase to do a
 # full build.  We wouldn't normally do this check for smaller
 # projects. :)
-if [[ -z "${CHANGE_URL}" ]]; then
+# On GitHub Actions Yetus determines the pull request by itself from the
+# GitHub Actions environment (see yetus' robots.d/githubactions.sh), so only
+# apply this check outside of GitHub Actions.
+if [[ "${GITHUB_ACTIONS}" != "true" ]] && [[ -z "${CHANGE_URL}" ]]; then
   echo "Full build skipped" > "${PATCHDIR}/report.html"
   exit 0
 fi
@@ -89,7 +98,13 @@ YETUS_ARGS+=("--basedir=${SOURCEDIR}")
 YETUS_ARGS+=("--console-report-file=${PATCHDIR}/console.txt")
 # enable writing back to Github
 YETUS_ARGS+=("--github-token=${GITHUB_PASSWORD}")
-YETUS_ARGS+=("--github-write-comment")
+# GitHub Actions cannot write comments on pull requests coming from forks
+# (the automatically provided GITHUB_TOKEN is read-only there), so rely on the
+# job summary and the uploaded artifacts instead. Jenkins keeps writing
+# comments via its own credentials.
+if [[ "${GITHUB_ACTIONS}" != "true" ]]; then
+  YETUS_ARGS+=("--github-write-comment")
+fi
 # auto-kill any surefire stragglers during unit test runs
 YETUS_ARGS+=("--reapermode=kill")
 # set relatively high limits for ASF machines
@@ -99,7 +114,9 @@ YETUS_ARGS+=("--dockermemlimit=20g")
 # rsync these files back into the archive dir
 YETUS_ARGS+=("--archive-list=${ARCHIVE_PATTERN_LIST}")
 # URL for user-side presentation in reports and such to our artifacts
-YETUS_ARGS+=("--build-url-artifacts=${BUILD_URL_ARTIFACTS}")
+if [[ -n "${BUILD_URL_ARTIFACTS}" ]]; then
+  YETUS_ARGS+=("--build-url-artifacts=${BUILD_URL_ARTIFACTS}")
+fi
 # plugins to enable
 YETUS_ARGS+=("--plugins=${PLUGINS}")
 YETUS_ARGS+=("--tests-filter=test4tests")
@@ -108,6 +125,15 @@ YETUS_ARGS+=("--tests-filter=test4tests")
 YETUS_ARGS+=("--docker")
 YETUS_ARGS+=("--dockerfile=${DOCKERFILE}")
 YETUS_ARGS+=("--mvn-custom-repos")
+# GitHub Actions runners are single-use, so a fixed instance name is safe and
+# keeps yetus' maven repo directory stable across runs
+# (~/yetus-m2/<project>-<branch>-patch-ci instead of ...-patch-<random>), which
+# is what makes the ~/yetus-m2 cache effective. Keep the default random
+# instance on shared Jenkins nodes so concurrent builds don't clobber each
+# other's repository.
+if [[ "${GITHUB_ACTIONS}" = "true" ]]; then
+  YETUS_ARGS+=("--instance=ci")
+fi
 YETUS_ARGS+=("--java-home=${SET_JAVA_HOME}")
 # effectively treat dev-support as a custom maven module
 YETUS_ARGS+=("--skip-dirs=dev-support")
