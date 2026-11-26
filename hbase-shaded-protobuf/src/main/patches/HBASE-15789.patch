@@ -1,19 +1,6 @@
-diff --git a/src/main/java/com/google/protobuf/ByteBufferWriter.java b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-index e7d9eec8e..e17fefd39 100644
---- a/src/main/java/com/google/protobuf/ByteBufferWriter.java
-+++ b/src/main/java/com/google/protobuf/ByteBufferWriter.java
-@@ -88,7 +88,7 @@ final class ByteBufferWriter {
-     }
-   }
-
--  private static byte[] getOrCreateBuffer(int requestedSize) {
-+  static byte[] getOrCreateBuffer(int requestedSize) {
-     requestedSize = max(requestedSize, MIN_CACHED_BUFFER_SIZE);
-
-     byte[] buffer = getBuffer();
 diff --git a/src/main/java/com/google/protobuf/ByteInput.java b/src/main/java/com/google/protobuf/ByteInput.java
 new file mode 100644
-index 000000000..8fa95a213
+index 0000000000..8fa95a213b
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInput.java
 @@ -0,0 +1,86 @@
@@ -105,10 +92,10 @@ index 000000000..8fa95a213
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteInputByteString.java b/src/main/java/com/google/protobuf/ByteInputByteString.java
 new file mode 100644
-index 000000000..3493393c8
+index 0000000000..821ad2dfed
 --- /dev/null
 +++ b/src/main/java/com/google/protobuf/ByteInputByteString.java
-@@ -0,0 +1,235 @@
+@@ -0,0 +1,240 @@
 +// Protocol Buffers - Google's data interchange format
 +// Copyright 2008 Google Inc.  All rights reserved.
 +// https://developers.google.com/protocol-buffers/
@@ -208,11 +195,16 @@ index 000000000..3493393c8
 +
 +  @Override
 +  public ByteString substring(int beginIndex, int endIndex) {
-+    if (beginIndex < 0 || beginIndex >= size() || endIndex < beginIndex || endIndex >= size()) {
-+      throw new IllegalArgumentException(
-+          String.format("Invalid indices [%d, %d]", beginIndex, endIndex));
++    return substringNoCopy(beginIndex, endIndex);
++  }
++
++  @Override
++  public ByteString substringNoCopy(int beginIndex, int endIndex) {
++    final int length = checkRange(beginIndex, endIndex, size());
++    if (length == 0) {
++      return ByteString.EMPTY;
 +    }
-+    return new ByteInputByteString(this.buffer, getAbsoluteOffset(beginIndex), endIndex - beginIndex);
++    return new ByteInputByteString(this.buffer, getAbsoluteOffset(beginIndex), length);
 +  }
 +
 +  @Override
@@ -238,7 +230,7 @@ index 000000000..3493393c8
 +
 +  @Override
 +  void writeToInternal(OutputStream out, int sourceOffset, int numberToWrite) throws IOException {
-+    byte[] buf = ByteBufferWriter.getOrCreateBuffer(numberToWrite);
++    byte[] buf = new byte[numberToWrite];
 +    this.buffer.read(getAbsoluteOffset(sourceOffset), buf, 0, numberToWrite);
 +    out.write(buf, 0, numberToWrite);
 +  }
@@ -345,10 +337,10 @@ index 000000000..3493393c8
 +  }
 +}
 diff --git a/src/main/java/com/google/protobuf/ByteString.java b/src/main/java/com/google/protobuf/ByteString.java
-index 900f98850..6789cafdf 100644
+index 4197fc1a5e..173845318d 100644
 --- a/src/main/java/com/google/protobuf/ByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteString.java
-@@ -457,6 +457,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -485,6 +485,13 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
      }
    }
 
@@ -362,7 +354,7 @@ index 900f98850..6789cafdf 100644
    /**
     * Wraps the given bytes into a {@code ByteString}. Intended for internal usage within the library
     * to force a classload of ByteString before LiteralByteString.
-@@ -1042,8 +1049,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
+@@ -1070,8 +1077,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
       * @return true for equality of substrings, else false.
       */
      abstract boolean equalsRange(ByteString other, int offset, int length);
@@ -372,10 +364,10 @@ index 900f98850..6789cafdf 100644
 
    /**
 diff --git a/src/main/java/com/google/protobuf/CodedInputStream.java b/src/main/java/com/google/protobuf/CodedInputStream.java
-index 0d68d1797..08b61797b 100644
+index 9382137db1..ca5f407b3b 100644
 --- a/src/main/java/com/google/protobuf/CodedInputStream.java
 +++ b/src/main/java/com/google/protobuf/CodedInputStream.java
-@@ -122,20 +122,12 @@ public abstract class CodedInputStream {
+@@ -127,20 +127,12 @@ public abstract class CodedInputStream {
    /** Create a new CodedInputStream wrapping the given byte array slice. */
    static CodedInputStream newInstance(
        final byte[] buf, final int off, final int len, final boolean bufferIsImmutable) {
@@ -402,7 +394,7 @@ index 0d68d1797..08b61797b 100644
      try {
        // Some uses of CodedInputStream can be more efficient if they know
        // exactly how many bytes are available.  By pushing the end point of the
-@@ -200,6 +192,15 @@ public abstract class CodedInputStream {
+@@ -205,6 +197,15 @@ public abstract class CodedInputStream {
      }
    }
 
@@ -418,8 +410,8 @@ index 0d68d1797..08b61797b 100644
    /** Disable construction/inheritance outside of this class. */
    private CodedInputStream() {}
 
-@@ -2605,4 +2606,652 @@ public abstract class CodedInputStream {
-       }
+@@ -2769,4 +2770,667 @@ public abstract class CodedInputStream {
+       return limit < currentOffset || bytesToAdd > limit - currentOffset;
      }
    }
 +
@@ -1005,6 +997,21 @@ index 0d68d1797..08b61797b 100644
 +    }
 +
 +    @Override
++    public int streamRawBytes(byte[] bytes, int offset, int length) throws IOException {
++      checkStreamingReadArgs(bytes, offset, length);
++      if (length == 0) {
++        return 0;
++      }
++      int bytesToCopy = Math.min(length, limit - pos);
++      if (bytesToCopy == 0) {
++        return -1;
++      }
++      buffer.read(pos, bytes, offset, bytesToCopy);
++      pos += bytesToCopy;
++      return bytesToCopy;
++    }
++
++    @Override
 +    public void skipRawBytes(int length) throws IOException {
 +      if (length >= 0 && length <= (limit - pos)) {
 +        // We have all the bytes we need already.
@@ -1072,10 +1079,10 @@ index 0d68d1797..08b61797b 100644
 +  }
  }
 diff --git a/src/main/java/com/google/protobuf/Utf8.java b/src/main/java/com/google/protobuf/Utf8.java
-index 5abe89dc2..0d0af5097 100644
+index de36bc5ec1..a48e553647 100644
 --- a/src/main/java/com/google/protobuf/Utf8.java
 +++ b/src/main/java/com/google/protobuf/Utf8.java
-@@ -122,6 +122,10 @@ final class Utf8 {
+@@ -212,6 +212,10 @@ final class Utf8 {
      }
    }
 
@@ -1086,7 +1093,7 @@ index 5abe89dc2..0d0af5097 100644
    // These UTF-8 handling methods are copied from Guava's Utf8 class with a modification to throw
    // a protocol buffer local exception. This exception is then caught in CodedOutputStream so it can
    // fallback to more lenient behavior.
-@@ -266,6 +270,16 @@ final class Utf8 {
+@@ -322,8 +326,87 @@ final class Utf8 {
      return i - index;
    }
 
@@ -1102,11 +1109,6 @@ index 5abe89dc2..0d0af5097 100644
 +
    /** A processor of UTF-8 strings, providing methods for checking validity and encoding. */
    abstract static class Processor {
-     /**
-@@ -357,6 +371,75 @@ final class Utf8 {
-       }
-     }
-
 +    protected boolean isValidUtf8ByteInput(ByteInput buffer, int index, int limit) {
 +      index += estimateConsecutiveAscii(buffer, index, limit);
 +

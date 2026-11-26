@@ -1,8 +1,8 @@
 diff --git a/src/main/java/com/google/protobuf/ByteInputByteString.java b/src/main/java/com/google/protobuf/ByteInputByteString.java
-index 3493393c8..136b90059 100644
+index 821ad2dfed..0185219766 100644
 --- a/src/main/java/com/google/protobuf/ByteInputByteString.java
 +++ b/src/main/java/com/google/protobuf/ByteInputByteString.java
-@@ -230,6 +230,8 @@ final class ByteInputByteString extends ByteString.LeafByteString {
+@@ -235,6 +235,8 @@ final class ByteInputByteString extends ByteString.LeafByteString {
    public CodedInputStream newCodedInput() {
      // We trust CodedInputStream not to modify the bytes, or to give anyone
      // else access to them.
