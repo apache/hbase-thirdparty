@@ -107,8 +107,9 @@
               https://github.com/netty/netty/issues/6665
 
             TODO: Ensure native works.
-            NOTE: The 'tofile' in the move command below has the relocation hard-coded
-            with '-' instead of '.' separators. If change the relocation, need to change here too.
+            NOTE: The globmapper 'to' patterns below hard-code the shaded package prefix (rename.offset,
+            'org.apache.hbase.thirdparty') with '_' instead of '.' separators. If the relocation
+            changes, update them here too.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -128,12 +129,21 @@
                   </patternset>
                   <mapper from="META-INF/license/(LICENSE.*.txt)$$" to="META-INF/\1" type="regexp"/>
                 </unzip>
-                <echo message="Rename netty .so in META-INF"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_x86_64.so"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_linux_aarch_64.so"/>
-                <echo message="Rename netty .jnilib in META-INF"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_x86_64.jnilib"/>
-                <move file="${project.build.directory}/unpacked/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/unpacked/META-INF/native/liborg_apache_hbase_thirdparty_netty_tcnative_osx_aarch_64.jnilib"/>
+                <echo message="Relocate all netty-tcnative native libs in META-INF to match the shaded package prefix"/>
+                <!-- On Unix/macOS System.mapLibraryName adds a 'lib' prefix: libnetty_* -> liborg_apache_hbase_thirdparty_netty_* -->
+                <move todir="${project.build.directory}/unpacked/META-INF/native">
+                  <fileset dir="${project.build.directory}/unpacked/META-INF/native">
+                    <include name="libnetty_*"/>
+                  </fileset>
+                  <globmapper from="libnetty_*" to="liborg_apache_hbase_thirdparty_netty_*"/>
+                </move>
+                <!-- On Windows System.mapLibraryName adds no prefix: netty_* -> org_apache_hbase_thirdparty_netty_* -->
+                <move todir="${project.build.directory}/unpacked/META-INF/native">
+                  <fileset dir="${project.build.directory}/unpacked/META-INF/native">
+                    <include name="netty_*"/>
+                  </fileset>
+                  <globmapper from="netty_*" to="org_apache_hbase_thirdparty_netty_*"/>
+                </move>
                 <echo message="Redo jar"/>
                 <jar basedir="${project.build.directory}/unpacked" destfile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
               </target>
