@@ -18,6 +18,44 @@
 -->
 # HBASE Changelog
 
+## Release thirdparty-4.1.15 - Unreleased (as of 2026-11-27)
+
+
+
+### IMPROVEMENTS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-30472](https://issues.apache.org/jira/browse/HBASE-30472) | [hbase-thirdparty] Make netty/netty-tcnative native-library relocation self-maintaining with a glob mapper |  Major | thirdparty |
+
+
+### BUG FIXES:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-30202](https://issues.apache.org/jira/browse/HBASE-30202) | [hbase-thirdparty] Bump netty4 to 4.1.135.Final |  Trivial | security, thirdparty |
+
+
+### SUB-TASKS:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-30572](https://issues.apache.org/jira/browse/HBASE-30572) | [hbase-thirdparty] Migrate pre commit check to github actions |  Major | thirdparty |
+| [HBASE-30568](https://issues.apache.org/jira/browse/HBASE-30568) | [hbase-thirdparty] Bump protobuf version to 4.36.2 |  Major | . |
+| [HBASE-30567](https://issues.apache.org/jira/browse/HBASE-30567) | [hbase-thirdparty] Bump dependency versions |  Major | dependencies, thirdparty |
+| [HBASE-30580](https://issues.apache.org/jira/browse/HBASE-30580) | [hbase-thirdparty] Polish the pom for hbase-noop-htrace |  Major | . |
+
+
+### OTHER:
+
+| JIRA | Summary | Priority | Component |
+|:---- |:---- | :--- |:---- |
+| [HBASE-30278](https://issues.apache.org/jira/browse/HBASE-30278) | [hbase-thirdparty] [INFRA] Set up default rulesets for default and release branches |  Major | thirdparty |
+| [HBASE-30372](https://issues.apache.org/jira/browse/HBASE-30372) | [hbase-thirdparty] Update Thrift to 0.24.0 to fix known security issues |  Major | security, thirdparty |
+| [HBASE-30282](https://issues.apache.org/jira/browse/HBASE-30282) | [hbase-thirdparty] Bump jackson-jaxrs-json-provider to 2.22.3 |  Major | security, thirdparty |
+| [HBASE-30470](https://issues.apache.org/jira/browse/HBASE-30470) | [hbase-thirdparty] Bump netty to 4.1.139.Final and netty-tcnative to 2.0.84.Final |  Major | security, thirdparty |
+
+
 ## Release thirdparty-4.1.14 - Unreleased (as of 2026-06-08)
 
 

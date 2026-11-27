@@ -16,6 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 -->
+# HBASE  thirdparty-4.1.15 Release Notes
+
+These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
+
+
+---
+
+* [HBASE-30567](https://issues.apache.org/jira/browse/HBASE-30567) | *Major* | **[hbase-thirdparty] Bump dependency versions**
+
+netty 4.1.139.Final -\> 4.1.141.Final
+netty-tcnative 2.0.84.Final -\> 2.0.86.Final
+guava 33.4.8-jre -\> 33.8.0-jre
+commons-collections 4.5.0 -\> 4.6.0
+error\_prone 2.48.0 -\> 2.53.0
+gson 2.13.2 -\> 2.15.0
+jetty12 12.0.32 -\> 12.0.41
+jersey 2.47 -\> 2.48
+javassist 3.30.2-GA -\> 3.33.0-GA
+jackson-jaxrs-json-provider 2.22.3 -\> 2.23.0
+
+
+
 # HBASE  thirdparty-4.1.14 Release Notes
 
 These release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.
