@@ -34,12 +34,14 @@
   <properties>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <!-- This library is meant to work with whatever HBase and Hadoop combos we still list
-         as recommended. The version here is what we'll test out of the box if you run mvn test
+         as recommended. The version here is what we'll test out of the box if you run mvn test.
+         Keep in sync with the hbase-version tested in
+         .github/workflows/noop-htrace-dropin-check.yml.
       -->
-    <hbase.stable.version>2.5.11</hbase.stable.version>
-    <!-- should match the slf4j-api version used in the above hbase -->
-    <slf4j.version>1.7.33</slf4j.version>
-    <log4j2.version>2.17.2</log4j2.version>
+    <hbase.stable.version>2.5.16</hbase.stable.version>
+    <!-- slf4j-api is inherited from the parent pom (slf4j.version); it should match
+         the slf4j-api version used in the above hbase -->
+    <log4j2.version>2.26.1</log4j2.version>
     <!-- These maybe need to match the main repo -->
     <maven.checkstyle.version>3.1.0</maven.checkstyle.version>
     <checkstyle.version>8.29</checkstyle.version>
@@ -82,6 +84,15 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-1.2-api</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- TODO why does hbase-shaded testing-util need this but not declare it?
+         (it pulled commons-logging in transitively up to 2.5.11 and stopped since;
+         bridge the JCL API to log4j2 like the bridges above) -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jcl</artifactId>
       <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
